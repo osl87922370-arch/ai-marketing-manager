@@ -1,12 +1,14 @@
-from sqlalchemy import Column, Integer, String, DateTime, Text
+from sqlalchemy import Column, Integer, String, Text, DateTime
 from datetime import datetime
 from db import Base
-
 
 class Report(Base):
     __tablename__ = "reports"
 
     id = Column(Integer, primary_key=True, index=True)
+
+    # ✅ 사용자 구분 키 (가장 중요)
+    user_id = Column(Integer, index=True, nullable=False)
 
     store_name = Column(String(120), nullable=True)
 
