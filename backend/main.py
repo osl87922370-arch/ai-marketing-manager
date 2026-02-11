@@ -123,3 +123,35 @@ def score_engine(reviews: List[str], ratings: Optional[List[float]] = None) -> S
 @app.post("/api/insight/score", response_model=ScoreResponse)
 def insight_score(req: ScoreRequest):
     return score_engine(req.reviews, req.ratings)
+from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
+
+from db import get_db
+from schemas import ReportCreate, ReportOut
+import crud
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.post("/api/reports", response_model=ReportOut)
+def create_report_api(payload: ReportCreate, db: Session = Depends(get_db)):
+    return crud.create_report(db, payload)
+
+@app.get("/api/reports", response_model=list[ReportOut])
+def list_reports_api(limit: int = 50, offset: int = 0, db: Session = Depends(get_db)):
+    return crud.list_reports(db, limit=limit, offset=offset)
+
+@app.get("/api/reports/{report_id}", response_model=ReportOut)
+def get_report_api(report_id: int, db: Session = Depends(get_db)):
+    obj = crud.get_report(db, report_id)
+    if not obj:
+        raise HTTPException(status_code=404, detail="Report not found")
+    return obj
