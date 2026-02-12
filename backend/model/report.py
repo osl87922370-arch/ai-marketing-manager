@@ -1,17 +1,19 @@
-from sqlalchemy import Column, Integer, String, Text, DateTime
+# backend/model/report.py
 from datetime import datetime
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
 from db import Base
+
 
 class Report(Base):
     __tablename__ = "reports"
 
     id = Column(Integer, primary_key=True, index=True)
 
-    # ✅ 사용자 구분 키 (가장 중요)
-    user_id = Column(Integer, index=True, nullable=False)
+    # ✅ FK (DB 레벨 연결)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), index=True, nullable=False)
 
     store_name = Column(String(120), nullable=True)
-
     reviews_text = Column(Text, nullable=False)
     ratings_csv = Column(String(200), nullable=True)
 
@@ -22,5 +24,7 @@ class Report(Base):
     risk = Column(Integer, nullable=False)
 
     summary = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
-    created_at = Column(DateTime, default=datetime.utcnow)
+    # 관계
+    user = relationship("User", back_populates="reports")

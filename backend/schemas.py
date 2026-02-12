@@ -1,9 +1,9 @@
+# backend/schemas.py
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
-# ✅ 공통 베이스 (모든 Report가 상속)
 class ReportBase(BaseModel):
     store_name: Optional[str] = None
     reviews_text: str
@@ -18,13 +18,14 @@ class ReportBase(BaseModel):
     summary: Optional[str] = None
 
 
-# ✅ 생성용 (user_id 필수)
 class ReportCreate(ReportBase):
-    user_id: int
+    # ✅ user_id를 여기서 없애도 됨 (권장)
+    # user_id: int  # <-- 제거 추천
+    pass
 
 
-# ✅ 수정용 (전부 optional)
 class ReportUpdate(BaseModel):
+    # ✅ 부분 업데이트 허용(없으면 업데이트 안 함)
     store_name: Optional[str] = None
     reviews_text: Optional[str] = None
     ratings_csv: Optional[str] = None
@@ -38,11 +39,9 @@ class ReportUpdate(BaseModel):
     summary: Optional[str] = None
 
 
-# ✅ 응답용
 class ReportOut(ReportBase):
     id: int
     user_id: int
     created_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
