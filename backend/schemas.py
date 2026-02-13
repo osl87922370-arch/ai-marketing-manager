@@ -1,9 +1,36 @@
 # backend/schemas.py
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, ConfigDict
+
+from pydantic import BaseModel, ConfigDict, EmailStr
 
 
+# ---------- USER ----------
+class UserCreate(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class UserOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    email: EmailStr
+    is_active: bool
+    created_at: datetime
+
+
+# ---------- AUTH / TOKEN ----------
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+
+class TokenData(BaseModel):
+    sub: Optional[str] = None
+
+
+# ---------- REPORT ----------
 class ReportBase(BaseModel):
     store_name: Optional[str] = None
     reviews_text: str
@@ -19,13 +46,11 @@ class ReportBase(BaseModel):
 
 
 class ReportCreate(ReportBase):
-    # ✅ user_id를 여기서 없애도 됨 (권장)
-    # user_id: int  # <-- 제거 추천
+    # user_id는 "클라에서 받지 않음" (JWT current_user로 서버에서 채움)
     pass
 
 
 class ReportUpdate(BaseModel):
-    # ✅ 부분 업데이트 허용(없으면 업데이트 안 함)
     store_name: Optional[str] = None
     reviews_text: Optional[str] = None
     ratings_csv: Optional[str] = None
@@ -39,9 +64,20 @@ class ReportUpdate(BaseModel):
     summary: Optional[str] = None
 
 
-class ReportOut(ReportBase):
+class ReportOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     user_id: int
-    created_at: datetime
+    store_name: Optional[str] = None
+    reviews_text: str
+    ratings_csv: Optional[str] = None
 
-    model_config = ConfigDict(from_attributes=True)
+    total_score: int
+    sentiment: int
+    shareability: int
+    growth: int
+    risk: int
+
+    summary: Optional[str] = None
+    created_at: datetime

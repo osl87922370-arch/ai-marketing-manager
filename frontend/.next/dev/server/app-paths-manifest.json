@@ -1,0 +1,5 @@
+{
+  "/api/insight/score/route": "app/api/insight/score/route.js",
+  "/insight/page": "app/insight/page.js",
+  "/page": "app/page.js"
+}
