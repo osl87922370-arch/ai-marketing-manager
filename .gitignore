@@ -22,3 +22,24 @@ frontend/out/
 # OS
 .DS_Store
 Thumbs.db
+# env
+.env
+.env.local
+
+# Python
+**/venv/
+**/.venv/
+**/__pycache__/
+**/*.pyc
+
+# Node/Next
+**/node_modules/
+**/.next/
+**/dist/
+**/.turbo/
+**/.swc/
+
+# OS
+.DS_Store
+Thumbs.db
+
