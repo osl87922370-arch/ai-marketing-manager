@@ -1,60 +1,72 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { apiFetch } from "@/lib/api";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 
-export default function GeneratePage() {
-    const router = useRouter();
+export default function LoginPage() {
+    const router = useRouter()
 
-    const [productDesc, setProductDesc] = useState("");
-    const [target, setTarget] = useState("");
-    const [tone, setTone] = useState("친근");
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [error, setError] = useState("")
 
-    async function generate() {
-        const data = await apiFetch("/api/generate", {
+    const handleLogin = async () => {
+        setError("")
+
+        const res = await fetch("http://127.0.0.1:8000/api/auth/login", {
             method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
             body: JSON.stringify({
-                product_desc: productDesc,
-                target,
-                tone,
+                email,
+                password,
             }),
-        });
+        })
 
-        sessionStorage.setItem("result", JSON.stringify(data));
-        router.push("/result");
+        if (!res.ok) {
+            const err = await res.json()
+            setError(err.detail || "로그인 실패")
+            return
+        }
+
+        const data = await res.json()
+
+        localStorage.setItem("access_token", data.access_token)
+        localStorage.setItem("user_email", email)
+
+        router.push("/generate")
     }
 
     return (
-        <div style={{ padding: 40 }}>
-            <h1>생성하기</h1>
-
-            <textarea
-                placeholder="상품 설명"
-                value={productDesc}
-                onChange={e => setProductDesc(e.target.value)}
-            />
-
-            <br />
+        <div className="p-8 max-w-sm mx-auto">
+            <h1 className="text-2xl font-bold mb-4">로그인</h1>
 
             <input
-                placeholder="타겟"
-                value={target}
-                onChange={e => setTarget(e.target.value)}
+                type="email"
+                placeholder="이메일"
+                className="border p-2 w-full mb-3"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
             />
 
-            <br />
+            <input
+                type="password"
+                placeholder="비밀번호"
+                className="border p-2 w-full mb-3"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
 
-            <select value={tone} onChange={e => setTone(e.target.value)}>
-                <option>친근</option>
-                <option>전문</option>
-                <option>유머</option>
-                <option>하드셀</option>
-            </select>
+            <button
+                onClick={handleLogin}
+                className="bg-black text-white px-4 py-2 w-full"
+            >
+                로그인
+            </button>
 
-            <br />
-
-            <button onClick={generate}>생성</button>
+            {error && <p className="text-red-500 mt-3">{error}</p>}
         </div>
-    );
+    )
 }
+

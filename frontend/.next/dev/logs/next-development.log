@@ -1,9 +1,2463 @@
-[00:00:01.721] Server  LOG     ✓ Ready in 1280ms
-[00:01:11.138] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:01:11.251] Browser WARN    Image with src "http://localhost:3000/vercel.svg" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
-[00:15:12.438] Server  LOG     ✓ Compiled in 70ms
-[00:26:22.365] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:26:22.488] Browser WARN    Image with src "http://localhost:3000/vercel.svg" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
-[00:26:26.244] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:26:26.358] Browser WARN    Image with src "http://localhost:3000/vercel.svg" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio.
-[00:27:26.240] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:00.950] Server  LOG     ✓ Ready in 685ms
+[00:00:19.091] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:19.434] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="en">
+                          <body
+                            className="inter_5972bc34-module__OU16Qa__className bg-slate-50 flex h-screen overflow-hidden"
+-                           __processed_fae506b3-f325-4d78-bd74-2bd8659c0de7__="true"
+                          >
+                  ...
+
+[00:09:08.726] Server  LOG     ✓ Compiled in 76ms
+[00:09:35.623] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:17:34.833] Server  LOG     ✓ Compiled in 60ms
+[00:18:07.168] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:18:14.735] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:18:15.063] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="en">
+                          <body
+                            className="inter_5972bc34-module__OU16Qa__className bg-slate-50 flex h-screen overflow-hidden"
+-                           __processed_44910a08-962a-4d66-9c97-f106d3993c75__="true"
+                          >
+                  ...
+
+[00:18:17.658] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:18:17.989] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="en">
+                          <body
+                            className="inter_5972bc34-module__OU16Qa__className bg-slate-50 flex h-screen overflow-hidden"
+-                           __processed_e63ac1f8-e564-4c27-a99a-a39d1be4ed13__="true"
+                          >
+                  ...
+
+[00:18:20.698] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:18:21.006] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="en">
+                          <body
+                            className="inter_5972bc34-module__OU16Qa__className bg-slate-50 flex h-screen overflow-hidden"
+-                           __processed_6e2bbddd-381b-4f6d-bdc8-1ade87b43866__="true"
+                          >
+                  ...
+
+[00:18:23.481] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:18:23.787] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="en">
+                          <body
+                            className="inter_5972bc34-module__OU16Qa__className bg-slate-50 flex h-screen overflow-hidden"
+-                           __processed_64b21aac-843f-4ef2-ae94-4b76485bf790__="true"
+                          >
+                  ...
+
+[00:18:29.112] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:18:29.536] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="en">
+                          <body
+                            className="inter_5972bc34-module__OU16Qa__className bg-slate-50 flex h-screen overflow-hidden"
+-                           __processed_c19d4876-ef67-4c71-a5fb-9e635f2f2de1__="true"
+                          >
+                  ...
+
+[00:18:34.170] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:18:34.472] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="en">
+                          <body
+                            className="inter_5972bc34-module__OU16Qa__className bg-slate-50 flex h-screen overflow-hidden"
+-                           __processed_861d13c3-445a-4806-9fa1-03604ea336e6__="true"
+                          >
+                  ...
+
+[00:29:24.928] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.930] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.931] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.933] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.952] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.954] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.955] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.955] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.957] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.957] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.958] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.959] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.960] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.960] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.961] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.962] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.964] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.965] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.965] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.967] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.968] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.969] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.970] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.970] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.972] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.974] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.975] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.977] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.979] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.981] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.982] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.984] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:24.996] Server  LOG     ✓ Compiled in 113ms
+[00:29:25.695] Browser ERROR   ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:29:46.103] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:46.228] Browser ERROR   ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:29:47.307] Browser ERROR   uncaughtError: Error: ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:47.506] Browser ERROR   ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:29:47.506] Browser ERROR   ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:29:51.402] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:51.939] Browser ERROR   uncaughtError: Error: ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:29:52.131] Browser ERROR   ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:29:52.131] Browser ERROR   ./app/layout.tsx:5:1
+Module not found: Can't resolve './Sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 | export default function RootLayout({
+  8 |   children,
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:33:32.171] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 | export default function RootLayout({
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:33:32.172] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 | export default function RootLayout({
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:33:32.172] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 | export default function RootLayout({
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:33:32.173] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 | export default function RootLayout({
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:33:32.709] Browser ERROR   ./app/layout.tsx:5:1
+Module not found: Can't resolve './sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 | export default function RootLayout({
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:33:51.754] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 | export default function RootLayout({
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:33:52.477] Browser ERROR   uncaughtError: Error: ./app/layout.tsx:5:1
+Module not found: Can't resolve './sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 | export default function RootLayout({
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:33:52.708] Browser ERROR   ./app/layout.tsx:5:1
+Module not found: Can't resolve './sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 | export default function RootLayout({
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:33:52.708] Browser ERROR   ./app/layout.tsx:5:1
+Module not found: Can't resolve './sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 | export default function RootLayout({
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:33:56.162] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Module not found: Can't resolve './sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 | export default function RootLayout({
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:33:56.744] Browser ERROR   uncaughtError: Error: ./app/layout.tsx:5:1
+Module not found: Can't resolve './sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 | export default function RootLayout({
+
+
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:33:56.920] Browser ERROR   ./app/layout.tsx:5:1
+Module not found: Can't resolve './sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 | export default function RootLayout({
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:33:56.920] Browser ERROR   ./app/layout.tsx:5:1
+Module not found: Can't resolve './sidebar'
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "./sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 | export default function RootLayout({
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:37:59.694] Browser ERROR   ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-client] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+[00:37:59.694] Browser ERROR   ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-ssr] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+[00:38:23.943] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-client] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+
+
+./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-ssr] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+
+[00:38:24.498] Browser ERROR   uncaughtError: Error: ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-client] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+
+[00:38:24.713] Browser ERROR   ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-client] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+[00:38:24.713] Browser ERROR   ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-ssr] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+[00:38:24.713] Browser ERROR   ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-client] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+[00:38:24.714] Browser ERROR   ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-ssr] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+[00:38:27.721] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-client] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+
+
+./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-ssr] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+
+[00:38:28.175] Browser ERROR   uncaughtError: Error: ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-client] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+
+[00:38:28.348] Browser ERROR   ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-client] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+[00:38:28.348] Browser ERROR   ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-ssr] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+[00:38:28.348] Browser ERROR   ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-client] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+[00:38:28.348] Browser ERROR   ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-ssr] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+[00:38:29.275] Server  ERROR   ⨯ ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-client] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+
+
+./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-ssr] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+
+[00:38:29.750] Browser ERROR   uncaughtError: Error: ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-client] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+
+
+[00:38:29.922] Browser ERROR   ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-client] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+[00:38:29.922] Browser ERROR   ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-ssr] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+[00:38:29.922] Browser ERROR   ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-client] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+[00:38:29.922] Browser ERROR   ./app/layout.tsx:5:1
+Export default doesn't exist in target module
+  3 | import "./globals.css";
+  4 | import { usePathname } from "next/navigation";
+> 5 | import Sidebar from "../components/Sidebar";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  6 |
+  7 |
+  8 |
+
+The export default was not found in module [project]/components/Sidebar.tsx [app-ssr] (ecmascript).
+Did you mean to import Sidebar?
+All exports of the module are statically known (It doesn't have dynamic exports). So it's known statically that the requested export doesn't exist.
+
+Import traces:
+  Client Component Browser:
+    ./app/layout.tsx [Client Component Browser]
+    ./app/layout.tsx [Server Component]
+
+  Client Component SSR:
+    ./app/layout.tsx [Client Component SSR]
+    ./app/layout.tsx [Server Component]
+[00:48:12.231] Server  LOG     ✓ Compiled in 53ms
+[00:48:12.908] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:48:14.697] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <ClientSegmentRoot Component={function RootLayout} slots={{...}} ...>
+                        <RootLayout params={Promise}>
+                          <html lang="ko">
+                            <body
+                              className="bg-slate-50"
+-                             __processed_b504f025-0632-4455-a3d8-d94c38557bbd__="true"
+                            >
+                  ...
+
+[00:50:17.445] Server  LOG     ✓ Compiled in 49ms
+[01:01:54.725] Server  ERROR   ⨯ ./app/layout.tsx:3:1
+Module not found: Can't resolve './ClientLayout'
+  1 | import "./globals.css";
+  2 | import type { ReactNode } from "react";
+> 3 | import ClientLayout from "./ClientLayout";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function RootLayout({ children }: { children: ReactNode }) {
+  6 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:01:54.726] Server  ERROR   ⨯ ./app/layout.tsx:3:1
+Module not found: Can't resolve './ClientLayout'
+  1 | import "./globals.css";
+  2 | import type { ReactNode } from "react";
+> 3 | import ClientLayout from "./ClientLayout";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function RootLayout({ children }: { children: ReactNode }) {
+  6 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:01:54.737] Server  ERROR   ⨯ ./app/layout.tsx:3:1
+Module not found: Can't resolve './ClientLayout'
+  1 | import "./globals.css";
+  2 | import type { ReactNode } from "react";
+> 3 | import ClientLayout from "./ClientLayout";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function RootLayout({ children }: { children: ReactNode }) {
+  6 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:01:54.738] Server  ERROR   ⨯ ./app/layout.tsx:3:1
+Module not found: Can't resolve './ClientLayout'
+  1 | import "./globals.css";
+  2 | import type { ReactNode } from "react";
+> 3 | import ClientLayout from "./ClientLayout";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function RootLayout({ children }: { children: ReactNode }) {
+  6 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:01:54.739] Server  ERROR   ⨯ ./app/layout.tsx:3:1
+Module not found: Can't resolve './ClientLayout'
+  1 | import "./globals.css";
+  2 | import type { ReactNode } from "react";
+> 3 | import ClientLayout from "./ClientLayout";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function RootLayout({ children }: { children: ReactNode }) {
+  6 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:01:54.740] Server  ERROR   ⨯ ./app/layout.tsx:3:1
+Module not found: Can't resolve './ClientLayout'
+  1 | import "./globals.css";
+  2 | import type { ReactNode } from "react";
+> 3 | import ClientLayout from "./ClientLayout";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function RootLayout({ children }: { children: ReactNode }) {
+  6 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:01:54.741] Server  ERROR   ⨯ ./app/layout.tsx:3:1
+Module not found: Can't resolve './ClientLayout'
+  1 | import "./globals.css";
+  2 | import type { ReactNode } from "react";
+> 3 | import ClientLayout from "./ClientLayout";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function RootLayout({ children }: { children: ReactNode }) {
+  6 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:01:54.742] Server  ERROR   ⨯ ./app/layout.tsx:3:1
+Module not found: Can't resolve './ClientLayout'
+  1 | import "./globals.css";
+  2 | import type { ReactNode } from "react";
+> 3 | import ClientLayout from "./ClientLayout";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function RootLayout({ children }: { children: ReactNode }) {
+  6 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:01:54.743] Server  ERROR   ⨯ ./app/layout.tsx:3:1
+Module not found: Can't resolve './ClientLayout'
+  1 | import "./globals.css";
+  2 | import type { ReactNode } from "react";
+> 3 | import ClientLayout from "./ClientLayout";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function RootLayout({ children }: { children: ReactNode }) {
+  6 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:01:54.744] Server  ERROR   ⨯ ./app/layout.tsx:3:1
+Module not found: Can't resolve './ClientLayout'
+  1 | import "./globals.css";
+  2 | import type { ReactNode } from "react";
+> 3 | import ClientLayout from "./ClientLayout";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function RootLayout({ children }: { children: ReactNode }) {
+  6 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:01:54.745] Server  ERROR   ⨯ ./app/layout.tsx:3:1
+Module not found: Can't resolve './ClientLayout'
+  1 | import "./globals.css";
+  2 | import type { ReactNode } from "react";
+> 3 | import ClientLayout from "./ClientLayout";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function RootLayout({ children }: { children: ReactNode }) {
+  6 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:01:54.747] Server  ERROR   ⨯ ./app/layout.tsx:3:1
+Module not found: Can't resolve './ClientLayout'
+  1 | import "./globals.css";
+  2 | import type { ReactNode } from "react";
+> 3 | import ClientLayout from "./ClientLayout";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function RootLayout({ children }: { children: ReactNode }) {
+  6 |   return (
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[01:01:54.779] Server  LOG     ✓ Compiled in 82ms
+[01:01:55.705] Browser ERROR   ./app/layout.tsx:3:1
+Module not found: Can't resolve './ClientLayout'
+  1 | import "./globals.css";
+  2 | import type { ReactNode } from "react";
+> 3 | import ClientLayout from "./ClientLayout";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function RootLayout({ children }: { children: ReactNode }) {
+  6 |   return (
+
+https://nextjs.org/docs/messages/module-not-found
+[01:02:48.265] Server  LOG     ✓ Compiled in 44ms
+[01:02:48.739] Server  ERROR   ⨯ Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: object. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+[01:02:49.323] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:02:50.703] Browser ERROR   uncaughtError: Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: object. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `RootLayout`.
+[01:02:59.633] Server  WARN    ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[01:03:00.315] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:03:01.706] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="ko">
+                          <body
+                            className="bg-slate-50 min-h-screen"
+-                           __processed_07b9deb8-de69-4f67-933e-416c10cab514__="true"
+                          >
+                  ...
+
+[01:03:24.305] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:03:24.718] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="ko">
+                          <body
+                            className="bg-slate-50 min-h-screen"
+-                           __processed_2cf01be5-c0ec-4542-911b-35b8eb7eceb9__="true"
+                          >
+                  ...
+
+[01:03:27.940] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:03:28.272] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="ko">
+                          <body
+                            className="bg-slate-50 min-h-screen"
+-                           __processed_30f8846c-0f60-403f-8dd6-d6633c5962b9__="true"
+                          >
+                  ...
+
+[01:03:32.665] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:03:32.948] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <script>
+                      <RootLayout>
+                        <html lang="ko">
+                          <body
+                            className="bg-slate-50 min-h-screen"
+-                           __processed_1f97a0f5-0bd2-441d-98c2-91c18fa9eafd__="true"
+                          >
+                  ...
+
+[01:10:01.357] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:19:06.701] Browser LOG     [ChromeTransport] chromePort disconnected
+[01:20:04.552] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:20:07.517] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:20:59.122] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:23:13.347] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:23:20.307] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:28:48.364] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

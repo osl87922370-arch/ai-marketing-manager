@@ -1,28 +1,14 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-import { Sidebar } from "@/components/Sidebar";
+import type { ReactNode } from "react";
+import ClientLayout from "./ClientLayout";
 
-const inter = Inter({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "CAMRec Dashboard",
-  description: "Co-Attention Multimodal Recommender System",
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} bg-slate-50 flex h-screen overflow-hidden`}>
-        <Sidebar />
-        <main className="flex-1 overflow-y-auto bg-slate-50">
-          {children}
-        </main>
+    <html lang="ko">
+      <body className="bg-slate-50 min-h-screen">
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );
 }
+
