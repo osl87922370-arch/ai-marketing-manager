@@ -8,7 +8,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import OpenAI
 from fastapi import Depends, Request
-from auth import get_current_user_supabase
+from auth import get_current_user
+
 from fastapi.security import HTTPBearer
 
 # ======================
@@ -118,7 +119,7 @@ class GenerateRequest(BaseModel):
 def health():
     return {"status": "ok"}
 @app.get("/ai/me")
-def me(request: Request, user=Depends(get_current_user_supabase)):
+def me(request: Request, user=Depends(get_current_user)):
     return user
 
 # ======================
