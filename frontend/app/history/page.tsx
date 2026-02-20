@@ -126,65 +126,100 @@ export default function HistoryPage() {
                 </button>
             </div>
 
-            <div style={{ marginTop: 16 }}>
-                {loading && <div>불러오는 중...</div>}
-                {err && (
-                    <div style={{ color: "crimson" }}>
-                        {err}
-                        <div style={{ marginTop: 6, color: "#666" }}>
-                            힌트: 로그인에서 user_email 저장이 되어 있어야 “내 것만” 필터됩니다.
-                        </div>
-                    </div>
-                )}
-
-                {!loading && !err && filtered.length === 0 && (
+            return (
+            <div style={{ padding: 40, maxWidth: 900 }}>
+                {/* 상단 헤더/필터 UI (이미 있는 그대로 유지) */}
+                <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
+                    <h1 style={{ margin: 0 }}>내 생성 히스토리</h1>
                     <div style={{ color: "#666" }}>
-                        히스토리가 없습니다. 먼저 생성 후 저장해보세요.
+                        {userEmail ? `(${userEmail})` : "(로그인 이메일 미저장)"}
                     </div>
-                )}
+                </div>
 
-                {!loading && !err && filtered.length > 0 && (
-                    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                        {filtered.map((x) => (
-                            <div
-                                key={x.id}
-                                style={{
-                                    border: "1px solid #e5e5e5",
-                                    borderRadius: 10,
-                                    padding: 14,
-                                }}
-                            >
-                                <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
-                                    <div>
-                                        <div style={{ fontWeight: 700 }}>
-                                            #{x.id} · {x.target} · {x.tone}
-                                        </div>
-                                        <div style={{ marginTop: 4, color: "#333" }}>
-                                            <b>상품</b>: {x.product_desc}
-                                        </div>
-                                        <div style={{ marginTop: 4, color: "#777", fontSize: 12 }}>
-                                            {x.created_at}
+                {/* 검색/필터/새로생성 버튼 (이미 있는 그대로 유지) */}
+                {/* ... */}
+
+                {/* ✅ 여기부터(= marginTop:16 블록) 통째로 이 구조로 맞추세요 */}
+                <div style={{ marginTop: 16 }}>
+                    {loading && <div>불러오는 중...</div>}
+
+                    {err && (
+                        <div style={{ color: "crimson" }}>
+                            {err}
+                            <div style={{ marginTop: 6, color: "#666" }}>
+                                힌트: 로그인에서 user_email 저장이 되어 있어야 “내 것만” 필터됩니다.
+                            </div>
+                        </div>
+                    )}
+
+                    {!loading && !err && filtered.length === 0 && (
+                        <div style={{ color: "#666" }}>
+                            히스토리가 없습니다. 먼저 생성 후 저장해보세요.
+                        </div>
+                    )}
+
+                    {!loading && !err && filtered.length > 0 && (
+                        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                            {filtered.map((x) => (
+                                <div
+                                    key={x.id}
+                                    style={{
+                                        border: "1px solid #eee",
+                                        borderRadius: 10,
+                                        padding: 14,
+                                        marginBottom: 12,
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            gap: 12,
+                                        }}
+                                    >
+                                        <div>
+                                            <div style={{ fontWeight: 700 }}>
+                                                #{x.id} · {x.target} · {x.tone}
+                                            </div>
+
+                                            <div style={{ marginTop: 4, color: "#333" }}>
+                                                <b>상품</b>: {x.product_desc}
+                                            </div>
+
+                                            <div style={{ marginTop: 4, color: "#777", fontSize: 12 }}>
+                                                {x.created_at}
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div style={{ display: "flex", gap: 8, alignItems: "start" }}>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            gap: 8,
+                                            alignItems: "start",
+                                            marginTop: 10,
+                                        }}
+                                    >
                                         <button onClick={() => openToResult(x)}>열기</button>
                                         <button onClick={() => copy(x.result_text)}>복사</button>
+
+                                        {/* ✅ 재사용 버튼 */}
+                                        <button onClick={() => router.push(`/generate?reuse=${x.id}`)}>
+                                            재사용
+                                        </button>
+                                    </div>
+
+                                    <div style={{ marginTop: 10 }}>
+                                        <textarea
+                                            readOnly
+                                            value={x.result_text}
+                                            style={{ width: "100%", height: 120 }}
+                                        />
                                     </div>
                                 </div>
-
-                                <div style={{ marginTop: 10 }}>
-                                    <textarea
-                                        readOnly
-                                        value={x.result_text}
-                                        style={{ width: "100%", height: 120 }}
-                                    />
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
-        </div>
-    );
-}
+            );

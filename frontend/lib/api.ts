@@ -35,12 +35,28 @@ export async function apiFetch<T>(
         }
     }
 
-    const res = await fetch(`http://127.0.0.1:8000${path}`, {
+    const res = await fetch(`${API_BASE}${path}`, {
         ...options,
         headers,
         body,
     });
 
+    // 🔐 인증 만료/무효 토큰 공통 처리
+    if (res.status === 401) {
+        if (typeof window !== "undefined") {
+            localStorage.removeItem("token");   // 네 프로젝트 키 그대로 사용
+            window.location.href = "/login";   // 원하는 UX
+        }
+
+        return {
+            ok: false,
+            error: {
+                code: "UNAUTHORIZED",
+                message: "세션이 만료되었습니다. 다시 로그인해 주세요.",
+                detail: null,
+            },
+        } as ApiResponse<T>;
+    }
 
     // 204 같은 응답 대응
     const text = await res.text();

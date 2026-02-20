@@ -1,8 +1,10 @@
+
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { apiFetch } from "@/lib/api";
+import { supabase } from "@/lib/supabase";
+
 
 type LoginResponse = {
     access_token: string;
@@ -39,10 +41,25 @@ export default function LoginPage() {
 
         setLoading(true);
         try {
-            const data = (await apiFetch("/api/auth/login", {
-                method: "POST",
-                body: JSON.stringify({ email, password }),
-            })) as LoginResponse;
+
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
+
+            if (error) {
+                setErrMsg(error.message);
+                return;
+            }
+
+            console.log("session:", data.session);
+            console.log("access_token:", data.session?.access_token);
+
+            if (data.session?.access_token) {
+                localStorage.setItem("access_token", data.session.access_token);
+                localStorage.setItem("user_email", data.session.user.email ?? email);
+            }
+
 
             // ✅ key 이름 반드시 "access_token"
             localStorage.setItem("access_token", data.access_token);

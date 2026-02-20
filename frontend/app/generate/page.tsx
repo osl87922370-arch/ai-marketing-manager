@@ -1,7 +1,9 @@
+
 "use client"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 
 export default function LoginPage() {
     const router = useRouter()
@@ -9,33 +11,42 @@ export default function LoginPage() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState("")
+    const [loading, setLoading] = useState(false)
 
     const handleLogin = async () => {
         setError("")
+        setLoading(true)
 
-        const res = await fetch("http://127.0.0.1:8000/api/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
+        try {
+            const { data, error } = await supabase.auth.signInWithPassword({
                 email,
                 password,
-            }),
-        })
+            })
 
-        if (!res.ok) {
-            const err = await res.json()
-            setError(err.detail || "로그인 실패")
-            return
+            if (error) {
+                setError(error.message)
+                return
+            }
+
+            const accessToken = data.session?.access_token
+            if (!accessToken) {
+                setError("토큰이 발급되지 않았습니다")
+                return
+            }
+
+            // 기존 코드가 localStorage에서 access_token을 읽는 구조라면 유지
+            localStorage.setItem("access_token", accessToken)
+            localStorage.setItem("user_email", email)
+
+            // 이미 /generate 페이지라면 refresh가 더 깔끔
+            router.refresh()
+            // 다른 페이지로 보내고 싶으면 아래처럼:
+            // router.push("/history")
+        } catch (e: any) {
+            setError(e?.message ?? "로그인 중 오류가 발생했습니다")
+        } finally {
+            setLoading(false)
         }
-
-        const data = await res.json()
-
-        localStorage.setItem("access_token", data.access_token)
-        localStorage.setItem("user_email", email)
-
-        router.push("/generate")
     }
 
     return (
@@ -60,13 +71,13 @@ export default function LoginPage() {
 
             <button
                 onClick={handleLogin}
-                className="bg-black text-white px-4 py-2 w-full"
+                disabled={loading}
+                className="w-full border p-2"
             >
-                로그인
+                {loading ? "로그인 중..." : "로그인"}
             </button>
 
-            {error && <p className="text-red-500 mt-3">{error}</p>}
+            {error ? <p className="text-red-500 mt-3">{error}</p> : null}
         </div>
     )
 }
-
