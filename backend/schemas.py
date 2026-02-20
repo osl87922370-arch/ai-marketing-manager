@@ -26,3 +26,18 @@ class UserOut(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
+
+from typing import Any, Optional, List
+from datetime import datetime
+
+class GenerationOut(BaseModel):
+    id: str
+    user_id: str
+    task: Optional[str] = None
+    input_json: Any
+    headline: Optional[str] = None
+    created_at: datetime
+
+class HistoryResponse(BaseModel):
+    items: List[GenerationOut]
+    next_cursor: Optional[str] = None

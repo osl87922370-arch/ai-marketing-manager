@@ -1,3 +1,4 @@
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -6,12 +7,17 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import OpenAI
+from fastapi import Depends, Request
+from auth import get_current_user
+
+from fastapi.security import HTTPBearer
 
 # ======================
 # App
 # ======================
 
 app = FastAPI(debug=True)
+security = HTTPBearer()
 
 # ======================
 # DB (Postgres / Supabase)
@@ -20,7 +26,9 @@ app = FastAPI(debug=True)
 import uuid
 from datetime import datetime
 from sqlalchemy import create_engine, Column, String, DateTime, ForeignKey, Text, Integer
-from sqlalchemy.dialects.postgresql import UUID, JSONB
+from sqlalchemy import JSON
+from sqlalchemy.dialects.postgresql import UUID
+
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 
 DATABASE_URL = os.getenv("DATABASE_URL")
@@ -43,12 +51,14 @@ class Generation(Base):
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, index=True)
 
     task = Column(String, nullable=False)
-    input_json = Column(JSONB, nullable=False)
+    
+    input_json = Column(JSON, nullable=False)
 
     headline = Column(Text, nullable=False)
     body = Column(Text, nullable=False)
     cta = Column(String, nullable=False)
-    hashtags = Column(JSONB, nullable=False)
+    
+    hashtags = Column(JSON, nullable=False)
 
     model = Column(String, nullable=True)
     latency_ms = Column(Integer, nullable=True)
@@ -108,6 +118,9 @@ class GenerateRequest(BaseModel):
 @app.get("/")
 def health():
     return {"status": "ok"}
+@app.get("/ai/me")
+def me(request: Request, user=Depends(get_current_user)):
+    return user
 
 # ======================
 # AI Generate
@@ -163,5 +176,11 @@ def generate(req: GenerateRequest):
     finally:
         db.close()
 
+
+
+
 Base.metadata.create_all(bind=engine)
+
+from routes.history import router as history_router
+app.include_router(history_router)
 
