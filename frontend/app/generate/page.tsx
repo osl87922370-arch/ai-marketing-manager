@@ -1,83 +1,60 @@
+"use client";
 
-"use client"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { apiFetch } from "@/lib/api";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { supabase } from "@/lib/supabase"
+export default function GeneratePage() {
+    const router = useRouter();
 
-export default function LoginPage() {
-    const router = useRouter()
+    const [productDesc, setProductDesc] = useState("");
+    const [target, setTarget] = useState("");
+    const [tone, setTone] = useState("친근");
 
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [error, setError] = useState("")
-    const [loading, setLoading] = useState(false)
+    async function generate() {
+        const data = await apiFetch("/api/generate", {
+            method: "POST",
+            body: JSON.stringify({
+                product_desc: productDesc,
+                target,
+                tone,
+            }),
+        });
 
-    const handleLogin = async () => {
-        setError("")
-        setLoading(true)
-
-        try {
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email,
-                password,
-            })
-
-            if (error) {
-                setError(error.message)
-                return
-            }
-
-            const accessToken = data.session?.access_token
-            if (!accessToken) {
-                setError("토큰이 발급되지 않았습니다")
-                return
-            }
-
-            // 기존 코드가 localStorage에서 access_token을 읽는 구조라면 유지
-            localStorage.setItem("access_token", accessToken)
-            localStorage.setItem("user_email", email)
-
-            // 이미 /generate 페이지라면 refresh가 더 깔끔
-            router.refresh()
-            // 다른 페이지로 보내고 싶으면 아래처럼:
-            // router.push("/history")
-        } catch (e: any) {
-            setError(e?.message ?? "로그인 중 오류가 발생했습니다")
-        } finally {
-            setLoading(false)
-        }
+        sessionStorage.setItem("result", JSON.stringify(data));
+        router.push("/result");
     }
 
     return (
-        <div className="p-8 max-w-sm mx-auto">
-            <h1 className="text-2xl font-bold mb-4">로그인</h1>
+        <div style={{ padding: 40 }}>
+            <h1>생성하기</h1>
 
-            <input
-                type="email"
-                placeholder="이메일"
-                className="border p-2 w-full mb-3"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+            <textarea
+                placeholder="상품 설명"
+                value={productDesc}
+                onChange={e => setProductDesc(e.target.value)}
             />
 
+            <br />
+
             <input
-                type="password"
-                placeholder="비밀번호"
-                className="border p-2 w-full mb-3"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                placeholder="타겟"
+                value={target}
+                onChange={e => setTarget(e.target.value)}
             />
 
-            <button
-                onClick={handleLogin}
-                disabled={loading}
-                className="w-full border p-2"
-            >
-                {loading ? "로그인 중..." : "로그인"}
-            </button>
+            <br />
 
-            {error ? <p className="text-red-500 mt-3">{error}</p> : null}
+            <select value={tone} onChange={e => setTone(e.target.value)}>
+                <option>친근</option>
+                <option>전문</option>
+                <option>유머</option>
+                <option>하드셀</option>
+            </select>
+
+            <br />
+
+            <button onClick={generate}>생성</button>
         </div>
-    )
+    );
 }
