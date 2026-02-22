@@ -23,6 +23,31 @@ function parseHashParams(hash: string) {
 export default function ResetPasswordPage() {
     const router = useRouter();
 
+    useEffect(() => {
+        console.log("[reset-password] URL:", window.location.href);
+        console.log("[reset-password] HASH:", window.location.hash);
+
+        try {
+            const parsed = parseHashParams(window.location.hash);
+            console.log("[reset-password] PARSED HASH:", parsed);
+        } catch (e) {
+            console.log("[reset-password] parseHashParams error:", e);
+        }
+
+        supabase.auth.getSession().then(({ data, error }) => {
+            console.log("[reset-password] getSession error:", error);
+            console.log("[reset-password] SESSION:", data?.session);
+        });
+
+        const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
+            console.log("[reset-password] AUTH EVENT:", event);
+            console.log("[reset-password] EVENT SESSION:", session);
+        });
+
+        return () => {
+            sub.subscription.unsubscribe();
+        };
+    }, []);
     const [status, setStatus] = useState<Status>("idle");
     const [message, setMessage] = useState<string>("");
 

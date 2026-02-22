@@ -20,6 +20,29 @@ export default function LoginPage() {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
     const [okMsg, setOkMsg] = useState<string>("");
+    const handleSendResetEmail = async () => {
+        setError("");
+        setOkMsg("");
+
+        if (!email) {
+            setError("이메일을 먼저 입력하세요.");
+            return;
+        }
+
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: "http://localhost:3000/reset-password",
+        });
+
+        if (error) {
+            console.log("[reset-email] error:", error);
+            setError(`재설정 메일 발송 실패: ${error.message}`);
+
+            return;
+        }
+
+        setOkMsg("재설정 메일을 보냈습니다. 최신 메일만 클릭하세요.");
+    };
+
 
     // 이미 토큰 있으면 바로 이동(원치 않으면 이 useEffect 블록 삭제)
     useEffect(() => {
@@ -131,6 +154,16 @@ export default function LoginPage() {
                     >
                         {loading ? "로그인 중..." : "로그인"}
                     </button>
+
+                    <div className="mt-3">
+                        <button
+                            type="button"
+                            onClick={handleSendResetEmail}
+                            className="w-full text-sm text-blue-600 hover:underline"
+                        >
+                            비밀번호를 잊으셨나요? 재설정 메일 보내기
+                        </button>
+                    </div>
                 </form>
 
                 {error ? (
