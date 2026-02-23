@@ -22,12 +22,10 @@ class ErrorDetails(BaseModel):
     extra: Optional[dict[str, Any]] = None
 
 
-class APIError(BaseModel):
+class ErrorObject(BaseModel):
     code: ErrorCode
     message: str
     details: Optional[ErrorDetails] = None
 
-class ErrorResponse(BaseModel):
-    code: ErrorCode
-    message: str
-    details: Optional[ErrorDetails] = None 
+
+

@@ -7,11 +7,17 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import OpenAI
-from fastapi import Depends, Request
+from fastapi import Depends 
 from auth import get_current_user
 
 from fastapi.security import HTTPBearer
+from fastapi import Request 
+import uuid
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
 
+from schemas.response import ApiResponse
+from schemas.error import ErrorObject, ErrorDetails, FieldError, ErrorCode
 # ======================
 # App
 # ======================
@@ -19,6 +25,62 @@ from fastapi.security import HTTPBearer
 app = FastAPI(debug=True)
 security = HTTPBearer()
 
+def get_request_id(request: Request) -> str:
+    rid = request.headers.get("x-request-id")
+    if rid:
+        return rid
+    return f"req_{uuid.uuid4().hex[:12]}"
+
+    @app.exception_handler(RequestValidationError)
+    async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    
+     request_id = get_request_id(request)
+
+    field_errors = [
+        FieldError(
+            field=".".join(map(str, err["loc"])),
+            reason=err["msg"]
+        )
+        for err in exc.errors()
+    ]
+
+    error = ErrorObject(
+        code=ErrorCode.VALIDATION_ERROR,
+        message="Request validation failed",
+        details=ErrorDetails(field_errors=field_errors)
+    )
+
+    return JSONResponse(
+        status_code=422,
+        content=ApiResponse(
+            ok=False,
+            request_id=request_id,
+            api_version="v1",
+            data=None,
+            error=error
+        ).dict()
+    )
+
+    @app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    request_id = get_request_id(request)
+
+    error = ErrorObject(
+        code=ErrorCode.UPSTREAM_ERROR if exc.status_code >= 500 else ErrorCode.FORBIDDEN,
+        message=exc.detail,
+        details=None
+    )
+
+    return JSONResponse(
+        status_code=exc.status_code,
+        content=ApiResponse(
+            ok=False,
+            request_id=request_id,
+            api_version="v1",
+            data=None,
+            error=error
+        ).dict()
+    )
 # ======================
 # DB (Postgres / Supabase)
 # ======================
