@@ -128,59 +128,20 @@ def me(request: Request, user=Depends(get_current_user)):
 
 
 
-@app.post("/ai/generate")
-def generate(req: GenerateRequest):
-
-    # 1️⃣ 프롬프트 생성
-    prompt = f"..."
-
-    # 2️⃣ OpenAI 호출
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.7,
-    )
-
-    # 3️⃣ 결과 추출
-    text = response.choices[0].message.content or ""
-
-    # 4️⃣ DB 저장
-    db = SessionLocal()
-    try:
-        user = get_or_create_user(db, req.userEmail)
-
-        g = Generation(
-            user_id=user.id,
-            task=req.task,
-            input_json=req.input,
-            headline=text,
-            body=text,
-            cta="자세히 보기",
-            hashtags=["#카페", "#할인", "#이벤트"],
-            model="gpt-4o-mini",
-            latency_ms=None,
-        )
-
-        db.add(g)
-        db.commit()
-        db.refresh(g)
-
-        return {
-            "headline": text,
-            "body": text,
-            "cta": "자세히 보기",
-            "hashtags": ["#카페", "#할인", "#이벤트"],
-            "generationId": str(g.id),
-        }
-
-    finally:
-        db.close()
 
 
+
+   
+   
 
 
 Base.metadata.create_all(bind=engine)
 
 from routes.history import router as history_router
-app.include_router(history_router)
+from routes.generate import router as generate_router
+
+app.include_router(history_router, prefix="/ai", tags=["ai"])
+app.include_router(generate_router, prefix="/ai", tags=["ai"])
+
+
 

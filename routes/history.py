@@ -6,7 +6,7 @@ from typing import Optional
 from db import get_db
 from auth import get_current_user
 from model.generation import Generation
-from schemas import HistoryResponse, GenerationOut
+from legacy_schemas import HistoryResponse, GenerationOut
 from utils.pagination import encode_cursor, decode_cursor
 
 router = APIRouter()

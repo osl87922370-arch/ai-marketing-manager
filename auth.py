@@ -13,6 +13,11 @@ from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
+# ✅ (추가) DB 세션 + DB Dependency + User ORM
+from sqlalchemy.orm import Session
+from db import get_db
+from model.user import User
+
 load_dotenv()
 
 bearer_scheme = HTTPBearer(auto_error=True)
@@ -64,8 +69,9 @@ def _safe_decode_jwt_header(token: str) -> Dict[str, Any]:
 
 
 def get_current_user(
+    db: Session = Depends(get_db),
     credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
-) -> Dict[str, Any]:
+) -> User:
     """
     Supabase access_token(JWT) 로컬 검증:
     - 서명 검증: JWKS 공개키
@@ -116,8 +122,27 @@ def get_current_user(
     except Exception as e:
         raise _unauthorized(f"Invalid Supabase token: {type(e).__name__} {e}")
 
-    return claims
+   # ✅ 이 아래부터 함수 안쪽 동일 레벨이어야 함
+
+    
+        supabase_user_id = claims.get("sub")
+        if not supabase_user_id:
+            raise _unauthorized("Invalid token payload")
+
+        email = claims.get("email")
+
+        user = db.query(User).filter(User.supabase_id == supabase_user_id).first()
+
+        if not user:
+            user = User(
+                supabase_id=supabase_user_id,
+                email=email,
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+
+        return user
+   
 
 
-# 과거 코드와의 호환용 별칭(혹시 main.py에서 이 이름을 쓰면 그대로 동작)
-get_current_user_supabase = get_current_user
