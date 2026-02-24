@@ -22,9 +22,15 @@ from schemas.error import ErrorObject, ErrorDetails, FieldError, ErrorCode
 # App
 # ======================
 
-app = FastAPI(debug=True)
+app = FastAPI()
 security = HTTPBearer()
-
+@app.middleware("http")
+async def request_id_middleware(request: Request, call_next):
+    rid = get_request_id(request)
+    request.state.request_id = rid
+    response = await call_next(request)
+    response.headers["x-request-id"] = rid
+    return response
 def get_request_id(request: Request) -> str:
     rid = request.headers.get("x-request-id")
     if rid:
@@ -62,8 +68,8 @@ def get_request_id(request: Request) -> str:
     )
 
     @app.exception_handler(HTTPException)
-async def http_exception_handler(request: Request, exc: HTTPException):
-    request_id = get_request_id(request)
+    async def http_exception_handler(request: Request, exc: HTTPException):
+     request_id = get_request_id(request)
 
     error = ErrorObject(
         code=ErrorCode.UPSTREAM_ERROR if exc.status_code >= 500 else ErrorCode.FORBIDDEN,
@@ -172,7 +178,46 @@ class GenerateRequest(BaseModel):
     input: dict
     userEmail: EmailStr
 
+# =====================
+# Global Exception Handlers
+# =====================
 
+import logging
+from fastapi import Request
+from fastapi.responses import JSONResponse
+
+from schemas.response import ApiResponse
+from schemas.error import ErrorObject, ErrorCode
+
+logger = logging.getLogger(__name__)
+
+
+@app.exception_handler(Exception)
+async def fallback_exception_handler(request: Request, exc: Exception):
+    request_id = getattr(request.state, "request_id", None)
+
+    logger.exception(
+        "Unhandled server error",
+        extra={
+            "request_id": request_id,
+            "path": request.url.path,
+            "method": request.method,
+        },
+    )
+
+    response = ApiResponse(
+    ok=False,
+    request_id=request_id or "unknown",
+    error=ErrorObject(
+        code=ErrorCode.INTERNAL_ERROR,
+        message="Unexpected server error",
+    ),
+)
+
+    return JSONResponse(
+        status_code=500,
+        content=response.model_dump(),
+    )
 # ======================
 # Health check
 # ======================
@@ -180,6 +225,9 @@ class GenerateRequest(BaseModel):
 @app.get("/")
 def health():
     return {"status": "ok"}
+
+
+
 @app.get("/ai/me")
 def me(request: Request, user=Depends(get_current_user)):
     return user
