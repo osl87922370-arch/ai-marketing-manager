@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from openai import OpenAI
 from fastapi import Depends 
 from auth import get_current_user
-
+from routes.place_insights import router as place_insights_router
 from fastapi.security import HTTPBearer
 from fastapi import Request 
 import uuid
@@ -23,6 +23,7 @@ from schemas.error import ErrorObject, ErrorDetails, FieldError, ErrorCode
 # ======================
 
 app = FastAPI()
+app.include_router(place_insights_router)
 security = HTTPBearer()
 @app.middleware("http")
 async def request_id_middleware(request: Request, call_next):
@@ -100,8 +101,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 
 DATABASE_URL = os.getenv("DATABASE_URL")
-if not DATABASE_URL:
-    raise RuntimeError("DATABASE_URL is not set")
+
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
