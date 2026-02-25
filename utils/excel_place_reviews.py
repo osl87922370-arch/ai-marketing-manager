@@ -7,13 +7,8 @@ from openpyxl import load_workbook
 from schemas.place_insights import ReviewRowIn
 
 
-KOREAN_WEEKDAY_PATTERN = re.compile(r"\.\w+$")  # 2.11.화 → 2.11
+KOREAN_WEEKDAY_PATTERN = re.compile(r"\.(월|화|수|목|금|토|일)$")
 
-
-from datetime import date
-import re
-
-KOREeAN_WEEKDAY_PATTERN = re.compile(r"\.\w+$")  # 2.11.화 -> 2.11
 
 
 def parse_review_date(raw: str, default_year: int) -> date:
@@ -31,7 +26,7 @@ def parse_review_date(raw: str, default_year: int) -> date:
         return date(y, mo, d)
 
     # 3) M.D / M/D
-    m = re.search(r"(\d{1,2})\s*[.\-\/]\s*(\d{1,2})", s)
+    m = re.search(r"^(\d{1,2})[.\-\/](\d{1,2})$", s)
     if m:
         mo, d = map(int, m.groups())
         return date(default_year, mo, d)
