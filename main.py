@@ -10,6 +10,7 @@ from openai import OpenAI
 from fastapi import Depends 
 from auth import get_current_user
 from routes.place_insights import router as place_insights_router
+from routes.reviews import router as reviews_router
 from fastapi.security import HTTPBearer
 from fastapi import Request 
 import uuid
@@ -24,6 +25,7 @@ from schemas.error import ErrorObject, ErrorDetails, FieldError, ErrorCode
 
 app = FastAPI()
 app.include_router(place_insights_router)
+app.include_router(reviews_router)
 security = HTTPBearer()
 @app.middleware("http")
 async def request_id_middleware(request: Request, call_next):
