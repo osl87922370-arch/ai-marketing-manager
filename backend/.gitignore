@@ -1,0 +1,42 @@
+﻿
+# ======================
+# Python
+# ======================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# dotenv
+.env
+.env.local
+
+# Logs / DB
+*.log
+*.sqlite3
+*.db
+
+# ======================
+# Node / Next.js
+# ======================
+node_modules/
+.next/
+out/
+dist/
+.turbo/
+.swc/
+
+# ======================
+# OS
+# ======================
+.DS_Store
+Thumbs.db
+logs/
+data/
+__pycache__/
+*.pyc
