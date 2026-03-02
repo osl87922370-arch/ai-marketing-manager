@@ -12,7 +12,17 @@ type LoginResponse = {
 };
 
 export default function LoginPage() {
+
     const router = useRouter();
+
+    useEffect(() => {
+        console.log("LOGIN PAGE ENV URL =", process.env.NEXT_PUBLIC_SUPABASE_URL);
+        console.log(
+            "LOGIN PAGE ENV KEY =",
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.slice(0, 20)
+        );
+    }, []);
+
 
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -45,60 +55,55 @@ export default function LoginPage() {
 
 
     // 이미 토큰 있으면 바로 이동(원치 않으면 이 useEffect 블록 삭제)
+    /*
     useEffect(() => {
         const token =
             typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
         if (token) router.replace("/generate");
     }, [router]);
+    */
 
     const onSubmit = async (e: React.FormEvent) => {
+        console.log("✅ onSubmit fired", Date.now());
         e.preventDefault();
 
         setError("");
         setOkMsg("");
-
-        if (!email.trim() || !password.trim()) {
-            setError("이메일/비밀번호를 입력해줘.");
-            return;
-        }
-
         setLoading(true);
-        try {
 
+        try {
             const { data, error } = await supabase.auth.signInWithPassword({
-                email,
-                password,
+                email: email.trim(),
+                password: password.trim(),
             });
 
             if (error) {
-                setErrMsg(error.message);
-                return;
+                console.error("LOGIN ERROR:", error.message);
+                setError(error.message);
+                setLoading(false);
+                return; // ✅ 여기서 끝
             }
 
-            console.log("session:", data.session);
-            console.log("access_token:", data.session?.access_token);
+            const accessToken = data.session?.access_token;
+            const userEmail = data.session?.user?.email;
 
-            if (data.session?.access_token) {
-                localStorage.setItem("access_token", data.session.access_token);
-                localStorage.setItem("user_email", data.session.user.email ?? email);
+            console.log("✅ LOGIN SUCCESS");
+            console.log("session =", data.session);
+            console.log("access_token =", accessToken);
+
+            if (accessToken) {
+                localStorage.setItem("access_token", accessToken);
+                localStorage.setItem("user_email", userEmail ?? email.trim());
             }
 
-
-            // ✅ key 이름 반드시 "access_token"
-            localStorage.setItem("access_token", data.access_token);
-            localStorage.setItem("user_email", email);
-
-            setOkMsg("로그인 성공! 이동 중...");
-            router.push("/generate");
-        } catch (err: any) {
-            // apiFetch가 던지는 에러 형태 대비
-            const msg =
-                err?.detail ||
-                err?.message ||
-                (typeof err === "string" ? err : JSON.stringify(err));
-            setError(msg);
-        } finally {
             setLoading(false);
+            router.replace("/generate");
+            return; // ✅ 성공 후에도 끝 (아래 중복 코드 실행 방지)
+        } catch (err: any) {
+            console.error("LOGIN EXCEPTION:", err?.message ?? err);
+            setError(err?.message ?? "Unknown error");
+            setLoading(false);
+            return;
         }
     };
 
