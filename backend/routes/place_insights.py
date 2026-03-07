@@ -1,10 +1,10 @@
 from fastapi import APIRouter, UploadFile, File, Depends, HTTPException
 from sqlalchemy.orm import Session
 from datetime import datetime
-from db import get_db
-from utils.excel_place_reviews import load_reviews_from_excel
-from schemas.place_insights import ReviewDatasetCreate
-from model.place_insights import ReviewDataset, ReviewRow
+from ..db import get_db
+from ..utils.excel_place_reviews import load_reviews_from_excel
+from ..schemas.place_insights import ReviewDatasetCreate
+from ..model.place_insights import ReviewDataset, ReviewRow
 
 router = APIRouter(
     prefix="/place-insights",

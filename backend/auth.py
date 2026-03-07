@@ -9,16 +9,20 @@ from typing import Any, Dict, Optional
 import jwt  # PyJWT
 from jwt import PyJWKClient
 from dotenv import load_dotenv
+from pathlib import Path
+
+# ✅ backend/.env를 auth.py 위치 기준으로 강제 로드
+ENV_PATH = Path(__file__).resolve().parent / ".env"
+load_dotenv(dotenv_path=ENV_PATH)
+print("SUPABASE_PROJECT_URL =", os.getenv("SUPABASE_PROJECT_URL"))
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-
-# ✅ (추가) DB 세션 + DB Dependency + User ORM
 from sqlalchemy.orm import Session
-from db import get_db
-from model.user import User
 
-load_dotenv()
+from .db import get_db
+from .model.user import User
+
 
 bearer_scheme = HTTPBearer(auto_error=True)
 
@@ -72,6 +76,7 @@ def get_current_user(
     db: Session = Depends(get_db),
     credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
 ) -> User:
+
     """
     Supabase access_token(JWT) 로컬 검증:
     - 서명 검증: JWKS 공개키
@@ -83,24 +88,41 @@ def get_current_user(
         raise _unauthorized("Invalid token format (not a JWT)")
 
     # 1) 토큰 헤더의 alg를 먼저 확인 (지금까지 에러의 핵심 포인트)
+    allowed_algs = ["RS256", "ES256"]
+
     try:
-        header = _safe_decode_jwt_header(token)
-        alg = header.get("alg")
-        if not alg:
+      header = _safe_decode_jwt_header(token)
+      alg = header.get("alg")
+    
+        
+
+      if not alg:
             raise _unauthorized("JWT header missing alg")
     except Exception as e:
         raise _unauthorized(f"Invalid token header: {type(e).__name__} {e}")
 
     # 2) JWKS에서 해당 토큰에 맞는 공개키 획득
     try:
-        signing_key = _get_jwk_client().get_signing_key_from_jwt(token).key
+        print("JWT alg =", alg)
+        print("JWT kid =", header.get("kid"))
+
+        jwk_client = _get_jwk_client()
+        print("JWK client =", jwk_client)
+
+        signing_key_obj = jwk_client.get_signing_key_from_jwt(token)
+        print("Matched JWK kid =", signing_key_obj.key_id)
+
+        signing_key = signing_key_obj.key
+        print("Signing key loaded")
+
     except Exception as e:
         # 여기서 401/404가 나면 JWKS_URL 또는 네트워크 문제
         raise _unauthorized(f"Failed to load JWKS signing key: {type(e).__name__} {e}")
 
     # 3) 서명 + 클레임 검증
     # Supabase는 보통 RS256을 사용하지만, 헤더 alg를 기반으로 허용 목록에 포함되도록 설정
-    allowed_algs = ["RS256", "ES256"]
+        
+    
     if alg not in allowed_algs:
         raise _unauthorized(f"Unexpected JWT alg: {alg} (allowed: {allowed_algs})")
 
@@ -125,24 +147,47 @@ def get_current_user(
    # ✅ 이 아래부터 함수 안쪽 동일 레벨이어야 함
 
     
-        supabase_user_id = claims.get("sub")
-        if not supabase_user_id:
-            raise _unauthorized("Invalid token payload")
+    supabase_user_id = claims.get("sub")
+    if not supabase_user_id:
+        raise _unauthorized("Invalid token payload")
 
-        email = claims.get("email")
+    email = claims.get("email")
+    print("supabase_user_id =", supabase_user_id)
+    print("email =", email)
 
-        user = db.query(User).filter(User.supabase_id == supabase_user_id).first()
+    user = db.query(User).filter(User.id == supabase_user_id).first()
+    print("queried user =", user)
 
-        if not user:
-            user = User(
-                supabase_id=supabase_user_id,
-                email=email,
-            )
-            db.add(user)
-            db.commit()
-            db.refresh(user)
+    if not user:
+        print("user not found, creating new user...")
+        
+        user = User(
+            id=supabase_user_id,
+            email=email,
+            hashed_password="supabase_auth",
+        )   
+            
+        print("created user object =", user)
 
-        return user
+        db.add(user)
+        print("db.add done")
+
+        db.commit()
+        print("db.commit done")
+
+        db.refresh(user)
+        print("db.refresh done =", user)
+
+    if not user:
+        print("final user is still None")
+        raise _unauthorized("User could not be loaded")
+
+    print("returning user =", user)
+    return user
+       
+
+
+
    
 
 

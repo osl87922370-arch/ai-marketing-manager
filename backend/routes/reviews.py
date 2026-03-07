@@ -1,7 +1,7 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
 
-from utils.excel_place_reviews import load_reviews_from_excel
+from ..utils.excel_place_reviews import load_reviews_from_excel
 
 router = APIRouter(prefix="/reviews", tags=["reviews"])
 

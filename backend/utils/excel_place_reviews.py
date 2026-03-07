@@ -4,7 +4,7 @@ import re
 
 from openpyxl import load_workbook
 
-from schemas.place_insights import ReviewRowIn
+from ..schemas.place_insights import ReviewRowIn
 
 
 KOREAN_WEEKDAY_PATTERN = re.compile(r"\.(월|화|수|목|금|토|일)$")

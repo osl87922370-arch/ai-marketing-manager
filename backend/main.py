@@ -8,20 +8,20 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from openai import OpenAI
 from fastapi import Depends 
-from auth import get_current_user
-from routes.place_insights import router as place_insights_router
-from routes.reviews import router as reviews_router
+from .auth import get_current_user
+from .routes.place_insights import router as place_insights_router
+from .routes.reviews import router as reviews_router
 from fastapi.security import HTTPBearer
 from fastapi import Request 
 import uuid
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 
-from schemas.response import ApiResponse
-from schemas.error import ErrorObject, ErrorDetails, FieldError, ErrorCode
-from db import Base, engine 
-import model  # ← 여기에
-from model import User   # ← 이 줄 추가
+from .schemas.response import ApiResponse
+from .schemas.error import ErrorObject, ErrorDetails, FieldError, ErrorCode
+from .db import Base, engine 
+from .import model  # ← 여기에
+from .model import User   # ← 이 줄 추가
 # ======================
 # App
 # ======================
@@ -160,8 +160,8 @@ import logging
 from fastapi import Request
 from fastapi.responses import JSONResponse
 
-from schemas.response import ApiResponse
-from schemas.error import ErrorObject, ErrorCode
+from .schemas.response import ApiResponse
+from .schemas.error import ErrorObject, ErrorCode
 
 logger = logging.getLogger(__name__)
 
@@ -204,7 +204,14 @@ def health():
 
 @app.get("/ai/me")
 def me(request: Request, user=Depends(get_current_user)):
-    return user
+    if not user:
+        raise HTTPException(status_code=401, detail="User not found")
+
+    return {
+        "id": str(user.id),
+        "email": user.email,
+    }
+
 
 # ======================
 # AI Generate
@@ -212,8 +219,8 @@ def me(request: Request, user=Depends(get_current_user)):
 
 
 
-from routes.history import router as history_router
-from routes.generate import router as generate_router
+from .routes.history import router as history_router
+from .routes.generate import router as generate_router
 
 app.include_router(history_router, prefix="/ai", tags=["ai"])
 app.include_router(generate_router, prefix="/ai", tags=["ai"])

@@ -1,7 +1,7 @@
 from sqlalchemy import Column, String, DateTime, ForeignKey, JSON
 from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime
-from db import Base
+from ..db import Base
 
 class Generation(Base):
     __tablename__ = "generations"

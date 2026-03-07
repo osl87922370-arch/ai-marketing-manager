@@ -13,7 +13,7 @@ pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 # ⚠️ User 모델 import 경로는 네 프로젝트에 맞게 조정
 # - user.py가 backend 폴더에 있으면: from user import User
 # - model/user.py에 있으면: from model.user import User
-from model.user import User
+from .model.user import User
 
 
 
