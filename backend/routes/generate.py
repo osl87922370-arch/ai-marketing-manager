@@ -2,15 +2,15 @@ from fastapi import APIRouter, Request
 from datetime import datetime, timezone
 import time
 
-from schemas.generate import (
+from ..schemas.generate import (
     GenerateRequest,
     GenerateResponse,
     Generation,
     GenerationOutput,
     Variant,
 )
-from schemas.usage import Usage
-from utils.pricing import calc_credits
+from ..schemas.usage import Usage
+from ..utils.pricing import calc_credits
 
 router = APIRouter(tags=["ai"])
 

@@ -8,7 +8,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
-from db import Base
+from ..db import Base
 
 
 class ReviewDataset(Base):

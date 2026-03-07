@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 from openpyxl import load_workbook
 from datetime import datetime
 
@@ -6,44 +6,41 @@ import re
 from datetime import date
 
 KOREAN_WEEKDAY_PATTERN = re.compile(r"\.(월|화|수|목|금|토|일)$")  # 2.11.화 -> 2.11
-=======
+
 from typing import List
 from datetime import date
 import re
 
 from openpyxl import load_workbook
 
-from schemas.place_insights import ReviewRowIn
+from ..schemas.place_insights import ReviewRowIn
 
 
 KOREAN_WEEKDAY_PATTERN = re.compile(r"\.(월|화|수|목|금|토|일)$")
 
 
->>>>>>> edb363e (chore: ignore pycache and untrack pyc)
 
 def parse_review_date(raw: str, default_year: int) -> date:
     s = (raw or "").strip()
     if not s:
-<<<<<<< HEAD
+
         return date(DEFAULT_YEAR, 1, 1)
-=======
+
         return date(default_year, 1, 1)
->>>>>>> edb363e (chore: ignore pycache and untrack pyc)
+
 
     # 1) 요일 제거
     s = KOREAN_WEEKDAY_PATTERN.sub("", s).strip()
 
     # 2) YYYY.MM.DD / YYYY-MM-DD / YYYY/MM/DD
-<<<<<<< HEAD
-    m = re.search(r"^(\d{4})[.\-/](\d{1,2})[.\-/](\d{1,2})$", s)
-=======
+
     m = re.search(r"(\d{4})[.\-\/](\d{1,2})[.\-\/](\d{1,2})", s)
->>>>>>> edb363e (chore: ignore pycache and untrack pyc)
+
     if m:
         y, mo, d = map(int, m.groups())
         return date(y, mo, d)
 
-<<<<<<< HEAD
+
     # 3) MM.DD / M/D / M-D (공백 허용)
     m = re.search(r"^(\d{1,2})\s*[.\-/]\s*(\d{1,2})$", s)
     if m:
@@ -130,48 +127,8 @@ if __name__ == "__main__":
     # 실패율 임계치
     FAIL_THRESHOLD = 0.5  # (%)
 
-    # 로그 파일 (JSONL)
-    LOG_DIR = Path("logs")
-    FAIL_LOG_PATH = LOG_DIR / "excel_place_reviews_failures.jsonl"
-
-    # =========================
-    # 실행
-    # =========================
-    LOG_DIR.mkdir(parents=True, exist_ok=True)
-
-    wb = load_workbook(EXCEL_PATH, data_only=True)
-    ws = wb[SHEET_NAME] if SHEET_NAME else wb.active
-
-    total = 0
-    ok = 0
-    fail = 0
-    fail_samples = []  # (row_idx, raw_date, error)
-
-    for row_idx, row in enumerate(
-        ws.iter_rows(min_row=HEADER_ROW + 1, values_only=True),
-        start=HEADER_ROW + 1
-    ):
-        total += 1
-        raw_date = row[DATE_COL - 1] if len(row) >= DATE_COL else None
-
-        try:
-            raw_str = "" if raw_date is None else str(raw_date)
-            _ = parse_review_date(raw_str, DEFAULT_YEAR)
-            
-=======
-    # 3) M.D / M/D
-    m = re.search(r"^(\d{1,2})[.\-\/](\d{1,2})$", s)
-    if m:
-        mo, d = map(int, m.groups())
-        return date(default_year, mo, d)
-
-    # 4) 2월 11일
-    m = re.search(r"(\d{1,2})\s*월\s*(\d{1,2})\s*일", s)
-    if m:
-        mo, d = map(int, m.groups())
-        return date(default_year, mo, d)
-
-    return date(default_year, 1, 1)
+   
+   
     
 from io import BytesIO
 from typing import Any, Dict, List, Optional, Tuple
@@ -359,12 +316,12 @@ def load_reviews_from_excel(file_bytes: bytes, filename: Optional[str] = None) -
             }
 
             result["items"].append(item)
->>>>>>> edb363e (chore: ignore pycache and untrack pyc)
+
             ok += 1
 
         except Exception as e:
             fail += 1
-<<<<<<< HEAD
+
 
             record = {
                 "timestamp": datetime.now().isoformat(timespec="seconds"),
@@ -400,10 +357,9 @@ def load_reviews_from_excel(file_bytes: bytes, filename: Optional[str] = None) -
         )
 
     print("PASS: failure rate within threshold ✅")
-=======
-            f = _failure(row=r_idx, code=ERR_PARSE_ERROR, message=f"row parse failed: {e}")
-            result["failures"].append(f)
-            bump(ERR_PARSE_ERROR)
+
+          
+          
 
     result["meta"]["total"] = total
     result["meta"]["ok"] = ok
@@ -411,4 +367,4 @@ def load_reviews_from_excel(file_bytes: bytes, filename: Optional[str] = None) -
 
     return result
    
->>>>>>> edb363e (chore: ignore pycache and untrack pyc)
+

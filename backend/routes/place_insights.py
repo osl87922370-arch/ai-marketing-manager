@@ -58,9 +58,9 @@ def upload_place_reviews(
     db.refresh(dataset)
 
     # 4️⃣ ReviewRow bulk insert
-    for r in reviews:
-        row = ReviewRow(
-=======
+    
+    
+
 
 @router.post("/upload")
 def upload_reviews(
