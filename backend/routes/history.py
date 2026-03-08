@@ -73,11 +73,15 @@ def get_history_detail(
     if not r:
         raise HTTPException(status_code=404, detail="Not found")
 
+    
     return GenerationOut(
-        id=str(r.id),
-        user_id=str(r.user_id),
-        task=getattr(r, "task", None),
-        input_json=getattr(r, "input_json"),
-        headline=getattr(r, "headline", None),
-        created_at=r.created_at,
-    )
+    id=str(r.id),
+    user_id=str(r.user_id),
+    task=getattr(r, "task", None),
+    input_json=getattr(r, "input_json", None),
+    output_json=getattr(r, "output_json", None),
+    headline=getattr(r, "headline", None),
+    status=getattr(r, "status", "completed"),
+    created_at=r.created_at,
+    updated_at=r.updated_at,
+)
