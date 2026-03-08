@@ -50,7 +50,17 @@ class Usage(BaseModel):
 class GenerationOutput(BaseModel):
     variants: List[Variant]
 
-
+class GenerationOut(BaseModel):
+    id: str
+    user_id: str
+    task: Optional[str] = None
+    input_json: Optional[Dict[str, Any]] = None
+    output_json: Optional[Dict[str, Any]] = None
+    headline: Optional[str] = None
+    status: str
+    created_at: datetime
+    updated_at: datetime
+    
 class Generation(BaseModel):
     id: str
     status: str

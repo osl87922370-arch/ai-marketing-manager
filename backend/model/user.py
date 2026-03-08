@@ -21,3 +21,4 @@ class User(Base):
 
     # 관계
     reports = relationship("Report", back_populates="user", cascade="all, delete-orphan")
+    generations = relationship("Generation", back_populates="user", cascade="all, delete-orphan")
