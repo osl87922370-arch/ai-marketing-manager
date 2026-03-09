@@ -2,12 +2,31 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { apiFetch } from "@/lib/api";
 
 type HistoryItem = {
     id: string;
-    result_text: string;
+    task?: string;
+    headline?: string;
     created_at?: string;
+    input_json?: {
+        product_name?: string;
+        target?: string;
+        channel?: string;
+        goal?: string;
+        input?: {
+            store_name?: string;
+            menu?: string;
+            price?: string;
+            location?: string;
+            feature?: string;
+        };
+        params?: {
+            variant_count?: number;
+        };
+    };
 };
+
 
 export default function HistoryPage() {
     const router = useRouter();
@@ -22,15 +41,9 @@ export default function HistoryPage() {
             try {
                 setLoading(true);
 
-                // TODO: 실제 API로 교체
-                const res = await fetch("/ai/history");
 
-                if (!res.ok) {
-                    throw new Error("히스토리 조회 실패");
-                }
-
-                const data = await res.json();
-                setItems(data || []);
+                const data = await apiFetch("/api/history");
+                setItems(data.items || []);
             } catch (e: any) {
                 setErr(e.message || "에러 발생");
             } finally {
@@ -102,9 +115,11 @@ export default function HistoryPage() {
                             {/* 결과 텍스트 */}
                             <textarea
                                 readOnly
-                                value={x.result_text}
+                                value={x.headline || ""}
                                 style={{ width: "100%", height: 120 }}
                             />
+
+
                         </div>
                     ))}
                 </div>
