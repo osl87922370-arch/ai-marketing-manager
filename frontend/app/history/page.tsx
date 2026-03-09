@@ -27,6 +27,10 @@ type HistoryItem = {
     };
 };
 
+type HistoryResponse = {
+    items?: HistoryItem[];
+    user_email?: string | null;
+};
 
 export default function HistoryPage() {
     const router = useRouter();
@@ -42,7 +46,7 @@ export default function HistoryPage() {
                 setLoading(true);
 
 
-                const data = await apiFetch("/api/history");
+                const data = await apiFetch<HistoryResponse>("/api/history");
                 setItems(data.items || []);
             } catch (e: any) {
                 setErr(e.message || "에러 발생");

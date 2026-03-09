@@ -6,9 +6,8 @@ export function getToken() {
 }
 
 
-type ApiOk<T> = { ok: true; result: T };
-type ApiErr = { ok: false; error: { code?: string; message: string; detail?: unknown } };
-type ApiResponse<T> = ApiOk<T> | ApiErr;
+
+
 
 function isFormData(v: unknown): v is FormData {
     return typeof FormData !== "undefined" && v instanceof FormData;
@@ -46,20 +45,15 @@ export async function apiFetch<T>(
 
 
     // 🔐 인증 만료/무효 토큰 공통 처리
+
     if (res.status === 401) {
         if (typeof window !== "undefined") {
-            localStorage.removeItem("token");   // 네 프로젝트 키 그대로 사용
-            window.location.href = "/login";   // 원하는 UX
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("user_email");
+            window.location.href = "/login";
         }
 
-        return {
-            ok: false,
-            error: {
-                code: "UNAUTHORIZED",
-                message: "세션이 만료되었습니다. 다시 로그인해 주세요.",
-                detail: null,
-            },
-        } as ApiResponse<T>;
+        throw new Error("세션이 만료되었습니다. 다시 로그인해 주세요.");
     }
 
     // 204 같은 응답 대응
@@ -83,14 +77,6 @@ export async function apiFetch<T>(
     // 앱 레벨 스키마 {ok:...} 처리
 
     if (maybeJson !== null) return maybeJson as T;
-    return text as unknown as T;
-
-
-
-    // 스키마가 아직 고정 전이면, 일단 JSON 그대로 반환
-    if (maybeJson !== null) return maybeJson as T;
-
-    // JSON이 아니면 텍스트 반환(이 경우는 거의 없게 만들 예정)
     return text as unknown as T;
 }
 export type GenerateResult = {
