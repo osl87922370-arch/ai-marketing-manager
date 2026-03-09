@@ -2,8 +2,9 @@ const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://127.0.0.1:8000";
 
 export function getToken() {
     if (typeof window === "undefined") return null;
-    return localStorage.getItem("token");
+    return localStorage.getItem("access_token");
 }
+
 
 type ApiOk<T> = { ok: true; result: T };
 type ApiErr = { ok: false; error: { code?: string; message: string; detail?: unknown } };
@@ -35,11 +36,14 @@ export async function apiFetch<T>(
         }
     }
 
-    const res = await fetch(`${API_BASE}${path}`, {
+    const url = path.startsWith("/api/") ? path : `${API_BASE}${path}`;
+
+    const res = await fetch(url, {
         ...options,
         headers,
         body,
     });
+
 
     // 🔐 인증 만료/무효 토큰 공통 처리
     if (res.status === 401) {

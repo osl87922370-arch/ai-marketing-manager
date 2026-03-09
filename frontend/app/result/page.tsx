@@ -18,16 +18,71 @@ export default function ResultPage() {
 
     // localStorage에서 최신 생성 결과 읽기
     useEffect(() => {
-        const p = localStorage.getItem("last_product") || "";
-        const t = localStorage.getItem("last_target") || "";
-        const toneVal = localStorage.getItem("last_tone") || "";
-        const r = localStorage.getItem("last_result") || "";
+        const raw = localStorage.getItem("result") || "";
+
+        let p = localStorage.getItem("product") || "";
+        let t = localStorage.getItem("target") || "";
+        let toneVal = localStorage.getItem("tone") || "";
+        let text = "";
+
+        try {
+            const parsed = raw ? JSON.parse(raw) : null;
+
+            const genInput =
+                parsed && parsed.generation && parsed.generation.input
+                    ? parsed.generation.input
+                    : {};
+
+            const first =
+                (parsed &&
+                    parsed.generation &&
+                    parsed.generation.output &&
+                    parsed.generation.output.variants &&
+                    parsed.generation.output.variants.length > 0
+                    ? parsed.generation.output.variants[0]
+                    : null) ||
+                (parsed &&
+                    parsed.output &&
+                    parsed.output.variants &&
+                    parsed.output.variants.length > 0
+                    ? parsed.output.variants[0]
+                    : null) ||
+                (parsed &&
+                    parsed.variants &&
+                    parsed.variants.length > 0
+                    ? parsed.variants[0]
+                    : null);
+
+
+            if (!p) p = genInput.product_desc || "";
+            if (!t) t = genInput.target || "";
+            if (!toneVal) toneVal = genInput.tone || "";
+
+            if (first) {
+                const hashtagsText = Array.isArray(first.hashtags)
+                    ? first.hashtags.join(" ")
+                    : first.hashtags || "";
+
+                text =
+                    (first.headline || "") +
+                    "\n\n" +
+                    (first.body || "") +
+                    "\n\n" +
+                    (first.cta || "") +
+                    "\n\n" +
+                    hashtagsText;
+            }
+        } catch (e) {
+            text = raw;
+        }
 
         setProductDesc(p);
         setTarget(t);
         setTone(toneVal);
-        setResultText(r);
+        setResultText(text);
     }, []);
+
+
 
     const canSave = useMemo(() => {
         return (
