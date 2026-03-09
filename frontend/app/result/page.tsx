@@ -16,9 +16,9 @@ export default function ResultPage() {
     const [savedId, setSavedId] = useState<number | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    // localStorage에서 최신 생성 결과 읽기
+    // sessionStorage에서 최신 생성 결과 읽기
     useEffect(() => {
-        const raw = localStorage.getItem("result") || "";
+        const raw = sessionStorage.getItem("generationResult") || "";
 
         let p = localStorage.getItem("product") || "";
         let t = localStorage.getItem("target") || "";

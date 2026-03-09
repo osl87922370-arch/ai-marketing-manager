@@ -79,10 +79,11 @@ export default function GeneratePage() {
             }),
         });
 
+        sessionStorage.setItem("generationResult", JSON.stringify(data));
         localStorage.setItem("target", target);
         localStorage.setItem("tone", tone);
         localStorage.setItem("product", productDesc);
-        localStorage.setItem("result", JSON.stringify(data));
+
 
         router.push("/result");
 
