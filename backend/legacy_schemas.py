@@ -41,3 +41,4 @@ class GenerationOut(BaseModel):
 class HistoryResponse(BaseModel):
     items: List[GenerationOut]
     next_cursor: Optional[str] = None
+    user_email: Optional[str] = None

@@ -55,7 +55,7 @@ def get_history(
         for r in rows
     ]
 
-    return HistoryResponse(items=items, next_cursor=next_cursor)
+    return HistoryResponse(items=items, next_cursor=next_cursor, user_email=current_user.email)
 
 
 @router.get("/history/{generation_id}", response_model=GenerationOut)
