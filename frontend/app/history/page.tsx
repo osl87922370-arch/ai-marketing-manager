@@ -48,6 +48,7 @@ export default function HistoryPage() {
 
                 const data = await apiFetch<HistoryResponse>("/api/history");
                 setItems(data.items || []);
+                setUserEmail(data.user_email || null);
             } catch (e: any) {
                 setErr(e.message || "에러 발생");
             } finally {
@@ -110,6 +111,7 @@ export default function HistoryPage() {
                                 </div>
 
                                 <button
+                                    type="button"
                                     onClick={() => router.push(`/generate?reuse=${x.id}`)}
                                 >
                                     재사용

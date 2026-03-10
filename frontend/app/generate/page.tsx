@@ -44,7 +44,7 @@ export default function GeneratePage() {
                     .filter(Boolean)
                     .join("\n");
 
-                setProductDesc(mergedDesc);
+                setProductDesc(mergedDesc || data?.input_json?.product_desc || "");
                 setTarget(input.target ?? "");
             } catch (e) {
                 console.error("재사용 데이터 조회 실패", e);
