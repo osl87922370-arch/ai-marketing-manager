@@ -55,6 +55,7 @@ export default function HistoryPage() {
         if (!ok) return;
 
         setErr(null);
+        setDeletingId(id);
 
         const res = await fetch(`/api/history/${id}`, {
             method: "DELETE",
@@ -65,14 +66,18 @@ export default function HistoryPage() {
 
         if (!res.ok) {
             setErr("삭제에 실패했습니다. 다시 시도해주세요.");
+            setDeletingId(null);
             return;
         }
+
+        setDeletingId(null);
         setItems((prev) => prev.filter((item) => item.id !== id));
     }
     const [items, setItems] = useState<HistoryItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState<string | null>(null);
     const [userEmail, setUserEmail] = useState<string | null>(null);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -150,8 +155,12 @@ export default function HistoryPage() {
                                 >
                                     재사용
                                 </button>
-                                <button type="button" onClick={() => handleDelete(x.id)}>
-                                    삭제
+                                <button
+                                    type="button"
+                                    onClick={() => handleDelete(x.id)}
+                                    disabled={deletingId === x.id}
+                                >
+                                    {deletingId === x.id ? "삭제 중..." : "삭제"}
                                 </button>
                             </div>
 
