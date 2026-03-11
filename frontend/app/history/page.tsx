@@ -53,12 +53,20 @@ export default function HistoryPage() {
     async function handleDelete(id: string) {
         const ok = window.confirm("삭제 후 목록에서 보이지 않습니다. 계속하시겠습니까?");
         if (!ok) return;
-        await fetch(`/api/history/${id}`, {
+
+        setErr(null);
+
+        const res = await fetch(`/api/history/${id}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("access_token") ?? ""}`,
             },
         });
+
+        if (!res.ok) {
+            setErr("삭제에 실패했습니다. 다시 시도해주세요.");
+            return;
+        }
         setItems((prev) => prev.filter((item) => item.id !== id));
     }
     const [items, setItems] = useState<HistoryItem[]>([]);
