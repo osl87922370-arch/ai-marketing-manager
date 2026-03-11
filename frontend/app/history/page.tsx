@@ -32,6 +32,21 @@ type HistoryResponse = {
     user_email?: string | null;
 };
 
+function formatDate(value?: string) {
+    if (!value) return "";
+
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return value;
+
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    const hh = String(d.getHours()).padStart(2, "0");
+    const mi = String(d.getMinutes()).padStart(2, "0");
+
+    return `${yyyy}.${mm}.${dd} ${hh}:${mi}`;
+}
+
 export default function HistoryPage() {
     const router = useRouter();
 
@@ -107,7 +122,7 @@ export default function HistoryPage() {
                                 }}
                             >
                                 <div style={{ fontSize: 14, color: "#888" }}>
-                                    {x.created_at || ""}
+                                    {formatDate(x.created_at)}
                                 </div>
 
                                 <button
