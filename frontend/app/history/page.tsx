@@ -50,6 +50,17 @@ function formatDate(value?: string) {
 export default function HistoryPage() {
     const router = useRouter();
 
+    async function handleDelete(id: string) {
+        const ok = window.confirm("삭제 후 목록에서 보이지 않습니다. 계속하시겠습니까?");
+        if (!ok) return;
+        await fetch(`/api/history/${id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("access_token") ?? ""}`,
+            },
+        });
+        setItems((prev) => prev.filter((item) => item.id !== id));
+    }
     const [items, setItems] = useState<HistoryItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState<string | null>(null);
@@ -130,6 +141,9 @@ export default function HistoryPage() {
                                     onClick={() => router.push(`/generate?reuse=${x.id}`)}
                                 >
                                     재사용
+                                </button>
+                                <button type="button" onClick={() => handleDelete(x.id)}>
+                                    삭제
                                 </button>
                             </div>
 

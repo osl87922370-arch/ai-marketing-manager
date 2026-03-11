@@ -1,3 +1,4 @@
+from datetime import datetime
 from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, or_
@@ -19,7 +20,10 @@ def get_history(
     current_user = Depends(get_current_user),
 ):
     # ✅ 사용자별 데이터 보호(서버 레벨)
-    q = db.query(Generation).filter(Generation.user_id == current_user.id)
+    q = db.query(Generation).filter(
+        Generation.user_id == current_user.id,
+        Generation.is_deleted.is_(False),
+)
 
     # ✅ cursor pagination (keyset)
     if cursor:
@@ -67,7 +71,11 @@ def get_history_detail(
     # ✅ 사용자별 데이터 보호(서버 레벨)
     r = (
         db.query(Generation)
-          .filter(Generation.id == generation_id, Generation.user_id == current_user.id)
+          .filter(
+              Generation.id == generation_id,
+              Generation.user_id == current_user.id,
+              Generation.is_deleted.is_(False),
+)
           .first()
     )
     if not r:
@@ -85,3 +93,31 @@ def get_history_detail(
     created_at=r.created_at,
     updated_at=r.updated_at,
 )
+
+@router.delete("/history/{generation_id}")
+def delete_history(
+    generation_id: str,
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user),
+):
+    item = (
+        db.query(Generation)
+        .filter(
+            Generation.id == generation_id,
+            Generation.user_id == current_user.id,
+            Generation.is_deleted.is_(False),
+        )
+        .first()
+    )
+    if not item:
+        raise HTTPException(status_code=404, detail="History not found")
+    item.is_deleted = True
+    item.deleted_at = datetime.utcnow()
+    db.commit()
+
+    return {"ok": True, "id": generation_id}
+
+
+    
+    
+    
