@@ -142,6 +142,7 @@ def get_current_user(
             },
         )
     except Exception as e:
+        print("decode error =", type(e).__name__, str(e))
         raise _unauthorized(f"Invalid Supabase token: {type(e).__name__} {e}")
 
    # ✅ 이 아래부터 함수 안쪽 동일 레벨이어야 함

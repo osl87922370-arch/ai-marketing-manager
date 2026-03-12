@@ -1,8 +1,9 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
 export default function Home() {
+  const router = useRouter();
   const login = async () => {
     const email = "osl87922370@gmail.com";
     const password = "012501!";
@@ -43,6 +44,10 @@ export default function Home() {
 
     console.log("SESSION:", signInResult.data.session);
     console.log("ACCESS_TOKEN:", signInResult.data.session.access_token);
+
+    localStorage.setItem("access_token", signInResult.data.session.access_token);
+    localStorage.setItem("user_email", email);
+    router.push("/history");
   };
 
   return (
