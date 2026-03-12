@@ -78,6 +78,7 @@ export default function HistoryPage() {
     const [err, setErr] = useState<string | null>(null);
     const [userEmail, setUserEmail] = useState<string | null>(null);
     const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [copiedId, setCopiedId] = useState<string | null>(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -141,8 +142,17 @@ export default function HistoryPage() {
                                 borderRadius: 8,
                                 padding: 16,
                                 marginBottom: 16,
+                                transition: "all 0.2s ease",
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.boxShadow = "none";
                             }}
                         >
+
+
                             {/* 상단 버튼 영역 */}
                             <div
                                 style={{
@@ -155,32 +165,52 @@ export default function HistoryPage() {
                                 <div style={{ fontSize: 14, color: "#888" }}>
                                     {formatDate(x.created_at)}
                                 </div>
+                                <div style={{ display: "flex", gap: 12 }}>
+                                    <button
+                                        type="button"
+                                        onClick={() => router.push(`/generate?reuse=${x.id}`)}
+                                    >
+                                        재사용
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={async () => {
+                                            await navigator.clipboard.writeText(x.headline || "");
+                                            setCopiedId(x.id);
+                                            setTimeout(() => setCopiedId(null), 1000);
+                                        }}
+                                    >
+                                        {copiedId === x.id ? "복사됨!" : "복사"}
+                                    </button>
 
-                                <button
-                                    type="button"
-                                    onClick={() => router.push(`/generate?reuse=${x.id}`)}
-                                >
-                                    재사용
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => handleDelete(x.id)}
-                                    disabled={deletingId === x.id}
-                                    style={{
-                                        opacity: deletingId === x.id ? 0.5 : 1,
-                                        cursor: deletingId === x.id ? "not-allowed" : "pointer",
-                                    }}
-                                >
-                                    {deletingId === x.id ? "삭제 중..." : "삭제"}
-                                </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleDelete(x.id)}
+                                        disabled={deletingId === x.id}
+                                        style={{
+                                            opacity: deletingId === x.id ? 0.5 : 1,
+                                            cursor: deletingId === x.id ? "not-allowed" : "pointer",
+                                        }}
+                                    >
+                                        {deletingId === x.id ? "삭제 중..." : "삭제"}
+                                    </button>
+                                </div>
                             </div>
-
                             {/* 결과 텍스트 */}
-                            <textarea
-                                readOnly
-                                value={x.headline || ""}
-                                style={{ width: "100%", height: 120 }}
-                            />
+
+                            <div
+                                style={{
+                                    width: "100%",
+                                    minHeight: 120,
+                                    padding: "10px",
+                                    border: "1px solid #ddd",
+                                    borderRadius: 6,
+                                    whiteSpace: "pre-wrap",
+                                    background: "#fafafa",
+                                }}
+                            >
+                                {x.headline || ""}
+                            </div>
 
 
                         </div>
@@ -189,4 +219,4 @@ export default function HistoryPage() {
             )}
         </div>
     );
-}
+}  
