@@ -103,9 +103,16 @@ export default function HistoryPage() {
     return (
         <div style={{ padding: 40, maxWidth: 900 }}>
             {/* ===== 헤더 ===== */}
-            <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-                <h1 style={{ margin: 0 }}>내 생성 히스토리</h1>
-                <div style={{ color: "#666" }}>
+            <div
+                style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    alignItems: "center",
+                    gap: 12,
+                }}
+            >
+                <h1 style={{ margin: 0, lineHeight: 1.2 }}>내 생성 히스토리</h1>
+                <div style={{ wordBreak: "break-all" }}>
                     {userEmail ? `(${userEmail})` : "(로그인 이메일 미저장)"}
                 </div>
             </div>
@@ -159,6 +166,10 @@ export default function HistoryPage() {
                                     type="button"
                                     onClick={() => handleDelete(x.id)}
                                     disabled={deletingId === x.id}
+                                    style={{
+                                        opacity: deletingId === x.id ? 0.5 : 1,
+                                        cursor: deletingId === x.id ? "not-allowed" : "pointer",
+                                    }}
                                 >
                                     {deletingId === x.id ? "삭제 중..." : "삭제"}
                                 </button>
