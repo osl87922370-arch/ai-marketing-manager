@@ -1,15 +1,25 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { apiFetch } from "@/lib/api";
 
 type SaveResponse = { id: number };
-
+type Variant = {
+    headline?: string;
+    body?: string;
+    cta?: string;
+    hashtags?: string[] | string;
+};
 export default function ResultPage() {
+    const searchParams = useSearchParams();
+    const historyId = searchParams.get("id");
     const [productDesc, setProductDesc] = useState("");
     const [target, setTarget] = useState("");
     const [tone, setTone] = useState("");
     const [resultText, setResultText] = useState("");
+    const [variants, setVariants] = useState<Variant[]>([]);
+    const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
 
     const [copied, setCopied] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -17,71 +27,148 @@ export default function ResultPage() {
     const [error, setError] = useState<string | null>(null);
 
     // sessionStorage에서 최신 생성 결과 읽기
+
     useEffect(() => {
-        const raw = sessionStorage.getItem("generationResult") || "";
+        async function loadResult() {
+            // 1) History 카드 클릭으로 들어온 경우: DB 상세 조회
+            if (historyId) {
+                try {
+                    setError(null);
 
-        let p = localStorage.getItem("product") || "";
-        let t = localStorage.getItem("target") || "";
-        let toneVal = localStorage.getItem("tone") || "";
-        let text = "";
-
-        try {
-            const parsed = raw ? JSON.parse(raw) : null;
-
-            const genInput =
-                parsed && parsed.generation && parsed.generation.input
-                    ? parsed.generation.input
-                    : {};
-
-            const first =
-                (parsed &&
-                    parsed.generation &&
-                    parsed.generation.output &&
-                    parsed.generation.output.variants &&
-                    parsed.generation.output.variants.length > 0
-                    ? parsed.generation.output.variants[0]
-                    : null) ||
-                (parsed &&
-                    parsed.output &&
-                    parsed.output.variants &&
-                    parsed.output.variants.length > 0
-                    ? parsed.output.variants[0]
-                    : null) ||
-                (parsed &&
-                    parsed.variants &&
-                    parsed.variants.length > 0
-                    ? parsed.variants[0]
-                    : null);
+                    const data = await apiFetch(`/api/history/${historyId}`, {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("access_token") ?? ""}`,
+                        },
+                    });
 
 
-            if (!p) p = genInput.product_desc || "";
-            if (!t) t = genInput.target || "";
-            if (!toneVal) toneVal = genInput.tone || "";
+                    const detail = data as any;
 
-            if (first) {
-                const hashtagsText = Array.isArray(first.hashtags)
-                    ? first.hashtags.join(" ")
-                    : first.hashtags || "";
 
-                text =
-                    (first.headline || "") +
-                    "\n\n" +
-                    (first.body || "") +
-                    "\n\n" +
-                    (first.cta || "") +
-                    "\n\n" +
-                    hashtagsText;
+                    const input =
+                        detail?.input_json ??
+                        detail?.generation?.input_json ??
+                        detail?.input ??
+                        {};
+
+                    const nestedInput = input?.input ?? {};
+
+                    const output =
+                        detail?.output_json ??
+                        detail?.generation?.output_json ??
+                        detail?.output ??
+                        {};
+
+                    const vs = Array.isArray(output?.variants) ? output.variants : [];
+                    setVariants(vs);
+
+                    const first =
+                        (output?.variants && output.variants.length > 0
+                            ? output.variants[0]
+                            : null) ||
+                        (detail?.variants && detail.variants.length > 0
+                            ? detail.variants[0]
+                            : null);
+
+                    const hashtagsText = Array.isArray(first?.hashtags)
+                        ? first.hashtags.join(" ")
+                        : first?.hashtags || "";
+
+                    const text =
+                        output?.result_text ||
+                        detail?.result_text ||
+                        detail?.headline ||
+                        (first
+                            ? [
+                                first.headline || "",
+                                first.body || "",
+                                first.cta || "",
+                                hashtagsText,
+                            ]
+                                .filter(Boolean)
+                                .join("\n\n")
+                            : "");
+
+                    setProductDesc(
+                        nestedInput?.product_desc ||
+                        input?.product_name ||
+                        input?.product_desc ||
+                        input?.product ||
+                        ""
+                    );
+                    setTarget(input?.target || nestedInput?.target || "");
+                    setTone(nestedInput?.tone || input?.tone || "");
+                    setResultText(text);
+                    return;
+                } catch (e: any) {
+                    setError(e?.message || "히스토리 상세를 불러오지 못했습니다.");
+                    return;
+                }
             }
-        } catch (e) {
-            text = raw;
+
+            // 2) generate 페이지에서 바로 들어온 경우: 기존 local/session storage 사용
+            const raw = sessionStorage.getItem("generationResult") || "";
+            let p = localStorage.getItem("product") || "";
+            let t = localStorage.getItem("target") || "";
+            let toneVal = localStorage.getItem("tone") || "";
+            let text = "";
+
+            try {
+                const parsed = raw ? JSON.parse(raw) : null;
+
+                const genInput =
+                    parsed && parsed.generation && parsed.generation.input
+                        ? parsed.generation.input
+                        : {};
+
+                const first =
+                    (parsed &&
+                        parsed.generation &&
+                        parsed.generation.output &&
+                        parsed.generation.output.variants &&
+                        parsed.generation.output.variants.length > 0
+                        ? parsed.generation.output.variants[0]
+                        : null) ||
+                    (parsed &&
+                        parsed.output &&
+                        parsed.output.variants &&
+                        parsed.output.variants.length > 0
+                        ? parsed.output.variants[0]
+                        : null) ||
+                    (parsed && parsed.variants && parsed.variants.length > 0
+                        ? parsed.variants[0]
+                        : null);
+
+                if (!p) p = genInput.product_desc || "";
+                if (!t) t = genInput.target || "";
+                if (!toneVal) toneVal = genInput.tone || "";
+
+                if (first) {
+                    const hashtagsText = Array.isArray(first.hashtags)
+                        ? first.hashtags.join(" ")
+                        : first.hashtags || "";
+
+                    text =
+                        (first.headline || "") +
+                        "\n\n" +
+                        (first.body || "") +
+                        "\n\n" +
+                        (first.cta || "") +
+                        "\n\n" +
+                        hashtagsText;
+                }
+            } catch (e) {
+                text = raw;
+            }
+
+            setProductDesc(p);
+            setTarget(t);
+            setTone(toneVal);
+            setResultText(text);
         }
 
-        setProductDesc(p);
-        setTarget(t);
-        setTone(toneVal);
-        setResultText(text);
-    }, []);
-
+        loadResult();
+    }, [historyId]);
 
 
     const canSave = useMemo(() => {
@@ -146,8 +233,64 @@ export default function ResultPage() {
                 {productDesc || <span style={{ color: "#888" }}>(비어있음)</span>}
             </div>
 
+            {variants.length > 0 && (
+                <div style={{ marginBottom: 16 }}>
+                    <div style={{ marginBottom: 8, fontWeight: 600 }}>카피 선택</div>
+
+                    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                        {variants.map((variant, index) => (
+                            <button
+                                key={index}
+                                type="button"
+                                onClick={() => setSelectedVariantIndex(index)}
+                                style={{
+                                    textAlign: "left",
+                                    padding: 12,
+                                    borderRadius: 10,
+                                    border:
+                                        selectedVariantIndex === index
+                                            ? "2px solid #111"
+                                            : "1px solid #ddd",
+                                    background: selectedVariantIndex === index ? "#f8f8f8" : "#fff",
+                                    cursor: "pointer",
+                                }}
+                            >
+                                <div style={{ fontWeight: 600, marginBottom: 6 }}>
+                                    {variant.headline || `카피 ${index + 1}`}
+                                </div>
+
+                                <div
+                                    style={{
+                                        fontSize: 14,
+                                        color: "#666",
+                                        lineHeight: 1.5,
+                                        whiteSpace: "pre-wrap",
+                                    }}
+                                >
+                                    {variant.body || ""}
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             <textarea
-                value={resultText}
+                value={
+                    variants[selectedVariantIndex]
+                        ? [
+                            variants[selectedVariantIndex].headline || "",
+                            "",
+                            variants[selectedVariantIndex].body || "",
+                            "",
+                            variants[selectedVariantIndex].cta || "",
+                            "",
+                            Array.isArray(variants[selectedVariantIndex].hashtags)
+                                ? variants[selectedVariantIndex].hashtags.join(" ")
+                                : variants[selectedVariantIndex].hashtags || "",
+                        ].join("\n")
+                        : resultText
+                }
                 readOnly
                 rows={12}
                 style={{

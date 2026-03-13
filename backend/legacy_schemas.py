@@ -35,8 +35,12 @@ class GenerationOut(BaseModel):
     user_id: str
     task: Optional[str] = None
     input_json: Any
+    output_json: Any = None
     headline: Optional[str] = None
+    status: Optional[str] = None
     created_at: datetime
+    updated_at: Optional[datetime] = None
+
 
 class HistoryResponse(BaseModel):
     items: List[GenerationOut]

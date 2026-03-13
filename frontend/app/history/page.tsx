@@ -50,7 +50,12 @@ function formatDate(value?: string) {
 export default function HistoryPage() {
     const router = useRouter();
 
+    const handleCardClick = (id: string) => {
+        router.push(`/result?id=${id}`);
+    };
+
     async function handleDelete(id: string) {
+
         const ok = window.confirm("삭제 후 목록에서 보이지 않습니다. 계속하시겠습니까?");
         if (!ok) return;
 
@@ -79,6 +84,7 @@ export default function HistoryPage() {
     const [userEmail, setUserEmail] = useState<string | null>(null);
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [copiedId, setCopiedId] = useState<string | null>(null);
+    const [query, setQuery] = useState("");
 
     useEffect(() => {
         async function fetchData() {
@@ -99,7 +105,9 @@ export default function HistoryPage() {
         fetchData();
     }, []);
 
-    const filtered = items; // 필요하면 필터 로직 추가
+    const filtered = items.filter((item) =>
+        (item.headline || "").toLowerCase().includes(query.toLowerCase())
+    );
 
     return (
         <div style={{ padding: 40, maxWidth: 900 }}>
@@ -118,6 +126,28 @@ export default function HistoryPage() {
                 </div>
             </div>
 
+
+            {/* 여기 아래에 추가 */}
+
+            <div style={{ marginTop: 16, marginBottom: 16 }}>
+                <input
+                    type="text"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="제목으로 검색"
+                    style={{
+                        width: "100%",
+                        maxWidth: 360,
+                        padding: "10px 12px",
+                        border: "1px solid #ddd",
+                        borderRadius: 8,
+                        fontSize: 14,
+                    }}
+                />
+            </div>
+
+            {/* ===== 로딩 ===== */}
+            {loading && <div style={{ marginTop: 20 }}>로딩중...</div>}
             {/* ===== 로딩 ===== */}
             {loading && <div style={{ marginTop: 20 }}>로딩중...</div>}
 
@@ -127,8 +157,13 @@ export default function HistoryPage() {
             )}
 
             {/* ===== 데이터 없음 ===== */}
-            {!loading && !err && filtered.length === 0 && (
+            {!loading && !err && items.length === 0 && (
                 <div style={{ marginTop: 20 }}>저장된 히스토리가 없습니다.</div>
+            )}
+            {!loading && !err && filtered.length === 0 && (
+                <div style={{ marginTop: 20, color: "#888" }}>
+                    검색 결과가 없습니다.
+                </div>
             )}
 
             {/* ===== 리스트 ===== */}
@@ -137,12 +172,14 @@ export default function HistoryPage() {
                     {filtered.map((x) => (
                         <div
                             key={x.id}
+                            onClick={() => handleCardClick(x.id)}
                             style={{
                                 border: "1px solid #ddd",
                                 borderRadius: 8,
                                 padding: 16,
                                 marginBottom: 16,
                                 transition: "all 0.2s ease",
+                                cursor: "pointer"
                             }}
                             onMouseEnter={(e) => {
                                 e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.15)";
@@ -168,24 +205,32 @@ export default function HistoryPage() {
                                 <div style={{ display: "flex", gap: 12 }}>
                                     <button
                                         type="button"
-                                        onClick={() => router.push(`/generate?reuse=${x.id}`)}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            router.push(`/generate?reuse=${x.id}`);
+                                        }}
                                     >
                                         재사용
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={async () => {
+                                        onClick={async (e) => {
+                                            e.stopPropagation();
                                             await navigator.clipboard.writeText(x.headline || "");
                                             setCopiedId(x.id);
                                             setTimeout(() => setCopiedId(null), 1000);
                                         }}
+
                                     >
                                         {copiedId === x.id ? "복사됨!" : "복사"}
                                     </button>
 
                                     <button
                                         type="button"
-                                        onClick={() => handleDelete(x.id)}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleDelete(x.id);
+                                        }}
                                         disabled={deletingId === x.id}
                                         style={{
                                             opacity: deletingId === x.id ? 0.5 : 1,
