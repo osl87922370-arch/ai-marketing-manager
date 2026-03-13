@@ -12,8 +12,8 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # ✅ 모델 로드 (테이블 인식용)
-import backend.model as model
-from backend.db import Base
+import legacy_schemas as model
+from db import Base
 
 
 # ✅ Alembic이 참조할 메타데이터

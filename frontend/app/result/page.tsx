@@ -59,8 +59,11 @@ export default function ResultPage() {
                         detail?.output ??
                         {};
 
-                    const vs = Array.isArray(output?.variants) ? output.variants : [];
-                    setVariants(vs);
+
+
+
+
+
 
                     const first =
                         (output?.variants && output.variants.length > 0
@@ -108,6 +111,7 @@ export default function ResultPage() {
 
             // 2) generate 페이지에서 바로 들어온 경우: 기존 local/session storage 사용
             const raw = sessionStorage.getItem("generationResult") || "";
+            console.log("generationResult raw:", raw);
             let p = localStorage.getItem("product") || "";
             let t = localStorage.getItem("target") || "";
             let toneVal = localStorage.getItem("tone") || "";
@@ -115,48 +119,34 @@ export default function ResultPage() {
 
             try {
                 const parsed = raw ? JSON.parse(raw) : null;
-
+                console.log("parsed result:", parsed);
                 const genInput =
                     parsed && parsed.generation && parsed.generation.input
                         ? parsed.generation.input
                         : {};
 
-                const first =
-                    (parsed &&
-                        parsed.generation &&
-                        parsed.generation.output &&
-                        parsed.generation.output.variants &&
+                const variants =
+                    (parsed?.generation?.output?.variants &&
                         parsed.generation.output.variants.length > 0
-                        ? parsed.generation.output.variants[0]
+                        ? parsed.generation.output.variants
                         : null) ||
-                    (parsed &&
-                        parsed.output &&
-                        parsed.output.variants &&
+                    (parsed?.output?.variants &&
                         parsed.output.variants.length > 0
-                        ? parsed.output.variants[0]
+                        ? parsed.output.variants
                         : null) ||
-                    (parsed && parsed.variants && parsed.variants.length > 0
-                        ? parsed.variants[0]
-                        : null);
+                    (parsed?.variants && parsed.variants.length > 0
+                        ? parsed.variants
+                        : []);
+                setVariants(variants || []);
+                setSelectedVariantIndex(0);
 
                 if (!p) p = genInput.product_desc || "";
                 if (!t) t = genInput.target || "";
                 if (!toneVal) toneVal = genInput.tone || "";
 
-                if (first) {
-                    const hashtagsText = Array.isArray(first.hashtags)
-                        ? first.hashtags.join(" ")
-                        : first.hashtags || "";
 
-                    text =
-                        (first.headline || "") +
-                        "\n\n" +
-                        (first.body || "") +
-                        "\n\n" +
-                        (first.cta || "") +
-                        "\n\n" +
-                        hashtagsText;
-                }
+
+
             } catch (e) {
                 text = raw;
             }
@@ -275,33 +265,39 @@ export default function ResultPage() {
                 </div>
             )}
 
-            <textarea
-                value={
-                    variants[selectedVariantIndex]
-                        ? [
-                            variants[selectedVariantIndex].headline || "",
-                            "",
-                            variants[selectedVariantIndex].body || "",
-                            "",
-                            variants[selectedVariantIndex].cta || "",
-                            "",
-                            Array.isArray(variants[selectedVariantIndex].hashtags)
-                                ? variants[selectedVariantIndex].hashtags.join(" ")
-                                : variants[selectedVariantIndex].hashtags || "",
-                        ].join("\n")
-                        : resultText
-                }
-                readOnly
-                rows={12}
-                style={{
-                    width: "100%",
-                    padding: 12,
-                    borderRadius: 8,
-                    border: "1px solid #ddd",
-                    fontSize: 14,
-                    lineHeight: 1.5,
-                }}
-            />
+            {variants.length > 1 && (
+                <div
+                    style={{
+                        display: "flex",
+                        gap: 8,
+                        marginBottom: 12,
+                        flexWrap: "wrap",
+                    }}
+                >
+                    {variants.map((_, index) => (
+                        <button
+                            key={index}
+                            type="button"
+                            onClick={() => setSelectedVariantIndex(index)}
+
+                            style={{
+                                padding: "8px 12px",
+                                borderRadius: 10,
+                                border: selectedVariantIndex === index ? "2px solid #111" : "1px solid #ddd",
+                                background: selectedVariantIndex === index ? "#f8f8f8" : "#fff",
+                                cursor: "pointer",
+                                fontWeight: selectedVariantIndex === index ? 700 : 400,
+                            }}
+
+                        >
+                            카피 {index + 1}
+                        </button>
+                    ))}
+                </div>
+            )}
+
+
+
 
             <div style={{ marginTop: 14, display: "flex", gap: 10 }}>
                 <button
