@@ -137,8 +137,21 @@ export default function ResultPage() {
                     (parsed?.variants && parsed.variants.length > 0
                         ? parsed.variants
                         : []);
-                setVariants(variants || []);
+
+
+
+                const parsedVariants = parsed?.generation?.output?.variants || [];
+
+                setVariants(parsedVariants);
                 setSelectedVariantIndex(0);
+
+                if (parsedVariants.length > 0) {
+                    const first = parsedVariants[0];
+                    setResultText(`${first.headline}\n${first.body}`);
+                } else {
+                    setResultText("");
+                }
+
 
                 if (!p) p = genInput.product_desc || "";
                 if (!t) t = genInput.target || "";
@@ -154,7 +167,7 @@ export default function ResultPage() {
             setProductDesc(p);
             setTarget(t);
             setTone(toneVal);
-            setResultText(text);
+            // setResultText(text);
         }
 
         loadResult();
@@ -168,9 +181,11 @@ export default function ResultPage() {
             tone.trim().length > 0 &&
             resultText.trim().length > 0
         );
-    }, [productDesc, target, tone, resultText]);
+    }, [historyId]);
 
     async function onCopy() {
+        console.log("COPY CLICKED", resultText);
+
         try {
             await navigator.clipboard.writeText(resultText);
             setCopied(true);
@@ -232,7 +247,13 @@ export default function ResultPage() {
                             <button
                                 key={index}
                                 type="button"
-                                onClick={() => setSelectedVariantIndex(index)}
+                                onClick={() => {
+                                    setSelectedVariantIndex(index);
+                                    const selected = variants[index];
+                                    if (selected) {
+                                        setResultText(`${selected.headline}\n${selected.body}`);
+                                    }
+                                }}
                                 style={{
                                     textAlign: "left",
                                     padding: 12,
@@ -274,11 +295,15 @@ export default function ResultPage() {
                         flexWrap: "wrap",
                     }}
                 >
-                    {variants.map((_, index) => (
+                    {variants.map((variant, index) => (
                         <button
                             key={index}
                             type="button"
-                            onClick={() => setSelectedVariantIndex(index)}
+                            onClick={() => {
+                                setSelectedVariantIndex(index);
+                                setResultText(`${variant.headline}\n${variant.body}`);
+                            }}
+
 
                             style={{
                                 padding: "8px 12px",
@@ -301,8 +326,12 @@ export default function ResultPage() {
 
             <div style={{ marginTop: 14, display: "flex", gap: 10 }}>
                 <button
-                    onClick={onCopy}
-                    disabled={!resultText.trim()}
+                    onClick={() => {
+                        console.log("BUTTON CLICKED");
+                        console.log("resultText =", resultText);
+
+                    }}
+                    disabled={false}
                     style={{
                         padding: "10px 14px",
                         borderRadius: 8,
@@ -313,9 +342,10 @@ export default function ResultPage() {
                     {copied ? "복사됨!" : "복사"}
                 </button>
 
+
                 <button
                     onClick={onSave}
-                    disabled={!canSave || saving || savedId !== null}
+                    disabled={false}
                     style={{
                         padding: "10px 14px",
                         borderRadius: 8,

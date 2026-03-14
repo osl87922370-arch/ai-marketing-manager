@@ -36,27 +36,43 @@ async def generate(
 
     # 👉 MVP용 더미 variants (나중에 LLM 연결)
     
-    variants = [
-    Variant(
-        headline="이번 주말 줄 서서 먹는 닭볶음탕",
-        body="강남주말포차에서 푸짐한 양의 닭볶음탕을 즐겨보세요. 주말 야식으로 딱입니다.",
-        cta="지금 방문해보세요",
-        hashtags=["#강남맛집", "#닭볶음탕", "#주말야식"]
-    ),
-    Variant(
-        headline="강남역에서 찾은 푸짐한 한 끼",
-        body="매콤한 닭볶음탕 한 냄비로 주말 저녁을 든든하게 채워보세요.",
-        cta="오늘 저녁 메뉴로 추천",
-        hashtags=["#강남역맛집", "#한식추천", "#저녁메뉴"]
-    ),
-    Variant(
-        headline="주말 모임 메뉴로 딱 좋은 닭볶음탕",
-        body="강남주말포차의 닭볶음탕은 푸짐한 양과 깊은 맛으로 만족도를 높여줍니다.",
-        cta="친구와 함께 방문해보세요",
-        hashtags=["#모임맛집", "#강남포차", "#닭볶음탕추천"]
-    ),
-]
+    37  # 👉 MVP용 입력값 기반 더미 variants (나중에 LLM 연결)
 
+
+    # 👉 MVP용 입력값 기반 더미 variants (나중에 LLM 연결)
+
+    product = (getattr(payload, "product_name", "") or "").strip()
+    target = (getattr(payload, "target", "") or "").strip()
+    tone = (getattr(payload, "tone", "") or "").strip()
+    
+
+    if not product:
+       product = "추천 상품"
+    if not target:
+       target = "고객"
+    if not tone:
+        tone = "친근"
+
+    variants = [
+        Variant(
+            headline=f"{target}에게 딱 맞는 {product}",
+            body=f"{tone} 분위기로 소개하는 {product}입니다.",
+            cta="지금 확인해보세요",
+            hashtags=["#매장홍보", "#방문유도", "#마케팅카피"],
+        ),
+        Variant(
+            headline=f"오늘 눈길 가는 메뉴, {product}",
+            body=f"{target}도 부담 없이 관심 가질 수 있게 {tone} 톤으로 풀어낸 카피입니다.",
+            cta="지금 방문해보세요",
+            hashtags=["#맛집홍보", "#로컬마케팅", "#카피라이팅"],
+        ),
+        Variant(
+            headline=f"{product} 찾는 순간 선택은 더 쉬워집니다",
+            body=f"{product}의 매력을 {tone} 느낌으로 전달하는 홍보 문구입니다.",
+            cta="매장 정보 보기",
+            hashtags=["#소상공인마케팅", "#콘텐츠마케팅", "#AI카피"],
+        ),
+    ]
     # 💰 크레딧 계산
     pricing = calc_credits(variant_count=len(variants))
 
@@ -80,20 +96,19 @@ async def generate(
 
     db_generation = GenerationModel(
         user_id=current_user.id,
-        task=payload.task,
+        task="generate",
         input_json={
-            "userEmail": payload.userEmail,
-            "input": payload.input,
-            "target": payload.target,
-            "channel": payload.channel,
-            "goal": payload.goal,
-            "product_name": payload.product_name,
-            "params": payload.params.model_dump(),
+            "target": getattr(payload, "target", ""),
+            "channel": getattr(payload, "channel", ""),
+            "goal": getattr(payload, "goal", ""),
+            "product_name": getattr(payload, "product_name", ""),
+            "params": payload.params.model_dump() if getattr(payload, "params", None) else {},
         },
         output_json=generation.output.model_dump(),
         headline=generation.output.variants[0].headline if generation.output.variants else None,
         status=generation.status,
     )
+    
 
     db.add(db_generation)
     db.commit()

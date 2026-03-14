@@ -15,10 +15,11 @@ export default function GeneratePage() {
         const data = await apiFetch("/api/generate", {
             method: "POST",
             body: JSON.stringify({
-                product_desc: productDesc,
+                product_name: productDesc,
                 target,
                 tone,
-            }),
+            })
+
         });
 
         sessionStorage.setItem("result", JSON.stringify(data));
