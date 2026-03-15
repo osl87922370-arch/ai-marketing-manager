@@ -3,12 +3,10 @@ from __future__ import annotations
 from datetime import datetime, date
 from typing import Optional, List, Dict, Any
 
-from sqlalchemy import (
-    String, Integer, Date, DateTime, ForeignKey, Text, JSON, Index
-)
+from sqlalchemy import String, Integer, Date, DateTime, ForeignKey, Text, JSON, Index
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
-from db import Base
+from core.db import Base
 
 
 class ReviewDataset(Base):

@@ -1,7 +1,10 @@
 import uuid
-from sqlalchemy import Column, String, DateTime, ForeignKey, JSON, Integer
 from datetime import datetime
-from db import Base
+
+from sqlalchemy import Column, String, DateTime, ForeignKey, JSON, Integer
+
+from core.db import Base
+
 
 class Generation(Base):
     __tablename__ = "generations"

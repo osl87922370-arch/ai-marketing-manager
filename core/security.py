@@ -1,37 +1,20 @@
-
 from __future__ import annotations
 
-# backend/auth.py
-import os
 import time
 from typing import Any, Dict, Optional
 
-import jwt  # PyJWT
+import jwt
 from jwt import PyJWKClient
-from dotenv import load_dotenv
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-
-# ✅ (추가) DB 세션 + DB Dependency + User ORM
 from sqlalchemy.orm import Session
-from db import get_db
-from model.user import User
 
-load_dotenv()
+from core.config import SUPABASE_PROJECT_URL, SUPABASE_JWT_ISS, SUPABASE_JWT_AUD, DEBUG_AUTH
+from core.db import get_db
+from models.user import User
 
 bearer_scheme = HTTPBearer(auto_error=True)
-
-# ===== Supabase env =====
-SUPABASE_PROJECT_URL = os.getenv("SUPABASE_PROJECT_URL", "").rstrip("/")
-SUPABASE_JWT_ISS = os.getenv("SUPABASE_JWT_ISS", "").rstrip("/")
-SUPABASE_JWT_AUD = os.getenv("SUPABASE_JWT_AUD", "authenticated")
-DEBUG_AUTH = False
-
-if DEBUG_AUTH:
-    print("ISS:", SUPABASE_JWT_ISS)
-    print("AUD:", SUPABASE_JWT_AUD)
-
 
 if not SUPABASE_PROJECT_URL:
     raise RuntimeError("Missing env: SUPABASE_PROJECT_URL")
@@ -40,7 +23,11 @@ if not SUPABASE_JWT_ISS:
 
 JWKS_URL = f"{SUPABASE_PROJECT_URL}/auth/v1/.well-known/jwks.json"
 
-# ===== JWKS client cache =====
+if DEBUG_AUTH:
+    print("ISS:", SUPABASE_JWT_ISS)
+    print("AUD:", SUPABASE_JWT_AUD)
+
+# JWKS client cache
 _JWK_CLIENT: Optional[PyJWKClient] = None
 _JWK_EXPIRES_AT = 0.0
 _JWK_TTL_SECONDS = 6 * 60 * 60  # 6h
@@ -64,7 +51,6 @@ def _unauthorized(detail: str) -> HTTPException:
 
 
 def _safe_decode_jwt_header(token: str) -> Dict[str, Any]:
-    # 헤더 확인용 (디버깅/검증용). 실패해도 예외 던짐.
     return jwt.get_unverified_header(token)
 
 
@@ -72,17 +58,10 @@ def get_current_user(
     db: Session = Depends(get_db),
     credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
 ) -> User:
-    """
-    Supabase access_token(JWT) 로컬 검증:
-    - 서명 검증: JWKS 공개키
-    - iss/aud/exp 검증
-    반환: claims(dict)
-    """
     token = (credentials.credentials or "").strip()
     if token.count(".") != 2:
         raise _unauthorized("Invalid token format (not a JWT)")
 
-    # 1) 토큰 헤더의 alg를 먼저 확인 (지금까지 에러의 핵심 포인트)
     try:
         header = _safe_decode_jwt_header(token)
         alg = header.get("alg")
@@ -91,15 +70,11 @@ def get_current_user(
     except Exception as e:
         raise _unauthorized(f"Invalid token header: {type(e).__name__} {e}")
 
-    # 2) JWKS에서 해당 토큰에 맞는 공개키 획득
     try:
         signing_key = _get_jwk_client().get_signing_key_from_jwt(token).key
     except Exception as e:
-        # 여기서 401/404가 나면 JWKS_URL 또는 네트워크 문제
         raise _unauthorized(f"Failed to load JWKS signing key: {type(e).__name__} {e}")
 
-    # 3) 서명 + 클레임 검증
-    # Supabase는 보통 RS256을 사용하지만, 헤더 alg를 기반으로 허용 목록에 포함되도록 설정
     allowed_algs = ["RS256", "ES256"]
     if alg not in allowed_algs:
         raise _unauthorized(f"Unexpected JWT alg: {alg} (allowed: {allowed_algs})")
@@ -108,7 +83,7 @@ def get_current_user(
         claims = jwt.decode(
             token,
             signing_key,
-            algorithms=[alg],  # 헤더 alg 그대로 사용
+            algorithms=[alg],
             issuer=SUPABASE_JWT_ISS,
             audience=SUPABASE_JWT_AUD,
             options={
@@ -129,15 +104,10 @@ def get_current_user(
     email = claims.get("email")
 
     user = db.query(User).filter(User.email == email).first()
-
     if not user:
-        user = User(
-            email=email,
-        )
+        user = User(email=email)
         db.add(user)
         db.commit()
         db.refresh(user)
 
     return user
-
-

@@ -1,9 +1,9 @@
-# backend/model/user.py
 import uuid
 from datetime import datetime
 
 from sqlalchemy import Column, DateTime, String
-from db import Base
+
+from core.db import Base
 
 
 class User(Base):
