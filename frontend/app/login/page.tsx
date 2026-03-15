@@ -54,14 +54,12 @@ export default function LoginPage() {
     };
 
 
-    // 이미 토큰 있으면 바로 이동(원치 않으면 이 useEffect 블록 삭제)
-    /*
+    // 이미 로그인된 세션이 있으면 바로 이동
     useEffect(() => {
-        const token =
-            typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
-        if (token) router.replace("/generate");
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) router.replace("/generate");
+        });
     }, [router]);
-    */
 
     const onSubmit = async (e: React.FormEvent) => {
         console.log("✅ onSubmit fired", Date.now());

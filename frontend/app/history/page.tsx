@@ -62,14 +62,9 @@ export default function HistoryPage() {
         setErr(null);
         setDeletingId(id);
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000"}/ai/history/${id}`, {
-            method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("access_token") ?? ""}`,
-            },
-        });
-
-        if (!res.ok) {
+        try {
+            await apiFetch(`/ai/history/${id}`, { method: "DELETE" });
+        } catch {
             setErr("삭제에 실패했습니다. 다시 시도해주세요.");
             setDeletingId(null);
             return;
@@ -146,8 +141,6 @@ export default function HistoryPage() {
                 />
             </div>
 
-            {/* ===== 로딩 ===== */}
-            {loading && <div style={{ marginTop: 20 }}>로딩중...</div>}
             {/* ===== 로딩 ===== */}
             {loading && <div style={{ marginTop: 20 }}>로딩중...</div>}
 

@@ -26,7 +26,7 @@ bearer_scheme = HTTPBearer(auto_error=True)
 SUPABASE_PROJECT_URL = os.getenv("SUPABASE_PROJECT_URL", "").rstrip("/")
 SUPABASE_JWT_ISS = os.getenv("SUPABASE_JWT_ISS", "").rstrip("/")
 SUPABASE_JWT_AUD = os.getenv("SUPABASE_JWT_AUD", "authenticated")
-DEBUG_AUTH = True
+DEBUG_AUTH = False
 
 if DEBUG_AUTH:
     print("ISS:", SUPABASE_JWT_ISS)

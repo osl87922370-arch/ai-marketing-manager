@@ -268,40 +268,6 @@ export default function ResultPage() {
                 </div>
             )}
 
-            {variants.length > 1 && (
-                <div
-                    style={{
-                        display: "flex",
-                        gap: 8,
-                        marginBottom: 12,
-                        flexWrap: "wrap",
-                    }}
-                >
-                    {variants.map((variant, index) => (
-                        <button
-                            key={index}
-                            type="button"
-                            onClick={() => {
-                                setSelectedVariantIndex(index);
-                                setResultText(`${variant.headline}\n${variant.body}`);
-                            }}
-
-
-                            style={{
-                                padding: "8px 12px",
-                                borderRadius: 10,
-                                border: selectedVariantIndex === index ? "2px solid #111" : "1px solid #ddd",
-                                background: selectedVariantIndex === index ? "#f8f8f8" : "#fff",
-                                cursor: "pointer",
-                                fontWeight: selectedVariantIndex === index ? 700 : 400,
-                            }}
-
-                        >
-                            카피 {index + 1}
-                        </button>
-                    ))}
-                </div>
-            )}
 
 
 
