@@ -122,27 +122,22 @@ def get_current_user(
     except Exception as e:
         raise _unauthorized(f"Invalid Supabase token: {type(e).__name__} {e}")
 
-   # ✅ 이 아래부터 함수 안쪽 동일 레벨이어야 함
+    supabase_user_id = claims.get("sub")
+    if not supabase_user_id:
+        raise _unauthorized("Invalid token payload")
 
-    
-        supabase_user_id = claims.get("sub")
-        if not supabase_user_id:
-            raise _unauthorized("Invalid token payload")
+    email = claims.get("email")
 
-        email = claims.get("email")
+    user = db.query(User).filter(User.email == email).first()
 
-        user = db.query(User).filter(User.supabase_id == supabase_user_id).first()
+    if not user:
+        user = User(
+            email=email,
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
 
-        if not user:
-            user = User(
-                supabase_id=supabase_user_id,
-                email=email,
-            )
-            db.add(user)
-            db.commit()
-            db.refresh(user)
-
-        return user
-   
+    return user
 
 

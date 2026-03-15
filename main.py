@@ -251,9 +251,11 @@ Base.metadata.create_all(bind=engine)
 
 from routes.history import router as history_router
 from routes.generate import router as generate_router
+from routes.results import router as results_router
 
 app.include_router(history_router, prefix="/ai", tags=["ai"])
 app.include_router(generate_router, prefix="/ai", tags=["ai"])
+app.include_router(results_router, prefix="/ai", tags=["ai"])
 
 
 

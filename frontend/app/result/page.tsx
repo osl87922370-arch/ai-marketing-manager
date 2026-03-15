@@ -115,8 +115,6 @@ export default function ResultPage() {
             let p = localStorage.getItem("product") || "";
             let t = localStorage.getItem("target") || "";
             let toneVal = localStorage.getItem("tone") || "";
-            let text = "";
-
             try {
                 const parsed = raw ? JSON.parse(raw) : null;
                 console.log("parsed result:", parsed);
@@ -124,21 +122,6 @@ export default function ResultPage() {
                     parsed && parsed.generation && parsed.generation.input
                         ? parsed.generation.input
                         : {};
-
-                const variants =
-                    (parsed?.generation?.output?.variants &&
-                        parsed.generation.output.variants.length > 0
-                        ? parsed.generation.output.variants
-                        : null) ||
-                    (parsed?.output?.variants &&
-                        parsed.output.variants.length > 0
-                        ? parsed.output.variants
-                        : null) ||
-                    (parsed?.variants && parsed.variants.length > 0
-                        ? parsed.variants
-                        : []);
-
-
 
                 const parsedVariants = parsed?.generation?.output?.variants || [];
 
@@ -161,13 +144,12 @@ export default function ResultPage() {
 
 
             } catch (e) {
-                text = raw;
+                console.error("parse error", e);
             }
 
             setProductDesc(p);
             setTarget(t);
             setTone(toneVal);
-            // setResultText(text);
         }
 
         loadResult();
@@ -181,7 +163,7 @@ export default function ResultPage() {
             tone.trim().length > 0 &&
             resultText.trim().length > 0
         );
-    }, [historyId]);
+    }, [productDesc, target, tone, resultText]);
 
     async function onCopy() {
         console.log("COPY CLICKED", resultText);
@@ -203,15 +185,15 @@ export default function ResultPage() {
             const user_email =
                 localStorage.getItem("user_email") || "unknown@example.com";
 
-            const res = await apiFetch("/api/results", {
+            const res = await apiFetch("/ai/results", {
                 method: "POST",
-                body: JSON.stringify({
+                json: {
                     user_email,
                     product_desc: productDesc,
                     target,
                     tone,
                     result_text: resultText,
-                }),
+                },
             });
 
             const data = res as SaveResponse;
@@ -326,11 +308,7 @@ export default function ResultPage() {
 
             <div style={{ marginTop: 14, display: "flex", gap: 10 }}>
                 <button
-                    onClick={() => {
-                        console.log("BUTTON CLICKED");
-                        console.log("resultText =", resultText);
-
-                    }}
+                    onClick={onCopy}
                     disabled={false}
                     style={{
                         padding: "10px 14px",
@@ -345,28 +323,23 @@ export default function ResultPage() {
 
                 <button
                     onClick={onSave}
-                    disabled={false}
+                    disabled={!canSave || saving || !!savedId}
                     style={{
                         padding: "10px 14px",
                         borderRadius: 8,
                         border: "1px solid #ddd",
-                        cursor: "pointer",
+                        cursor: canSave && !saving && !savedId ? "pointer" : "default",
+                        opacity: canSave && !saving && !savedId ? 1 : 0.5,
                     }}
                 >
                     {savedId
-                        ? `저장됨 (id=${savedId})`
+                        ? "저장 완료"
                         : saving
                             ? "저장 중..."
                             : "저장"}
                 </button>
             </div>
 
-            {!canSave && (
-                <div style={{ marginTop: 12, color: "#b36b00" }}>
-                    ⚠️ 저장하려면 target/tone/product/result 값이 모두 있어야 해.
-                    (generate 페이지에서 localStorage 저장이 필요)
-                </div>
-            )}
 
             {error && (
                 <div style={{ marginTop: 12, color: "red", whiteSpace: "pre-wrap" }}>

@@ -35,7 +35,7 @@ export async function apiFetch<T>(
         }
     }
 
-    const url = path.startsWith("/api/") ? path : `${API_BASE}${path}`;
+    const url = path.startsWith("http") ? path : `${API_BASE}${path}`;
 
     const res = await fetch(url, {
         ...options,

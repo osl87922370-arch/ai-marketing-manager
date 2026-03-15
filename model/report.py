@@ -27,4 +27,4 @@ class Report(Base):
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     # 관계
-    user = relationship("User", back_populates="reports")
+    user = relationship("User")

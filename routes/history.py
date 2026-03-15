@@ -11,7 +11,7 @@ from utils.pagination import encode_cursor, decode_cursor
 
 router = APIRouter()
 
-@router.get("/ai/history", response_model=HistoryResponse)
+@router.get("/history", response_model=HistoryResponse)
 def get_history(
     limit: int = Query(20, ge=1, le=50),
     cursor: Optional[str] = None,
@@ -58,7 +58,7 @@ def get_history(
     return HistoryResponse(items=items, next_cursor=next_cursor)
 
 
-@router.get("/ai/history/{generation_id}", response_model=GenerationOut)
+@router.get("/history/{generation_id}", response_model=GenerationOut)
 def get_history_detail(
     generation_id: str,
     db: Session = Depends(get_db),
@@ -81,3 +81,21 @@ def get_history_detail(
         headline=getattr(r, "headline", None),
         created_at=r.created_at,
     )
+
+
+@router.delete("/history/{generation_id}", status_code=204)
+def delete_history(
+    generation_id: str,
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user),
+):
+    r = (
+        db.query(Generation)
+          .filter(Generation.id == generation_id, Generation.user_id == current_user.id)
+          .first()
+    )
+    if not r:
+        raise HTTPException(status_code=404, detail="Not found")
+
+    db.delete(r)
+    db.commit()

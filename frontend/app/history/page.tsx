@@ -62,7 +62,7 @@ export default function HistoryPage() {
         setErr(null);
         setDeletingId(id);
 
-        const res = await fetch(`/api/history/${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000"}/ai/history/${id}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("access_token") ?? ""}`,
@@ -92,7 +92,7 @@ export default function HistoryPage() {
                 setLoading(true);
 
 
-                const data = await apiFetch<HistoryResponse>("/api/history");
+                const data = await apiFetch<HistoryResponse>("/ai/history");
                 setItems(data.items || []);
                 setUserEmail(data.user_email || null);
             } catch (e: any) {
