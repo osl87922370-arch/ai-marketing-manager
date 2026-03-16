@@ -25,6 +25,7 @@ from routers.history import router as history_router
 from routers.results import router as results_router
 from routers.place_insights import router as place_insights_router
 from routers.reviews import router as reviews_router
+from routers.dashboard import router as dashboard_router
 
 # ======================
 # 테이블 자동 생성
@@ -43,7 +44,7 @@ logger = logging.getLogger(__name__)
 # ======================
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["http://localhost:3000", "http://localhost:3001"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -138,6 +139,7 @@ async def fallback_exception_handler(request: Request, exc: Exception):
 app.include_router(generate_router, prefix="/ai", tags=["ai"])
 app.include_router(history_router, prefix="/ai", tags=["ai"])
 app.include_router(results_router, prefix="/ai", tags=["ai"])
+app.include_router(dashboard_router, prefix="/ai", tags=["ai"])
 app.include_router(place_insights_router)
 app.include_router(reviews_router)
 

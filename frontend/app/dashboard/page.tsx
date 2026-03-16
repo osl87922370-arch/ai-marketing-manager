@@ -1,56 +1,174 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Activity, Users, TrendingUp, Star } from "lucide-react";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { apiFetch } from "@/lib/api";
+import { FileText, Clock, Upload } from "lucide-react";
+
+type RecentGen = { id: string; headline: string | null; created_at: string | null };
+type LastAnalysis = { filename: string | null; total: number | null; target_suggestion: string | null; created_at: string | null };
+type DashboardData = {
+    total_generations: number;
+    total_analyses: number;
+    recent_generations: RecentGen[];
+    last_analysis: LastAnalysis | null;
+};
+
+function formatDate(value?: string | null) {
+    if (!value) return "";
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return value;
+    return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")} ${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
 
 export default function DashboardPage() {
-    return (
-        <div className="p-8">
-            <h1 className="text-3xl font-bold text-slate-800 mb-6">Dashboard Overview</h1>
+    const router = useRouter();
+    const [data, setData] = useState<DashboardData | null>(null);
+    const [loading, setLoading] = useState(true);
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <StatsCard title="Total Reviews" value="1,284" icon={Activity} color="text-blue-500" />
-                <StatsCard title="Avg. Sentiment" value="4.8/5.0" icon={Star} color="text-amber-500" />
-                <StatsCard title="Engagement" value="+12.5%" icon={TrendingUp} color="text-emerald-500" />
-                <StatsCard title="Active Users" value="842" icon={Users} color="text-purple-500" />
+    useEffect(() => {
+        apiFetch<DashboardData>("/ai/dashboard")
+            .then(setData)
+            .catch(() => setData(null))
+            .finally(() => setLoading(false));
+    }, []);
+
+    if (loading) return <div style={{ padding: 40, color: "#888" }}>로딩 중...</div>;
+
+    return (
+        <div style={{ padding: 40, maxWidth: 900 }}>
+            <h1 style={{ fontSize: 26, fontWeight: 700, marginBottom: 6 }}>대시보드</h1>
+            <p style={{ color: "#888", marginBottom: 32, fontSize: 14 }}>내 마케팅 활동 현황</p>
+
+            {/* 통계 카드 */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16, marginBottom: 32 }}>
+                <StatCard
+                    icon={<FileText size={22} color="#1a6fa8" />}
+                    label="총 카피 생성"
+                    value={data?.total_generations ?? 0}
+                    unit="회"
+                    bg="#e8f4fd"
+                    onClick={() => router.push("/history")}
+                />
+                <StatCard
+                    icon={<Upload size={22} color="#27ae60" />}
+                    label="총 리뷰 분석"
+                    value={data?.total_analyses ?? 0}
+                    unit="회"
+                    bg="#e8f8f0"
+                    onClick={() => router.push("/upload")}
+                />
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <Card className="h-96 shadow-sm border-slate-200">
-                    <CardHeader>
-                        <CardTitle>Recent Activity</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="flex items-center justify-center h-full text-slate-400">
-                            Chart Placeholder
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+                {/* 최근 생성 히스토리 */}
+                <div style={{ border: "1px solid #eee", borderRadius: 10, padding: 20 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+                        <div style={{ fontWeight: 600, fontSize: 15 }}>최근 카피 생성</div>
+                        <button
+                            onClick={() => router.push("/history")}
+                            style={{ fontSize: 12, color: "#1a6fa8", border: "none", background: "none", cursor: "pointer" }}
+                        >
+                            전체 보기 →
+                        </button>
+                    </div>
+                    {data?.recent_generations.length === 0 ? (
+                        <div style={{ color: "#aaa", fontSize: 14 }}>생성 내역이 없습니다.</div>
+                    ) : (
+                        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                            {data?.recent_generations.map((g) => (
+                                <div
+                                    key={g.id}
+                                    onClick={() => router.push(`/result?id=${g.id}`)}
+                                    style={{ cursor: "pointer", padding: "10px 12px", borderRadius: 8, background: "#fafafa", border: "1px solid #f0f0f0" }}
+                                >
+                                    <div style={{ fontWeight: 500, fontSize: 14, marginBottom: 3 }}>
+                                        {g.headline || "(제목 없음)"}
+                                    </div>
+                                    <div style={{ fontSize: 12, color: "#aaa", display: "flex", alignItems: "center", gap: 4 }}>
+                                        <Clock size={11} /> {formatDate(g.created_at)}
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    </CardContent>
-                </Card>
-                <Card className="h-96 shadow-sm border-slate-200">
-                    <CardHeader>
-                        <CardTitle>Top Categories</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="flex items-center justify-center h-full text-slate-400">
-                            Pie Chart Placeholder
+                    )}
+                </div>
+
+                {/* 최근 리뷰 분석 */}
+                <div style={{ border: "1px solid #eee", borderRadius: 10, padding: 20 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+                        <div style={{ fontWeight: 600, fontSize: 15 }}>최근 리뷰 분석</div>
+                        <button
+                            onClick={() => router.push("/upload")}
+                            style={{ fontSize: 12, color: "#1a6fa8", border: "none", background: "none", cursor: "pointer" }}
+                        >
+                            분석하기 →
+                        </button>
+                    </div>
+                    {!data?.last_analysis ? (
+                        <div style={{ color: "#aaa", fontSize: 14 }}>분석 내역이 없습니다.</div>
+                    ) : (
+                        <div style={{ padding: "10px 12px", borderRadius: 8, background: "#fafafa", border: "1px solid #f0f0f0" }}>
+                            <div style={{ fontWeight: 500, fontSize: 14, marginBottom: 4 }}>
+                                {data.last_analysis.filename || "파일명 없음"}
+                            </div>
+                            {data.last_analysis.total != null && (
+                                <div style={{ fontSize: 13, color: "#555", marginBottom: 4 }}>
+                                    리뷰 {data.last_analysis.total}개 분석
+                                </div>
+                            )}
+                            {data.last_analysis.target_suggestion && (
+                                <div style={{ fontSize: 13, color: "#1a6fa8" }}>
+                                    추천 타겟: {data.last_analysis.target_suggestion}
+                                </div>
+                            )}
+                            <div style={{ fontSize: 12, color: "#aaa", marginTop: 6, display: "flex", alignItems: "center", gap: 4 }}>
+                                <Clock size={11} /> {formatDate(data.last_analysis.created_at)}
+                            </div>
                         </div>
-                    </CardContent>
-                </Card>
+                    )}
+                </div>
+            </div>
+
+            {/* 빠른 이동 */}
+            <div style={{ marginTop: 28, display: "flex", gap: 12, flexWrap: "wrap" }}>
+                <button
+                    onClick={() => router.push("/generate")}
+                    style={{ padding: "12px 20px", background: "#1a1a1a", color: "#fff", border: "none", borderRadius: 8, fontWeight: 600, fontSize: 14, cursor: "pointer" }}
+                >
+                    카피 생성하기
+                </button>
+                <button
+                    onClick={() => router.push("/upload")}
+                    style={{ padding: "12px 20px", background: "#fff", color: "#333", border: "1px solid #ddd", borderRadius: 8, fontWeight: 600, fontSize: 14, cursor: "pointer" }}
+                >
+                    리뷰 분석하기
+                </button>
             </div>
         </div>
     );
 }
 
-function StatsCard({ title, value, icon: Icon, color }: any) {
+function StatCard({ icon, label, value, unit, bg, onClick }: {
+    icon: React.ReactNode;
+    label: string;
+    value: number;
+    unit: string;
+    bg: string;
+    onClick: () => void;
+}) {
     return (
-        <Card className="shadow-sm border-slate-200">
-            <CardContent className="p-6 flex items-center justify-between">
-                <div>
-                    <p className="text-sm font-medium text-slate-500">{title}</p>
-                    <h3 className="text-2xl font-bold text-slate-800 mt-1">{value}</h3>
-                </div>
-                <div className={`p-3 rounded-full bg-slate-100 ${color}`}>
-                    <Icon size={24} />
-                </div>
-            </CardContent>
-        </Card>
-    )
+        <div
+            onClick={onClick}
+            style={{ background: bg, borderRadius: 10, padding: "20px 24px", cursor: "pointer", transition: "opacity 0.15s" }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+        >
+            <div style={{ marginBottom: 10 }}>{icon}</div>
+            <div style={{ fontSize: 28, fontWeight: 700 }}>{value}</div>
+            <div style={{ fontSize: 13, color: "#555", marginTop: 2 }}>
+                {label} ({unit})
+            </div>
+        </div>
+    );
 }
