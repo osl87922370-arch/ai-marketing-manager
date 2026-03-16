@@ -35,6 +35,42 @@ export default function ResultPage() {
     const [savedId, setSavedId] = useState<number | null>(null);
     const [error, setError] = useState<string | null>(null);
 
+    // 편집 상태
+    const [editingIndex, setEditingIndex] = useState<number | null>(null);
+    const [draft, setDraft] = useState({ headline: "", body: "", cta: "", hashtags: "" });
+
+    function startEdit(index: number) {
+        const v = variants[index];
+        setDraft({
+            headline: v.headline || "",
+            body: v.body || "",
+            cta: v.cta || "",
+            hashtags: Array.isArray(v.hashtags) ? v.hashtags.join(", ") : (v.hashtags || ""),
+        });
+        setEditingIndex(index);
+    }
+
+    function applyEdit() {
+        if (editingIndex === null) return;
+        const updated: Variant = {
+            headline: draft.headline,
+            body: draft.body,
+            cta: draft.cta || undefined,
+            hashtags: draft.hashtags ? draft.hashtags.split(",").map(h => h.trim()).filter(Boolean) : [],
+        };
+        const newVariants = variants.map((v, i) => i === editingIndex ? updated : v);
+        setVariants(newVariants);
+        // 선택된 variant이면 resultText도 갱신
+        if (selectedVariantIndex === editingIndex) {
+            setResultText(`${updated.headline}\n${updated.body}`);
+        }
+        // sessionStorage 갱신 (카드뉴스 반영)
+        sessionStorage.setItem("generationResult", JSON.stringify({
+            generation: { output: { variants: newVariants } }
+        }));
+        setEditingIndex(null);
+    }
+
     // sessionStorage에서 최신 생성 결과 읽기
 
     useEffect(() => {
@@ -271,44 +307,102 @@ export default function ResultPage() {
 
                     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                         {variants.map((variant, index) => (
-                            <button
+                            <div
                                 key={index}
-                                type="button"
-                                onClick={() => {
-                                    setSelectedVariantIndex(index);
-                                    sessionStorage.setItem("selectedVariantIndex", String(index));
-                                    const selected = variants[index];
-                                    if (selected) {
-                                        setResultText(`${selected.headline}\n${selected.body}`);
-                                    }
-                                }}
                                 style={{
-                                    textAlign: "left",
-                                    padding: 12,
                                     borderRadius: 10,
-                                    border:
-                                        selectedVariantIndex === index
-                                            ? "2px solid #111"
-                                            : "1px solid #ddd",
+                                    border: selectedVariantIndex === index ? "2px solid #111" : "1px solid #ddd",
                                     background: selectedVariantIndex === index ? "#f8f8f8" : "#fff",
-                                    cursor: "pointer",
+                                    overflow: "hidden",
                                 }}
                             >
-                                {variant.headline ? (
-                                    <>
-                                        <div style={{ fontWeight: 600, marginBottom: 6 }}>
-                                            {variant.headline}
+                                {editingIndex === index ? (
+                                    /* ── 편집 모드 ── */
+                                    <div style={{ padding: 14 }}>
+                                        <div style={{ marginBottom: 8 }}>
+                                            <div style={{ fontSize: 12, color: "#888", marginBottom: 4 }}>헤드라인</div>
+                                            <input
+                                                value={draft.headline}
+                                                onChange={e => setDraft(d => ({ ...d, headline: e.target.value }))}
+                                                style={{ width: "100%", padding: "8px 10px", border: "1px solid #ddd", borderRadius: 6, fontSize: 14, boxSizing: "border-box" }}
+                                            />
                                         </div>
-                                        <div style={{ fontSize: 14, color: "#666", lineHeight: 1.5, whiteSpace: "pre-wrap" }}>
-                                            {variant.body || ""}
+                                        <div style={{ marginBottom: 8 }}>
+                                            <div style={{ fontSize: 12, color: "#888", marginBottom: 4 }}>본문</div>
+                                            <textarea
+                                                value={draft.body}
+                                                onChange={e => setDraft(d => ({ ...d, body: e.target.value }))}
+                                                rows={4}
+                                                style={{ width: "100%", padding: "8px 10px", border: "1px solid #ddd", borderRadius: 6, fontSize: 14, resize: "vertical", boxSizing: "border-box" }}
+                                            />
                                         </div>
-                                    </>
+                                        <div style={{ marginBottom: 8 }}>
+                                            <div style={{ fontSize: 12, color: "#888", marginBottom: 4 }}>CTA (선택)</div>
+                                            <input
+                                                value={draft.cta}
+                                                onChange={e => setDraft(d => ({ ...d, cta: e.target.value }))}
+                                                placeholder="예) 지금 방문하기"
+                                                style={{ width: "100%", padding: "8px 10px", border: "1px solid #ddd", borderRadius: 6, fontSize: 14, boxSizing: "border-box" }}
+                                            />
+                                        </div>
+                                        <div style={{ marginBottom: 12 }}>
+                                            <div style={{ fontSize: 12, color: "#888", marginBottom: 4 }}>해시태그 (쉼표로 구분, 선택)</div>
+                                            <input
+                                                value={draft.hashtags}
+                                                onChange={e => setDraft(d => ({ ...d, hashtags: e.target.value }))}
+                                                placeholder="예) #맛집, #용인, #가족외식"
+                                                style={{ width: "100%", padding: "8px 10px", border: "1px solid #ddd", borderRadius: 6, fontSize: 14, boxSizing: "border-box" }}
+                                            />
+                                        </div>
+                                        <div style={{ display: "flex", gap: 8 }}>
+                                            <button
+                                                type="button"
+                                                onClick={applyEdit}
+                                                style={{ flex: 1, padding: "9px 0", background: "#1a1a1a", color: "#fff", border: "none", borderRadius: 7, fontSize: 14, fontWeight: 600, cursor: "pointer" }}
+                                            >
+                                                적용
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => setEditingIndex(null)}
+                                                style={{ flex: 1, padding: "9px 0", background: "#fff", color: "#555", border: "1px solid #ddd", borderRadius: 7, fontSize: 14, cursor: "pointer" }}
+                                            >
+                                                취소
+                                            </button>
+                                        </div>
+                                    </div>
                                 ) : (
-                                    <div style={{ fontSize: 15, color: "#333", lineHeight: 1.6, whiteSpace: "pre-wrap", fontWeight: 500 }}>
-                                        {variant.body || `카피 ${index + 1}`}
+                                    /* ── 보기 모드 ── */
+                                    <div style={{ display: "flex", alignItems: "flex-start" }}>
+                                        <div
+                                            onClick={() => {
+                                                setSelectedVariantIndex(index);
+                                                sessionStorage.setItem("selectedVariantIndex", String(index));
+                                                setResultText(`${variant.headline || ""}\n${variant.body || ""}`);
+                                            }}
+                                            style={{ flex: 1, padding: 12, cursor: "pointer", minWidth: 0 }}
+                                        >
+                                            {variant.headline ? (
+                                                <>
+                                                    <div style={{ fontWeight: 600, marginBottom: 6 }}>{variant.headline}</div>
+                                                    <div style={{ fontSize: 14, color: "#666", lineHeight: 1.5, whiteSpace: "pre-wrap" }}>{variant.body || ""}</div>
+                                                </>
+                                            ) : (
+                                                <div style={{ fontSize: 15, color: "#333", lineHeight: 1.6, whiteSpace: "pre-wrap", fontWeight: 500 }}>
+                                                    {variant.body || `카피 ${index + 1}`}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => startEdit(index)}
+                                            style={{ flexShrink: 0, margin: "10px 10px 0 0", padding: "4px 10px", border: "1px solid #ddd", borderRadius: 6, background: "#fff", color: "#555", fontSize: 12, cursor: "pointer" }}
+                                        >
+                                            편집
+                                        </button>
                                     </div>
                                 )}
-                            </button>
+                            </div>
                         ))}
                     </div>
                 </div>
