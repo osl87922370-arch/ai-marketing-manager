@@ -38,6 +38,26 @@ ANALYZE_REVIEW_LIMIT = 30  # GPT에 보낼 최대 리뷰 수
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
+@router.delete("/history/{analysis_id}", status_code=204)
+def delete_review_analysis(
+    analysis_id: str,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    row = (
+        db.query(ReviewAnalysis)
+        .filter(
+            ReviewAnalysis.id == analysis_id,
+            ReviewAnalysis.user_id == str(current_user.id),
+        )
+        .first()
+    )
+    if not row:
+        raise HTTPException(status_code=404, detail="분석 기록을 찾을 수 없습니다.")
+    db.delete(row)
+    db.commit()
+
+
 @router.get("/history", response_model=List[ReviewAnalysisOut])
 def list_review_history(
     db: Session = Depends(get_db),

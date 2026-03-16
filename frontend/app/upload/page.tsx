@@ -132,10 +132,24 @@ export default function UploadPage() {
     const [historyLoading, setHistoryLoading] = useState(false);
     const [historyError, setHistoryError] = useState<string | null>(null);
     const [expandedId, setExpandedId] = useState<string | null>(null);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
 
     useEffect(() => {
         if (tab === "history") fetchHistory();
     }, [tab]);
+
+    async function deleteHistory(id: string) {
+        if (!window.confirm("삭제 후 목록에서 보이지 않습니다. 계속하시겠습니까?")) return;
+        setDeletingId(id);
+        try {
+            await apiFetch(`/reviews/history/${id}`, { method: "DELETE" });
+            setHistoryItems((prev) => prev.filter((item) => item.id !== id));
+        } catch (e: any) {
+            setHistoryError(e.message || "삭제에 실패했습니다.");
+        } finally {
+            setDeletingId(null);
+        }
+    }
 
     async function fetchHistory() {
         setHistoryLoading(true);
@@ -323,12 +337,21 @@ export default function UploadPage() {
                                         )}
                                     </div>
                                 </div>
-                                <button
-                                    onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}
-                                    style={{ padding: "6px 14px", border: "1px solid #ddd", borderRadius: 6, cursor: "pointer", fontSize: 13, background: "#fff" }}
-                                >
-                                    {expandedId === item.id ? "접기" : "결과 보기"}
-                                </button>
+                                <div style={{ display: "flex", gap: 8 }}>
+                                    <button
+                                        onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}
+                                        style={{ padding: "6px 14px", border: "1px solid #ddd", borderRadius: 6, cursor: "pointer", fontSize: 13, background: "#fff" }}
+                                    >
+                                        {expandedId === item.id ? "접기" : "결과 보기"}
+                                    </button>
+                                    <button
+                                        onClick={() => deleteHistory(item.id)}
+                                        disabled={deletingId === item.id}
+                                        style={{ padding: "6px 14px", border: "1px solid #fcc", borderRadius: 6, cursor: deletingId === item.id ? "not-allowed" : "pointer", fontSize: 13, background: "#fff", color: "#c00", opacity: deletingId === item.id ? 0.5 : 1 }}
+                                    >
+                                        {deletingId === item.id ? "삭제 중..." : "삭제"}
+                                    </button>
+                                </div>
                             </div>
 
                             {/* 키워드 미리보기 */}
