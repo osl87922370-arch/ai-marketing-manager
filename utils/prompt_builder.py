@@ -7,15 +7,55 @@ TONE_MAP = {
     "하드셀": "강렬하고 구매를 직접 촉구하는 말투",
 }
 
+CHANNEL_GUIDE = {
+    "instagram": {
+        "name": "인스타그램",
+        "guide": "헤드라인 15자 이내, 본문 50~80자, 해시태그 3~5개 필수",
+        "headline_len": "15자 이내",
+        "body_len": "50~80자",
+        "hashtags": True,
+    },
+    "blog": {
+        "name": "블로그",
+        "guide": "헤드라인 30자 이내, 본문 150~250자로 풍부하게, 해시태그 불필요",
+        "headline_len": "30자 이내",
+        "body_len": "150~250자",
+        "hashtags": False,
+    },
+    "sms": {
+        "name": "문자/SMS",
+        "guide": "헤드라인 없이 본문만 40자 이내로 간결하게, CTA 필수, 해시태그 없음",
+        "headline_len": "10자 이내 (생략 가능)",
+        "body_len": "40자 이내 (간결하게)",
+        "hashtags": False,
+    },
+    "naver": {
+        "name": "네이버 플레이스",
+        "guide": "헤드라인 20자 이내, 본문 80~120자, 방문 유도·리뷰 강조, 해시태그 2~3개",
+        "headline_len": "20자 이내",
+        "body_len": "80~120자",
+        "hashtags": True,
+    },
+}
+
 
 def build_prompt(payload: GenerateRequest) -> str:
     tone_desc = TONE_MAP.get(payload.input.get("tone", "친근"), "친근하고 따뜻한 말투")
     product_desc = payload.input.get("product_desc") or payload.product_name or ""
     variant_count = payload.params.variant_count
 
+    channel_key = (payload.channel or "instagram").lower()
+    ch = CHANNEL_GUIDE.get(channel_key, CHANNEL_GUIDE["instagram"])
+
+    hashtag_instruction = (
+        f'"hashtags": ["{ch["name"]} 관련 해시태그1", "해시태그2", "해시태그3"]'
+        if ch["hashtags"]
+        else '"hashtags": []'
+    )
+
     return f"""당신은 SNS 마케팅 카피라이터입니다.
 
-아래 정보를 바탕으로 인스타그램 마케팅 카피를 {variant_count}가지 버전으로 작성해주세요.
+아래 정보를 바탕으로 [{ch["name"]}] 채널에 최적화된 마케팅 카피를 {variant_count}가지 버전으로 작성해주세요.
 
 [상품/서비스 설명]
 {product_desc}
@@ -23,8 +63,8 @@ def build_prompt(payload: GenerateRequest) -> str:
 [타겟]
 {payload.target}
 
-[채널]
-{payload.channel}
+[채널: {ch["name"]}]
+{ch["guide"]}
 
 [목표]
 {payload.goal}
@@ -38,10 +78,10 @@ def build_prompt(payload: GenerateRequest) -> str:
 {{
   "variants": [
     {{
-      "headline": "헤드라인 (15자 이내)",
-      "body": "본문 카피 (50-80자)",
+      "headline": "헤드라인 ({ch["headline_len"]})",
+      "body": "본문 카피 ({ch["body_len"]})",
       "cta": "행동 유도 문구 (10자 이내)",
-      "hashtags": ["해시태그1", "해시태그2", "해시태그3"]
+      {hashtag_instruction}
     }}
   ]
 }}"""

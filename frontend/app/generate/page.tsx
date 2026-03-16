@@ -15,6 +15,13 @@ const TONES = [
     { value: "하드셀", label: "하드셀", desc: "강렬한 구매 유도" },
 ];
 
+const CHANNELS = [
+    { value: "instagram", label: "인스타그램", desc: "짧은 카피 + 해시태그" },
+    { value: "blog", label: "블로그", desc: "풍부한 본문" },
+    { value: "sms", label: "문자/SMS", desc: "40자 이내 간결" },
+    { value: "naver", label: "네이버 플레이스", desc: "방문 유도·리뷰" },
+];
+
 export default function GeneratePage() {
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -28,6 +35,7 @@ export default function GeneratePage() {
     });
     const [target, setTarget] = useState(searchParams.get("target") || "");
     const [tone, setTone] = useState(searchParams.get("tone") || "친근");
+    const [channel, setChannel] = useState("instagram");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -76,13 +84,12 @@ export default function GeneratePage() {
             const data = await apiFetch("/ai/generate", {
                 method: "POST",
                 json: {
-                    task: "instagram_caption",
-                    userEmail: localStorage.getItem("user_email") ?? "",
+                    task: `${channel}_caption`,
                     input: {
                         product_desc: productDesc,
                         tone,
                     },
-                    channel: "instagram",
+                    channel,
                     goal: "방문 유도",
                     target,
                     product_name: productDesc,
@@ -157,6 +164,38 @@ export default function GeneratePage() {
                             value={target}
                             onChange={e => setTarget(e.target.value)}
                         />
+                    </CardContent>
+                </Card>
+
+                {/* 채널 선택 */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle style={{ fontSize: 15 }}>채널 선택</CardTitle>
+                        <p style={{ fontSize: 13, color: "#888", marginTop: 2 }}>어떤 플랫폼에 올릴 카피인지 선택하세요.</p>
+                    </CardHeader>
+                    <CardContent>
+                        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                            {CHANNELS.map(c => (
+                                <button
+                                    key={c.value}
+                                    type="button"
+                                    onClick={() => setChannel(c.value)}
+                                    style={{
+                                        padding: "10px 18px",
+                                        borderRadius: 10,
+                                        border: channel === c.value ? "2px solid #1a6fa8" : "1px solid #ddd",
+                                        background: channel === c.value ? "#e8f4fd" : "#fff",
+                                        color: channel === c.value ? "#1a6fa8" : "#333",
+                                        cursor: "pointer",
+                                        fontWeight: channel === c.value ? 700 : 400,
+                                        fontSize: 14,
+                                    }}
+                                >
+                                    <div>{c.label}</div>
+                                    <div style={{ fontSize: 11, opacity: 0.7, marginTop: 2 }}>{c.desc}</div>
+                                </button>
+                            ))}
+                        </div>
                     </CardContent>
                 </Card>
 
