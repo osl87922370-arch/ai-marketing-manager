@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/api";
 
 type SaveResponse = { id: number };
@@ -12,6 +12,7 @@ type Variant = {
     hashtags?: string[] | string;
 };
 export default function ResultPage() {
+    const router = useRouter();
     const searchParams = useSearchParams();
     const historyId = searchParams.get("id");
     const [productDesc, setProductDesc] = useState("");
@@ -231,6 +232,7 @@ export default function ResultPage() {
                                 type="button"
                                 onClick={() => {
                                     setSelectedVariantIndex(index);
+                                    sessionStorage.setItem("selectedVariantIndex", String(index));
                                     const selected = variants[index];
                                     if (selected) {
                                         setResultText(`${selected.headline}\n${selected.body}`);
@@ -272,7 +274,24 @@ export default function ResultPage() {
 
 
 
-            <div style={{ marginTop: 14, display: "flex", gap: 10 }}>
+            <div style={{ marginTop: 14, display: "flex", gap: 10, flexWrap: "wrap" }}>
+                <button
+                    onClick={() => router.push("/cardnews")}
+                    disabled={variants.length === 0}
+                    style={{
+                        padding: "10px 16px",
+                        borderRadius: 8,
+                        border: "none",
+                        background: "#1a1a1a",
+                        color: "#fff",
+                        cursor: variants.length > 0 ? "pointer" : "default",
+                        opacity: variants.length > 0 ? 1 : 0.4,
+                        fontWeight: 600,
+                        fontSize: 14,
+                    }}
+                >
+                    카드뉴스 만들기
+                </button>
                 <button
                     onClick={onCopy}
                     disabled={false}
