@@ -37,6 +37,13 @@ type HistoryResponse = {
     user_email?: string | null;
 };
 
+const CHANNEL_LABELS: Record<string, { label: string; color: string; bg: string }> = {
+    instagram: { label: "인스타그램", color: "#c13584", bg: "#fdf0f8" },
+    blog:      { label: "블로그",     color: "#03c75a", bg: "#f0fdf6" },
+    sms:       { label: "문자/SMS",   color: "#ff6b00", bg: "#fff4ee" },
+    naver:     { label: "네이버 플레이스", color: "#1ec800", bg: "#edfbf3" },
+};
+
 function formatDate(value?: string) {
     if (!value) return "";
 
@@ -86,6 +93,7 @@ export default function HistoryPage() {
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [copiedId, setCopiedId] = useState<string | null>(null);
     const [query, setQuery] = useState("");
+    const [channelFilter, setChannelFilter] = useState<string>("all");
 
     useEffect(() => {
         async function fetchData() {
@@ -105,9 +113,11 @@ export default function HistoryPage() {
         fetchData();
     }, []);
 
-    const filtered = items.filter((item) =>
-        (item.headline || "").toLowerCase().includes(query.toLowerCase())
-    );
+    const filtered = items.filter((item) => {
+        const matchesQuery = (item.headline || "").toLowerCase().includes(query.toLowerCase());
+        const matchesChannel = channelFilter === "all" || item.input_json?.channel === channelFilter;
+        return matchesQuery && matchesChannel;
+    });
 
     return (
         <div style={{ padding: 40, maxWidth: 900 }}>
@@ -144,6 +154,35 @@ export default function HistoryPage() {
                         fontSize: 14,
                     }}
                 />
+            </div>
+
+            {/* 채널 필터 */}
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
+                {[
+                    { key: "all", label: "전체" },
+                    { key: "instagram", label: "인스타그램" },
+                    { key: "blog", label: "블로그" },
+                    { key: "sms", label: "문자/SMS" },
+                    { key: "naver", label: "네이버 플레이스" },
+                ].map(({ key, label }) => (
+                    <button
+                        key={key}
+                        type="button"
+                        onClick={() => setChannelFilter(key)}
+                        style={{
+                            padding: "6px 14px",
+                            borderRadius: 20,
+                            border: channelFilter === key ? "2px solid #1a1a1a" : "1px solid #ddd",
+                            background: channelFilter === key ? "#1a1a1a" : "#fff",
+                            color: channelFilter === key ? "#fff" : "#555",
+                            fontSize: 13,
+                            fontWeight: channelFilter === key ? 600 : 400,
+                            cursor: "pointer",
+                        }}
+                    >
+                        {label}
+                    </button>
+                ))}
             </div>
 
             {/* ===== 로딩 ===== */}
@@ -240,9 +279,19 @@ export default function HistoryPage() {
                                     </button>
                                 </div>
                             </div>
-                            {/* 상품/타겟 태그 */}
-                            {(x.input_json?.product_name || x.input_json?.target || x.input_json?.tone) && (
+                            {/* 상품/타겟/채널 태그 */}
+                            {(x.input_json?.product_name || x.input_json?.target || x.input_json?.tone || x.input_json?.channel) && (
                                 <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
+                                    {x.input_json?.channel && CHANNEL_LABELS[x.input_json.channel] && (
+                                        <span style={{
+                                            fontSize: 12, fontWeight: 600, borderRadius: 20, padding: "2px 10px",
+                                            background: CHANNEL_LABELS[x.input_json.channel].bg,
+                                            color: CHANNEL_LABELS[x.input_json.channel].color,
+                                            border: `1px solid ${CHANNEL_LABELS[x.input_json.channel].color}44`,
+                                        }}>
+                                            {CHANNEL_LABELS[x.input_json.channel].label}
+                                        </span>
+                                    )}
                                     {x.input_json?.product_name && (
                                         <span style={{ fontSize: 12, background: "#f0f0f0", borderRadius: 4, padding: "2px 8px", color: "#555" }}>
                                             {x.input_json.product_name}

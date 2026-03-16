@@ -75,6 +75,7 @@ async def request_id_middleware(request: Request, call_next):
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     request_id = _get_request_id(request)
+    print(f"[VALIDATION ERROR] {exc.errors()}")
     field_errors = [
         FieldError(field=".".join(map(str, err["loc"])), reason=err["msg"])
         for err in exc.errors()

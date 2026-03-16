@@ -39,6 +39,18 @@ export default function GeneratePage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    // localStorage에서 이전 입력값 복원 (search params 없을 때만)
+    useEffect(() => {
+        const hasSearchParams = searchParams.get("keywords") || searchParams.get("hint") || searchParams.get("target") || reuseId;
+        if (hasSearchParams) return;
+        const savedProduct = localStorage.getItem("product");
+        const savedTarget = localStorage.getItem("target");
+        const savedTone = localStorage.getItem("tone");
+        if (savedProduct) setProductDesc(savedProduct);
+        if (savedTarget) setTarget(savedTarget);
+        if (savedTone) setTone(savedTone);
+    }, []);
+
     useEffect(() => {
         if (!reuseId) return;
 
@@ -101,6 +113,7 @@ export default function GeneratePage() {
             localStorage.setItem("target", target);
             localStorage.setItem("tone", tone);
             localStorage.setItem("product", productDesc);
+            localStorage.setItem("channel", channel);
             router.push("/result");
         } catch (e: any) {
             setError(e?.message || "생성 중 오류가 발생했습니다.");

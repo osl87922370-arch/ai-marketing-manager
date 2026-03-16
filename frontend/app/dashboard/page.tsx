@@ -5,13 +5,21 @@ import { useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/api";
 import { FileText, Clock, Upload } from "lucide-react";
 
-type RecentGen = { id: string; headline: string | null; created_at: string | null };
+type RecentGen = { id: string; headline: string | null; channel?: string | null; created_at: string | null };
 type LastAnalysis = { filename: string | null; total: number | null; target_suggestion: string | null; created_at: string | null };
 type DashboardData = {
     total_generations: number;
     total_analyses: number;
+    channel_stats: Record<string, number>;
     recent_generations: RecentGen[];
     last_analysis: LastAnalysis | null;
+};
+
+const CHANNEL_LABELS: Record<string, { label: string; color: string; bg: string }> = {
+    instagram: { label: "인스타그램", color: "#c13584", bg: "#fdf0f8" },
+    blog:      { label: "블로그",     color: "#03c75a", bg: "#f0fdf6" },
+    sms:       { label: "문자/SMS",   color: "#ff6b00", bg: "#fff4ee" },
+    naver:     { label: "네이버 플레이스", color: "#1ec800", bg: "#edfbf3" },
 };
 
 function formatDate(value?: string | null) {
@@ -60,6 +68,27 @@ export default function DashboardPage() {
                 />
             </div>
 
+            {/* 채널별 통계 */}
+            {data?.channel_stats && Object.keys(data.channel_stats).length > 0 && (
+                <div style={{ border: "1px solid #eee", borderRadius: 10, padding: 20, marginBottom: 20 }}>
+                    <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 14 }}>채널별 생성 현황</div>
+                    <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                        {Object.entries(data.channel_stats).map(([ch, count]) => {
+                            const info = CHANNEL_LABELS[ch] ?? { label: ch, color: "#888", bg: "#f5f5f5" };
+                            return (
+                                <div key={ch} style={{
+                                    background: info.bg, borderRadius: 10, padding: "12px 18px",
+                                    border: `1px solid ${info.color}33`, minWidth: 100, textAlign: "center",
+                                }}>
+                                    <div style={{ fontSize: 22, fontWeight: 700, color: info.color }}>{count}</div>
+                                    <div style={{ fontSize: 12, color: info.color, marginTop: 2 }}>{info.label}</div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
+
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
                 {/* 최근 생성 히스토리 */}
                 <div style={{ border: "1px solid #eee", borderRadius: 10, padding: 20 }}>
@@ -82,8 +111,19 @@ export default function DashboardPage() {
                                     onClick={() => router.push(`/result?id=${g.id}`)}
                                     style={{ cursor: "pointer", padding: "10px 12px", borderRadius: 8, background: "#fafafa", border: "1px solid #f0f0f0" }}
                                 >
-                                    <div style={{ fontWeight: 500, fontSize: 14, marginBottom: 3 }}>
-                                        {g.headline || "(제목 없음)"}
+                                    <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 3 }}>
+                                        {g.channel && CHANNEL_LABELS[g.channel] && (
+                                            <span style={{
+                                                fontSize: 11, fontWeight: 600, padding: "1px 7px", borderRadius: 20,
+                                                background: CHANNEL_LABELS[g.channel].bg,
+                                                color: CHANNEL_LABELS[g.channel].color,
+                                            }}>
+                                                {CHANNEL_LABELS[g.channel].label}
+                                            </span>
+                                        )}
+                                        <span style={{ fontWeight: 500, fontSize: 14 }}>
+                                            {g.headline || "(제목 없음)"}
+                                        </span>
                                     </div>
                                     <div style={{ fontSize: 12, color: "#aaa", display: "flex", alignItems: "center", gap: 4 }}>
                                         <Clock size={11} /> {formatDate(g.created_at)}

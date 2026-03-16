@@ -40,13 +40,26 @@ def get_dashboard(
         .first()
     )
 
+    # 채널별 생성 수 (input_json.channel 기준)
+    all_gens = (
+        db.query(Generation.input_json)
+        .filter(Generation.user_id == user_id)
+        .all()
+    )
+    channel_stats: dict = {}
+    for (input_json,) in all_gens:
+        ch = (input_json or {}).get("channel", "unknown")
+        channel_stats[ch] = channel_stats.get(ch, 0) + 1
+
     return {
         "total_generations": total_generations,
         "total_analyses": total_analyses,
+        "channel_stats": channel_stats,
         "recent_generations": [
             {
                 "id": str(r.id),
                 "headline": r.headline,
+                "channel": (r.input_json or {}).get("channel"),
                 "created_at": r.created_at.isoformat() if r.created_at else None,
             }
             for r in recent_generations

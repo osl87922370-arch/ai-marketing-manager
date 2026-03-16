@@ -66,11 +66,13 @@ export async function apiFetch<T>(
     if (!res.ok) {
         // 백엔드가 JSON 에러를 주면 그걸 우선
         if (maybeJson && typeof maybeJson === "object") {
+            const errorObj = (maybeJson as any).error;
+            const fieldErrors: Array<{field: string; reason: string}> = errorObj?.details?.field_errors ?? [];
+            const fieldMsg = fieldErrors.length > 0
+                ? " [" + fieldErrors.map((f: {field: string; reason: string}) => `${f.field}: ${f.reason}`).join(", ") + "]"
+                : "";
             const msg =
-                (maybeJson as any).error?.message ||
-                (maybeJson as any).message ||
-                text ||
-                `HTTP ${res.status}`;
+                (errorObj?.message || (maybeJson as any).message || text || `HTTP ${res.status}`) + fieldMsg;
             throw new Error(msg);
         }
         throw new Error(text || `HTTP ${res.status}`);

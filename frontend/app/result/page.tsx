@@ -5,6 +5,13 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/api";
 
 type SaveResponse = { id: number };
+
+const CHANNEL_LABELS: Record<string, { label: string; color: string; bg: string }> = {
+    instagram: { label: "인스타그램", color: "#c13584", bg: "#fdf0f8" },
+    blog:      { label: "블로그",     color: "#03c75a", bg: "#f0fdf6" },
+    sms:       { label: "문자/SMS",   color: "#ff6b00", bg: "#fff4ee" },
+    naver:     { label: "네이버 플레이스", color: "#03c75a", bg: "#edfbf3" },
+};
 type Variant = {
     headline?: string;
     body?: string;
@@ -18,6 +25,7 @@ export default function ResultPage() {
     const [productDesc, setProductDesc] = useState("");
     const [target, setTarget] = useState("");
     const [tone, setTone] = useState("");
+    const [channel, setChannel] = useState("");
     const [resultText, setResultText] = useState("");
     const [variants, setVariants] = useState<Variant[]>([]);
     const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
@@ -123,6 +131,7 @@ export default function ResultPage() {
                     );
                     setTarget(input?.target || nestedInput?.target || "");
                     setTone(nestedInput?.tone || input?.tone || "");
+                    setChannel(input?.channel || "");
                     setResultText(text);
                     return;
                 } catch (e: any) {
@@ -137,6 +146,7 @@ export default function ResultPage() {
             let p = localStorage.getItem("product") || "";
             let t = localStorage.getItem("target") || "";
             let toneVal = localStorage.getItem("tone") || "";
+            let channelVal = localStorage.getItem("channel") || "";
             try {
                 const parsed = raw ? JSON.parse(raw) : null;
                 console.log("parsed result:", parsed);
@@ -172,6 +182,7 @@ export default function ResultPage() {
             setProductDesc(p);
             setTarget(t);
             setTone(toneVal);
+            setChannel(channelVal);
         }
 
         loadResult();
@@ -231,6 +242,18 @@ export default function ResultPage() {
         <div style={{ padding: 40, maxWidth: 900 }}>
             <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 18 }}>결과</h1>
 
+            {channel && CHANNEL_LABELS[channel] && (
+                <div style={{ marginBottom: 12 }}>
+                    <span style={{
+                        fontSize: 12, fontWeight: 600, padding: "3px 10px", borderRadius: 20,
+                        background: CHANNEL_LABELS[channel].bg,
+                        color: CHANNEL_LABELS[channel].color,
+                        border: `1px solid ${CHANNEL_LABELS[channel].color}33`,
+                    }}>
+                        {CHANNEL_LABELS[channel].label}
+                    </span>
+                </div>
+            )}
             <div style={{ marginBottom: 8 }}>
                 <b>타겟:</b> {target || <span style={{ color: "#888" }}>(비어있음)</span>}
             </div>
@@ -271,20 +294,20 @@ export default function ResultPage() {
                                     cursor: "pointer",
                                 }}
                             >
-                                <div style={{ fontWeight: 600, marginBottom: 6 }}>
-                                    {variant.headline || `카피 ${index + 1}`}
-                                </div>
-
-                                <div
-                                    style={{
-                                        fontSize: 14,
-                                        color: "#666",
-                                        lineHeight: 1.5,
-                                        whiteSpace: "pre-wrap",
-                                    }}
-                                >
-                                    {variant.body || ""}
-                                </div>
+                                {variant.headline ? (
+                                    <>
+                                        <div style={{ fontWeight: 600, marginBottom: 6 }}>
+                                            {variant.headline}
+                                        </div>
+                                        <div style={{ fontSize: 14, color: "#666", lineHeight: 1.5, whiteSpace: "pre-wrap" }}>
+                                            {variant.body || ""}
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div style={{ fontSize: 15, color: "#333", lineHeight: 1.6, whiteSpace: "pre-wrap", fontWeight: 500 }}>
+                                        {variant.body || `카피 ${index + 1}`}
+                                    </div>
+                                )}
                             </button>
                         ))}
                     </div>

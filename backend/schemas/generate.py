@@ -16,7 +16,7 @@ class GenerateParams(BaseModel):
 
 class GenerateRequest(BaseModel):
     task: str
-    userEmail: str
+    userEmail: Optional[str] = None
     input: Dict[str, Any]
 
     target: str
