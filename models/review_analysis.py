@@ -24,5 +24,7 @@ class ReviewAnalysis(Base):
     strength = Column(String, nullable=True)
     weakness = Column(String, nullable=True)
     copy_hint = Column(String, nullable=True)
+    source_type = Column(String, nullable=True, default="excel")  # "excel" | "image"
+    image_insights = Column(JSON, nullable=True)  # 이미지 분석 전용 필드
 
     created_at = Column(DateTime, default=datetime.utcnow)
