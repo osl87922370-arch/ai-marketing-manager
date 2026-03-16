@@ -8,8 +8,10 @@ python-dotenv>=1.0
 psycopg2-binary
 
 python-jose[cryptography]
+PyJWT
 passlib[bcrypt]
 pydantic[email]
+openai
 
 pillow
 numpy
