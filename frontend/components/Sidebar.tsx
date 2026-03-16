@@ -11,6 +11,7 @@ export default function Sidebar() {
     { href: "/history", label: "History" },
     { href: "/result", label: "Result" },
     { href: "/upload", label: "Upload" },
+    { href: "/cardnews", label: "Card News" },
   ];
 
   return (

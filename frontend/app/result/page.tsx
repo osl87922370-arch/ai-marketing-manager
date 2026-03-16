@@ -36,11 +36,7 @@ export default function ResultPage() {
                 try {
                     setError(null);
 
-                    const data = await apiFetch(`/api/history/${historyId}`, {
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem("access_token") ?? ""}`,
-                        },
-                    });
+                    const data = await apiFetch(`/ai/history/${historyId}`);
 
 
                     const detail = data as any;
@@ -66,13 +62,39 @@ export default function ResultPage() {
 
 
 
-                    const first =
+                    // variants 배열 구성 (히스토리 모드에서도 카피 선택 가능하게)
+                    const loadedVariants: Variant[] =
                         (output?.variants && output.variants.length > 0
-                            ? output.variants[0]
+                            ? output.variants
                             : null) ||
                         (detail?.variants && detail.variants.length > 0
-                            ? detail.variants[0]
-                            : null);
+                            ? detail.variants
+                            : null) ||
+                        [];
+
+                    // variants 없으면 개별 필드로 단일 항목 구성
+                    if (loadedVariants.length === 0 && (detail?.headline || detail?.body)) {
+                        loadedVariants.push({
+                            headline: detail.headline,
+                            body: detail.body,
+                            cta: detail.cta,
+                            hashtags: detail.hashtags,
+                        });
+                    }
+
+                    setVariants(loadedVariants);
+                    setSelectedVariantIndex(0);
+
+                    // 카드뉴스 페이지가 sessionStorage를 읽으므로 여기도 저장
+                    if (loadedVariants.length > 0) {
+                        sessionStorage.setItem(
+                            "generationResult",
+                            JSON.stringify({ generation: { output: { variants: loadedVariants } } })
+                        );
+                        sessionStorage.setItem("selectedVariantIndex", "0");
+                    }
+
+                    const first = loadedVariants[0] ?? null;
 
                     const hashtagsText = Array.isArray(first?.hashtags)
                         ? first.hashtags.join(" ")
@@ -81,7 +103,6 @@ export default function ResultPage() {
                     const text =
                         output?.result_text ||
                         detail?.result_text ||
-                        detail?.headline ||
                         (first
                             ? [
                                 first.headline || "",
@@ -306,23 +327,25 @@ export default function ResultPage() {
                 </button>
 
 
-                <button
-                    onClick={onSave}
-                    disabled={!canSave || saving || !!savedId}
-                    style={{
-                        padding: "10px 14px",
-                        borderRadius: 8,
-                        border: "1px solid #ddd",
-                        cursor: canSave && !saving && !savedId ? "pointer" : "default",
-                        opacity: canSave && !saving && !savedId ? 1 : 0.5,
-                    }}
-                >
-                    {savedId
-                        ? "저장 완료"
-                        : saving
-                            ? "저장 중..."
-                            : "저장"}
-                </button>
+                {!historyId && (
+                    <button
+                        onClick={onSave}
+                        disabled={!canSave || saving || !!savedId}
+                        style={{
+                            padding: "10px 14px",
+                            borderRadius: 8,
+                            border: "1px solid #ddd",
+                            cursor: canSave && !saving && !savedId ? "pointer" : "default",
+                            opacity: canSave && !saving && !savedId ? 1 : 0.5,
+                        }}
+                    >
+                        {savedId
+                            ? "저장 완료"
+                            : saving
+                                ? "저장 중..."
+                                : "저장"}
+                    </button>
+                )}
             </div>
 
 

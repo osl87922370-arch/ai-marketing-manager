@@ -18,12 +18,36 @@ const THEMES = [
     { label: "오렌지", bg: "#fff3e0", text: "#3e2723", accent: "#e65100", sub: "#555555" },
 ];
 
+const KOREAN_FONT = "'Noto Sans KR', Arial, sans-serif";
+const KOREAN_FONT_BOLD = "bold 'Noto Sans KR', Arial, sans-serif";
+
+async function loadKoreanFont(): Promise<void> {
+    if (document.fonts.check("12px 'Noto Sans KR'")) return;
+    try {
+        const font = new FontFace(
+            "Noto Sans KR",
+            "url(https://fonts.gstatic.com/s/notosanskr/v36/PbyxFmXiEBPT4ITbgNA5Cgms3VYcOA-vvnIzzuoyeLTq8H4hfeE.woff2) format('woff2')",
+            { weight: "400 700" }
+        );
+        const loaded = await font.load();
+        document.fonts.add(loaded);
+        await document.fonts.ready;
+    } catch {
+        // 폰트 로드 실패 시 기본 폰트 사용
+    }
+}
+
 export default function CardNewsPage() {
     const router = useRouter();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [variant, setVariant] = useState<Variant | null>(null);
     const [themeIndex, setThemeIndex] = useState(0);
     const [downloading, setDownloading] = useState(false);
+    const [fontReady, setFontReady] = useState(false);
+
+    useEffect(() => {
+        loadKoreanFont().then(() => setFontReady(true));
+    }, []);
 
     useEffect(() => {
         const raw = sessionStorage.getItem("generationResult");
@@ -37,8 +61,8 @@ export default function CardNewsPage() {
     }, [router]);
 
     useEffect(() => {
-        if (variant) drawCanvas();
-    }, [variant, themeIndex]);
+        if (variant && fontReady) drawCanvas();
+    }, [variant, themeIndex, fontReady]);
 
     function getHashtags(): string {
         if (!variant?.hashtags) return "";
@@ -75,7 +99,7 @@ export default function CardNewsPage() {
 
         // 브랜드 로고
         ctx.fillStyle = theme.accent;
-        ctx.font = "bold 28px Arial";
+        ctx.font = `bold 28px ${KOREAN_FONT}`;
         ctx.fillText("InsightFlow.ai", 60, 70);
 
         // 구분선
@@ -88,13 +112,13 @@ export default function CardNewsPage() {
 
         // Headline
         ctx.fillStyle = theme.text;
-        ctx.font = "bold 72px Arial";
+        ctx.font = `bold 72px ${KOREAN_FONT}`;
         const headline = variant.headline || "";
         wrapText(ctx, headline, 60, 200, size - 120, 90);
 
         // Body
         ctx.fillStyle = theme.sub;
-        ctx.font = "38px Arial";
+        ctx.font = `38px ${KOREAN_FONT}`;
         const body = variant.body || "";
         wrapText(ctx, body, 60, 420, size - 120, 52);
 
@@ -103,8 +127,8 @@ export default function CardNewsPage() {
             const ctaY = 680;
             ctx.fillStyle = theme.accent;
             roundRect(ctx, 60, ctaY, 380, 70, 12);
-            ctx.fillStyle = theme.bg.startsWith("linear") || theme.bg === "#1a1a2e" ? "#ffffff" : "#ffffff";
-            ctx.font = "bold 32px Arial";
+            ctx.fillStyle = "#ffffff";
+            ctx.font = `bold 32px ${KOREAN_FONT}`;
             ctx.fillText(`→ ${variant.cta}`, 80, ctaY + 46);
         }
 
@@ -112,13 +136,13 @@ export default function CardNewsPage() {
         const hashtags = getHashtags();
         if (hashtags) {
             ctx.fillStyle = theme.accent;
-            ctx.font = "28px Arial";
+            ctx.font = `28px ${KOREAN_FONT}`;
             wrapText(ctx, hashtags, 60, 800, size - 120, 40);
         }
 
         // 하단 워터마크
         ctx.fillStyle = theme.sub;
-        ctx.font = "24px Arial";
+        ctx.font = `24px ${KOREAN_FONT}`;
         ctx.fillText("AI 마케팅 카피 생성 by InsightFlow.ai", 60, size - 40);
     }
 
