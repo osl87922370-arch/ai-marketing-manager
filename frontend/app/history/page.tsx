@@ -8,10 +8,14 @@ type HistoryItem = {
     id: string;
     task?: string;
     headline?: string;
+    body?: string;
+    cta?: string;
+    hashtags?: string[] | null;
     created_at?: string;
     input_json?: {
         product_name?: string;
         target?: string;
+        tone?: string;
         channel?: string;
         goal?: string;
         input?: {
@@ -209,7 +213,8 @@ export default function HistoryPage() {
                                         type="button"
                                         onClick={async (e) => {
                                             e.stopPropagation();
-                                            await navigator.clipboard.writeText(x.headline || "");
+                                            const text = [x.headline, x.body, x.cta, ...(Array.isArray(x.hashtags) ? x.hashtags : [])].filter(Boolean).join("\n");
+                                            await navigator.clipboard.writeText(text);
                                             setCopiedId(x.id);
                                             setTimeout(() => setCopiedId(null), 1000);
                                         }}
@@ -234,20 +239,49 @@ export default function HistoryPage() {
                                     </button>
                                 </div>
                             </div>
-                            {/* 결과 텍스트 */}
+                            {/* 상품/타겟 태그 */}
+                            {(x.input_json?.product_name || x.input_json?.target || x.input_json?.tone) && (
+                                <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
+                                    {x.input_json?.product_name && (
+                                        <span style={{ fontSize: 12, background: "#f0f0f0", borderRadius: 4, padding: "2px 8px", color: "#555" }}>
+                                            {x.input_json.product_name}
+                                        </span>
+                                    )}
+                                    {x.input_json?.target && (
+                                        <span style={{ fontSize: 12, background: "#e8f4fd", borderRadius: 4, padding: "2px 8px", color: "#1a6fa8" }}>
+                                            {x.input_json.target}
+                                        </span>
+                                    )}
+                                    {x.input_json?.tone && (
+                                        <span style={{ fontSize: 12, background: "#f0faf0", borderRadius: 4, padding: "2px 8px", color: "#2d7a2d" }}>
+                                            {x.input_json.tone}
+                                        </span>
+                                    )}
+                                </div>
+                            )}
 
-                            <div
-                                style={{
-                                    width: "100%",
-                                    minHeight: 120,
-                                    padding: "10px",
-                                    border: "1px solid #ddd",
-                                    borderRadius: 6,
-                                    whiteSpace: "pre-wrap",
-                                    background: "#fafafa",
-                                }}
-                            >
-                                {x.headline || ""}
+                            {/* 카피 내용 */}
+                            <div style={{ background: "#fafafa", border: "1px solid #eee", borderRadius: 6, padding: 12 }}>
+                                {x.headline && (
+                                    <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 6 }}>
+                                        {x.headline}
+                                    </div>
+                                )}
+                                {x.body && (
+                                    <div style={{ fontSize: 14, color: "#444", marginBottom: 6, lineHeight: 1.6 }}>
+                                        {x.body}
+                                    </div>
+                                )}
+                                {x.cta && (
+                                    <div style={{ fontSize: 13, color: "#1a6fa8", fontWeight: 500, marginBottom: 6 }}>
+                                        → {x.cta}
+                                    </div>
+                                )}
+                                {x.hashtags && x.hashtags.length > 0 && (
+                                    <div style={{ fontSize: 12, color: "#888" }}>
+                                        {(Array.isArray(x.hashtags) ? x.hashtags : []).join(" ")}
+                                    </div>
+                                )}
                             </div>
 
 

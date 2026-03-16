@@ -31,6 +31,9 @@ def list_history(
             task=getattr(r, "task", None),
             input_json=r.input_json,
             headline=getattr(r, "headline", None),
+            body=getattr(r, "body", None),
+            cta=getattr(r, "cta", None),
+            hashtags=getattr(r, "hashtags", None),
             created_at=r.created_at,
         )
         for r in rows
@@ -56,6 +59,9 @@ def get_history_detail(
         task=getattr(r, "task", None),
         input_json=r.input_json,
         headline=getattr(r, "headline", None),
+        body=getattr(r, "body", None),
+        cta=getattr(r, "cta", None),
+        hashtags=getattr(r, "hashtags", None),
         created_at=r.created_at,
     )
 

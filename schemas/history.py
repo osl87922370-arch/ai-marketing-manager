@@ -12,6 +12,9 @@ class GenerationOut(BaseModel):
     task: Optional[str] = None
     input_json: Any
     headline: Optional[str] = None
+    body: Optional[str] = None
+    cta: Optional[str] = None
+    hashtags: Optional[Any] = None
     created_at: datetime
 
 

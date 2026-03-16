@@ -19,10 +19,15 @@ export default function GeneratePage() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const reuseId = searchParams.get("reuse");
+    const fromAnalysis = searchParams.get("target") || searchParams.get("hint");
 
-    const [productDesc, setProductDesc] = useState("");
-    const [target, setTarget] = useState("");
-    const [tone, setTone] = useState("친근");
+    const [productDesc, setProductDesc] = useState(() => {
+        const keywords = searchParams.get("keywords");
+        const hint = searchParams.get("hint");
+        return [hint, keywords ? `키워드: ${keywords}` : ""].filter(Boolean).join("\n");
+    });
+    const [target, setTarget] = useState(searchParams.get("target") || "");
+    const [tone, setTone] = useState(searchParams.get("tone") || "친근");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -105,6 +110,20 @@ export default function GeneratePage() {
                 <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 6 }}>카피 생성</h1>
                 <p style={{ color: "#666", fontSize: 15 }}>상품 정보를 입력하면 AI가 SNS 마케팅 카피 3가지를 작성합니다.</p>
             </div>
+
+            {fromAnalysis && (
+                <div style={{
+                    background: "#f0f9ff",
+                    border: "1px solid #b3d9f5",
+                    borderRadius: 8,
+                    padding: "12px 16px",
+                    marginBottom: 20,
+                    fontSize: 14,
+                    color: "#1a6fa8",
+                }}>
+                    리뷰 분석 결과가 자동으로 입력됐습니다. 내용을 수정하고 카피를 생성해보세요.
+                </div>
+            )}
 
             <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
                 {/* 상품 설명 */}
