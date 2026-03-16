@@ -1,15 +1,33 @@
 import json
 import os
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
 from openai import OpenAI
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from core.db import get_db
 from core.security import get_current_user
 from models.review_analysis import ReviewAnalysis
 from utils.excel_place_reviews import load_reviews_from_excel
+
+
+class ReviewAnalysisOut(BaseModel):
+    id: str
+    filename: Optional[str] = None
+    total: Optional[int] = None
+    ok: Optional[int] = None
+    fail: Optional[int] = None
+    positive_keywords: Optional[List[str]] = None
+    negative_keywords: Optional[List[str]] = None
+    target_suggestion: Optional[str] = None
+    tone_suggestion: Optional[str] = None
+    strength: Optional[str] = None
+    weakness: Optional[str] = None
+    copy_hint: Optional[str] = None
+    created_at: str
 
 router = APIRouter(prefix="/reviews", tags=["reviews"])
 
@@ -18,6 +36,38 @@ ERROR_SAMPLE_LIMIT = 20
 ANALYZE_REVIEW_LIMIT = 30  # GPT에 보낼 최대 리뷰 수
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+
+@router.get("/history", response_model=List[ReviewAnalysisOut])
+def list_review_history(
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user),
+):
+    rows = (
+        db.query(ReviewAnalysis)
+        .filter(ReviewAnalysis.user_id == str(current_user.id))
+        .order_by(ReviewAnalysis.created_at.desc())
+        .limit(50)
+        .all()
+    )
+    return [
+        ReviewAnalysisOut(
+            id=str(r.id),
+            filename=r.filename,
+            total=r.total,
+            ok=r.ok,
+            fail=r.fail,
+            positive_keywords=r.positive_keywords,
+            negative_keywords=r.negative_keywords,
+            target_suggestion=r.target_suggestion,
+            tone_suggestion=r.tone_suggestion,
+            strength=r.strength,
+            weakness=r.weakness,
+            copy_hint=r.copy_hint,
+            created_at=r.created_at.isoformat() if r.created_at else "",
+        )
+        for r in rows
+    ]
 
 
 @router.post("/upload")
