@@ -34,6 +34,7 @@ type HistoryItem = {
 
 type HistoryResponse = {
     items?: HistoryItem[];
+    next_cursor?: string | null;
     user_email?: string | null;
 };
 
@@ -89,6 +90,8 @@ export default function HistoryPage() {
     const userEmail = user?.email ?? null;
     const [items, setItems] = useState<HistoryItem[]>([]);
     const [loading, setLoading] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
+    const [nextCursor, setNextCursor] = useState<string | null>(null);
     const [err, setErr] = useState<string | null>(null);
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -99,19 +102,31 @@ export default function HistoryPage() {
         async function fetchData() {
             try {
                 setLoading(true);
-
-
-                const data = await apiFetch<HistoryResponse>("/ai/history");
+                const data = await apiFetch<HistoryResponse>("/ai/history?limit=20");
                 setItems(data.items || []);
+                setNextCursor(data.next_cursor || null);
             } catch (e: any) {
                 setErr(e.message || "에러 발생");
             } finally {
                 setLoading(false);
             }
         }
-
         fetchData();
     }, []);
+
+    async function loadMore() {
+        if (!nextCursor || loadingMore) return;
+        setLoadingMore(true);
+        try {
+            const data = await apiFetch<HistoryResponse>(`/ai/history?limit=20&cursor=${nextCursor}`);
+            setItems((prev) => [...prev, ...(data.items || [])]);
+            setNextCursor(data.next_cursor || null);
+        } catch (e: any) {
+            setErr(e.message || "에러 발생");
+        } finally {
+            setLoadingMore(false);
+        }
+    }
 
     const filtered = items.filter((item) => {
         const matchesQuery = (item.headline || "").toLowerCase().includes(query.toLowerCase());
@@ -337,6 +352,28 @@ export default function HistoryPage() {
 
                         </div>
                     ))}
+
+                    {/* 더 보기 버튼 */}
+                    {nextCursor && !query && channelFilter === "all" && (
+                        <div style={{ textAlign: "center", marginTop: 8 }}>
+                            <button
+                                type="button"
+                                onClick={loadMore}
+                                disabled={loadingMore}
+                                style={{
+                                    padding: "10px 32px",
+                                    border: "1px solid #ddd",
+                                    borderRadius: 8,
+                                    background: "#fff",
+                                    fontSize: 14,
+                                    cursor: loadingMore ? "default" : "pointer",
+                                    opacity: loadingMore ? 0.6 : 1,
+                                }}
+                            >
+                                {loadingMore ? "불러오는 중..." : "더 보기"}
+                            </button>
+                        </div>
+                    )}
                 </div>
             )}
         </div>
