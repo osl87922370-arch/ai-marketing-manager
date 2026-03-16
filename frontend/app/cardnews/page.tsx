@@ -40,7 +40,9 @@ async function loadKoreanFont(): Promise<void> {
 export default function CardNewsPage() {
     const router = useRouter();
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [variant, setVariant] = useState<Variant | null>(null);
+    const [variants, setVariants] = useState<Variant[]>([]);
+    const [variantIndex, setVariantIndex] = useState(0);
+    const variant = variants[variantIndex] ?? null;
     const [themeIndex, setThemeIndex] = useState(0);
     const [downloading, setDownloading] = useState(false);
     const [fontReady, setFontReady] = useState(false);
@@ -54,9 +56,11 @@ export default function CardNewsPage() {
         if (!raw) { router.replace("/generate"); return; }
         try {
             const parsed = JSON.parse(raw);
-            const variants = parsed?.generation?.output?.variants || [];
+            const loaded: Variant[] = parsed?.generation?.output?.variants || [];
+            if (loaded.length === 0) { router.replace("/generate"); return; }
             const selectedIndex = parseInt(sessionStorage.getItem("selectedVariantIndex") || "0", 10);
-            setVariant(variants[selectedIndex] || variants[0] || null);
+            setVariants(loaded);
+            setVariantIndex(Math.min(selectedIndex, loaded.length - 1));
         } catch { router.replace("/generate"); }
     }, [router]);
 
@@ -202,6 +206,38 @@ export default function CardNewsPage() {
                 </button>
                 <h1 style={{ margin: 0, fontSize: 24, fontWeight: 700 }}>카드뉴스 만들기</h1>
             </div>
+
+            {/* 카피 선택 (variant가 여러 개일 때만 표시) */}
+            {variants.length > 1 && (
+                <div style={{ marginBottom: 20 }}>
+                    <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 10 }}>카피 선택</div>
+                    <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                        {variants.map((v, i) => (
+                            <button
+                                key={i}
+                                onClick={() => setVariantIndex(i)}
+                                style={{
+                                    padding: "8px 16px",
+                                    borderRadius: 8,
+                                    border: variantIndex === i ? "2px solid #1a1a1a" : "1px solid #ddd",
+                                    background: variantIndex === i ? "#1a1a1a" : "#fff",
+                                    color: variantIndex === i ? "#fff" : "#555",
+                                    cursor: "pointer",
+                                    fontWeight: variantIndex === i ? 700 : 400,
+                                    fontSize: 13,
+                                }}
+                            >
+                                카피 {i + 1}
+                                {v.headline && (
+                                    <span style={{ marginLeft: 6, fontSize: 11, opacity: 0.75 }}>
+                                        {v.headline.slice(0, 10)}{v.headline.length > 10 ? "…" : ""}
+                                    </span>
+                                )}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* 테마 선택 */}
             <div style={{ marginBottom: 20 }}>
