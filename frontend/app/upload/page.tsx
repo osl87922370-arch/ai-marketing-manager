@@ -180,12 +180,16 @@ export default function UploadPage() {
     };
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const selected = Array.from(e.target.files || []).slice(0, 50);
-        setImageFiles(selected);
+        const newFiles = Array.from(e.target.files || []);
         setImageResult(null);
         setImageError(null);
-        const previews = selected.map((f) => URL.createObjectURL(f));
-        setImagePreviews(previews);
+        setImageFiles((prev) => {
+            const merged = [...prev, ...newFiles].slice(0, 50);
+            setImagePreviews(merged.map((f) => URL.createObjectURL(f)));
+            return merged;
+        });
+        // input 초기화 (같은 파일 재선택 가능하도록)
+        e.target.value = "";
     };
 
     const removeImage = (idx: number) => {
