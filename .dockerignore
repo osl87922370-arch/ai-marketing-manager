@@ -1,0 +1,17 @@
+frontend/
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.db
+*.log
+.git/
+.claude/
+node_modules/
+.next/
+기록/
+docs/
+archive/
+uploads/
+*.xlsx
+test_reviews.xlsx
