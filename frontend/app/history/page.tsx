@@ -212,14 +212,14 @@ export default function HistoryPage() {
             {!loading && !err && items.length === 0 && (
                 <div style={{ marginTop: 20 }}>저장된 히스토리가 없습니다.</div>
             )}
-            {!loading && !err && filtered.length === 0 && (
+            {!loading && !err && items.length > 0 && filtered.length === 0 && (
                 <div style={{ marginTop: 20, color: "#888" }}>
                     검색 결과가 없습니다.
                 </div>
             )}
 
             {/* ===== 리스트 ===== */}
-            {!loading && !err && filtered.length > 0 && (
+            {!loading && !err && items.length > 0 && (
                 <div style={{ marginTop: 20 }}>
                     {filtered.map((x) => (
                         <div
