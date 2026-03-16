@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 
 
@@ -171,12 +172,11 @@ export default function LoginPage() {
                     </div>
                 ) : null}
 
-                <div className="mt-6 text-xs text-slate-500 leading-relaxed">
-                    저장 확인: DevTools Console에서
-                    <div className="mt-2 font-mono text-[11px] bg-slate-50 border border-slate-200 rounded-lg p-2">
-                        localStorage.getItem("user_email"){"\n"}
-                        localStorage.getItem("access_token")
-                    </div>
+                <div className="mt-6 text-center text-sm text-slate-500">
+                    계정이 없으신가요?{" "}
+                    <Link href="/signup" className="text-blue-600 hover:underline font-medium">
+                        회원가입
+                    </Link>
                 </div>
             </div>
         </div>
