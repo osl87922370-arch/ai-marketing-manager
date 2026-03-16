@@ -1,0 +1,11 @@
+frontend/
+.venv/
+venv/
+__pycache__/
+*.db
+*.log
+.claude/
+기록/
+docs/
+archive/
+uploads/
