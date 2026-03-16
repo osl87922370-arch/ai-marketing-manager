@@ -102,7 +102,7 @@ export default function HistoryPage() {
         async function fetchData() {
             try {
                 setLoading(true);
-                const data = await apiFetch<HistoryResponse>("/ai/history?limit=20");
+                const data = await apiFetch<HistoryResponse>("/ai/history?limit=10");
                 setItems(data.items || []);
                 setNextCursor(data.next_cursor || null);
             } catch (e: any) {
@@ -118,7 +118,7 @@ export default function HistoryPage() {
         if (!nextCursor || loadingMore) return;
         setLoadingMore(true);
         try {
-            const data = await apiFetch<HistoryResponse>(`/ai/history?limit=20&cursor=${nextCursor}`);
+            const data = await apiFetch<HistoryResponse>(`/ai/history?limit=10&cursor=${encodeURIComponent(nextCursor)}`);
             setItems((prev) => [...prev, ...(data.items || [])]);
             setNextCursor(data.next_cursor || null);
         } catch (e: any) {
@@ -354,14 +354,16 @@ export default function HistoryPage() {
                     ))}
 
                     {/* 더 보기 버튼 */}
-                    {nextCursor && !query && channelFilter === "all" && (
-                        <div style={{ textAlign: "center", marginTop: 8 }}>
+                    {nextCursor && (
+                        <div style={{ textAlign: "center", marginTop: 16, paddingBottom: 8 }}>
                             <button
                                 type="button"
                                 onClick={loadMore}
                                 disabled={loadingMore}
                                 style={{
-                                    padding: "10px 32px",
+                                    padding: "12px 0",
+                                    width: "100%",
+                                    maxWidth: 360,
                                     border: "1px solid #ddd",
                                     borderRadius: 8,
                                     background: "#fff",
