@@ -14,6 +14,7 @@ class Generation(Base):
 
     task = Column(String, nullable=True)
     input_json = Column(JSON, nullable=True)
+    output_json = Column(JSON, nullable=True)
     headline = Column(String, nullable=True)
     body = Column(String, nullable=True)
     cta = Column(String, nullable=True)

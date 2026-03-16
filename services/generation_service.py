@@ -74,6 +74,7 @@ def build_generation_record(
         user_id=user_id,
         task=payload.task,
         input_json=payload.model_dump(),
+        output_json={"variants": [v.model_dump() for v in variants]},
         headline=variants[0].headline,
         body=variants[0].body,
         cta=variants[0].cta,

@@ -11,6 +11,7 @@ class GenerationOut(BaseModel):
     user_id: str
     task: Optional[str] = None
     input_json: Any
+    output_json: Optional[Any] = None
     headline: Optional[str] = None
     body: Optional[str] = None
     cta: Optional[str] = None

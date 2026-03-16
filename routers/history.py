@@ -58,6 +58,7 @@ def get_history_detail(
         user_id=str(r.user_id),
         task=getattr(r, "task", None),
         input_json=r.input_json,
+        output_json=getattr(r, "output_json", None),
         headline=getattr(r, "headline", None),
         body=getattr(r, "body", None),
         cta=getattr(r, "cta", None),
