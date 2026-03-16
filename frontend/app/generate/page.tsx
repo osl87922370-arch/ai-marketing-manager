@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { apiFetch } from "@/lib/api";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,7 @@ const CHANNELS = [
     { value: "naver", label: "네이버 플레이스", desc: "방문 유도·리뷰" },
 ];
 
-export default function GeneratePage() {
+function GeneratePageInner() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const reuseId = searchParams.get("reuse");
@@ -271,5 +271,13 @@ export default function GeneratePage() {
                 <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
             </div>
         </div>
+    );
+}
+
+export default function GeneratePage() {
+    return (
+        <Suspense>
+            <GeneratePageInner />
+        </Suspense>
     );
 }

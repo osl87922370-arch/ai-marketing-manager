@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/api";
 
@@ -18,7 +18,7 @@ type Variant = {
     cta?: string;
     hashtags?: string[] | string;
 };
-export default function ResultPage() {
+function ResultPageInner() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const historyId = searchParams.get("id");
@@ -472,6 +472,14 @@ export default function ResultPage() {
                 </div>
             )}
         </div>
+    );
+}
+
+export default function ResultPage() {
+    return (
+        <Suspense>
+            <ResultPageInner />
+        </Suspense>
     );
 }
 
