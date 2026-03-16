@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/api";
+import { useAuth } from "@/lib/auth-context";
 
 type HistoryItem = {
     id: string;
@@ -77,10 +78,11 @@ export default function HistoryPage() {
         setDeletingId(null);
         setItems((prev) => prev.filter((item) => item.id !== id));
     }
+    const { user } = useAuth();
+    const userEmail = user?.email ?? null;
     const [items, setItems] = useState<HistoryItem[]>([]);
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState<string | null>(null);
-    const [userEmail, setUserEmail] = useState<string | null>(null);
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [copiedId, setCopiedId] = useState<string | null>(null);
     const [query, setQuery] = useState("");
@@ -93,7 +95,6 @@ export default function HistoryPage() {
 
                 const data = await apiFetch<HistoryResponse>("/ai/history");
                 setItems(data.items || []);
-                setUserEmail(data.user_email || null);
             } catch (e: any) {
                 setErr(e.message || "에러 발생");
             } finally {

@@ -82,17 +82,7 @@ export default function LoginPage() {
                 return; // ✅ 여기서 끝
             }
 
-            const accessToken = data.session?.access_token;
-            const userEmail = data.session?.user?.email;
-
             console.log("✅ LOGIN SUCCESS");
-            console.log("session =", data.session);
-            console.log("access_token =", accessToken);
-
-            if (accessToken) {
-                localStorage.setItem("access_token", accessToken);
-                localStorage.setItem("user_email", userEmail ?? email.trim());
-            }
 
             setLoading(false);
             router.replace("/generate");

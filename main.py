@@ -18,6 +18,7 @@ import models.generation  # noqa: F401
 import models.result  # noqa: F401
 import models.place_insights  # noqa: F401
 import models.workflow_run  # noqa: F401
+import models.review_analysis  # noqa: F401
 
 from routers.generate import router as generate_router
 from routers.history import router as history_router

@@ -1,8 +1,11 @@
+import { supabase } from "./supabase";
+
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE || "http://127.0.0.1:8000";
 
-export function getToken() {
+export async function getToken(): Promise<string | null> {
     if (typeof window === "undefined") return null;
-    return localStorage.getItem("access_token");
+    const { data: { session } } = await supabase.auth.getSession();
+    return session?.access_token ?? null;
 }
 
 
@@ -18,7 +21,7 @@ export async function apiFetch<T>(
     options: RequestInit & { json?: unknown } = {}
 ): Promise<T> {
     const headers = new Headers(options.headers || {});
-    const token = getToken();
+    const token = await getToken();
     if (token) headers.set("Authorization", `Bearer ${token}`);
 
     // json 옵션을 주면 apiFetch가 body 구성까지 책임짐
@@ -48,8 +51,7 @@ export async function apiFetch<T>(
 
     if (res.status === 401) {
         if (typeof window !== "undefined") {
-            localStorage.removeItem("access_token");
-            localStorage.removeItem("user_email");
+            await supabase.auth.signOut();
             window.location.href = "/login";
         }
 

@@ -1,10 +1,14 @@
 import json
 import os
 
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, Depends, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
 from openai import OpenAI
+from sqlalchemy.orm import Session
 
+from core.db import get_db
+from core.security import get_current_user
+from models.review_analysis import ReviewAnalysis
 from utils.excel_place_reviews import load_reviews_from_excel
 
 router = APIRouter(prefix="/reviews", tags=["reviews"])
@@ -46,7 +50,11 @@ async def upload_reviews(file: UploadFile = File(...)):
 
 
 @router.post("/analyze")
-async def analyze_reviews(file: UploadFile = File(...)):
+async def analyze_reviews(
+    file: UploadFile = File(...),
+    current_user=Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
     """Excel 리뷰 업로드 → GPT-4o 감성분석 → 마케팅 인사이트 반환"""
     filename = file.filename or ""
     if not filename.lower().endswith(".xlsx"):
@@ -90,11 +98,30 @@ async def analyze_reviews(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=502, detail=f"GPT 분석 실패: {str(e)}")
 
+    meta = result["meta"]
+    db_record = ReviewAnalysis(
+        user_id=str(current_user.id),
+        filename=file.filename,
+        total=meta["total"],
+        ok=meta["ok"],
+        fail=meta["fail"],
+        positive_keywords=analysis.get("positive_keywords"),
+        negative_keywords=analysis.get("negative_keywords"),
+        target_suggestion=analysis.get("target_suggestion"),
+        tone_suggestion=analysis.get("tone_suggestion"),
+        strength=analysis.get("strength"),
+        weakness=analysis.get("weakness"),
+        copy_hint=analysis.get("copy_hint"),
+    )
+    db.add(db_record)
+    db.commit()
+
     return {
+        "id": db_record.id,
         "meta": {
-            "total": result["meta"]["total"],
-            "ok": result["meta"]["ok"],
-            "fail": result["meta"]["fail"],
+            "total": meta["total"],
+            "ok": meta["ok"],
+            "fail": meta["fail"],
         },
         "analysis": analysis,
     }

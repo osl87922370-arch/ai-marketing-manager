@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { UploadCloud, Loader2, FileSpreadsheet } from "lucide-react";
+import { apiFetch } from "@/lib/api";
 
 type Analysis = {
     positive_keywords: string[];
@@ -45,15 +46,10 @@ export default function UploadPage() {
         formData.append("file", file);
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/reviews/analyze`, {
+            const data = await apiFetch<AnalyzeResult>("/reviews/analyze", {
                 method: "POST",
                 body: formData,
             });
-            if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.detail || "분석 실패");
-            }
-            const data = await res.json();
             setResult(data);
         } catch (e: any) {
             setError(e.message || "분석 중 오류가 발생했습니다.");
