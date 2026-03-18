@@ -92,26 +92,48 @@ def load_reviews_from_excel(file_bytes: bytes, filename: Optional[str] = None) -
         codes = result["stats"]["codes"]
         codes[code] = int(codes.get(code, 0)) + 1
 
-    # 1) 워크북 로드 (bytes) — 스타일 깨진 파일 대응: read_only 우선, 실패 시 일반 모드
-    wb = None
+    # 1) 워크북 로드 — openpyxl 우선, 실패 시 pandas 대체
+    all_rows = None
+    sheet_title = None
+
+    # 1-a) openpyxl 시도 (read_only 우선)
     for read_only in (True, False):
         try:
             wb = load_workbook(BytesIO(file_bytes), data_only=True, read_only=read_only)
+            ws = wb.active
+            sheet_title = ws.title
+            all_rows = list(ws.iter_rows(values_only=True))
+            try:
+                wb.close()
+            except Exception:
+                pass
             break
         except Exception:
             continue
-    if wb is None:
+
+    # 1-b) openpyxl 실패 시 pandas로 대체 (스타일 깨진 파일 대응)
+    if all_rows is None:
+        try:
+            import pandas as pd
+            df = pd.read_excel(BytesIO(file_bytes), engine="openpyxl", header=None)
+            if df.empty:
+                raise ValueError("빈 파일")
+            # 첫 행을 헤더로 사용
+            header_row = tuple(df.iloc[0].tolist())
+            data_rows = [tuple(row) for row in df.iloc[1:].values]
+            all_rows = [header_row] + data_rows
+            sheet_title = "Sheet1"
+        except Exception:
+            pass
+
+    if all_rows is None:
         f = _failure(row=0, code=ERR_PARSE_ERROR, message="엑셀 파일을 열 수 없습니다. 파일이 손상되었을 수 있습니다.")
         result["failures"].append(f)
         bump(ERR_PARSE_ERROR)
         result["meta"]["fail"] = 1
         return result
 
-    ws = wb.active
-    result["meta"]["source"]["sheet"] = ws.title
-
-    # 2) 모든 행을 리스트로 읽기 (iter_rows로 안정적 순회)
-    all_rows = list(ws.iter_rows(values_only=True))
+    result["meta"]["source"]["sheet"] = sheet_title
     if not all_rows:
         f = _failure(row=0, code=ERR_PARSE_ERROR, message="빈 엑셀 파일입니다.")
         result["failures"].append(f)
