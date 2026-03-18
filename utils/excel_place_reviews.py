@@ -92,11 +92,16 @@ def load_reviews_from_excel(file_bytes: bytes, filename: Optional[str] = None) -
         codes = result["stats"]["codes"]
         codes[code] = int(codes.get(code, 0)) + 1
 
-    # 1) 워크북 로드 (bytes) — read_only=False로 안정적 파싱
-    try:
-        wb = load_workbook(BytesIO(file_bytes), data_only=True)
-    except Exception as e:
-        f = _failure(row=0, code=ERR_PARSE_ERROR, message=f"workbook load failed: {e}")
+    # 1) 워크북 로드 (bytes) — 스타일 깨진 파일 대응: read_only 우선, 실패 시 일반 모드
+    wb = None
+    for read_only in (True, False):
+        try:
+            wb = load_workbook(BytesIO(file_bytes), data_only=True, read_only=read_only)
+            break
+        except Exception:
+            continue
+    if wb is None:
+        f = _failure(row=0, code=ERR_PARSE_ERROR, message="엑셀 파일을 열 수 없습니다. 파일이 손상되었을 수 있습니다.")
         result["failures"].append(f)
         bump(ERR_PARSE_ERROR)
         result["meta"]["fail"] = 1
@@ -105,7 +110,7 @@ def load_reviews_from_excel(file_bytes: bytes, filename: Optional[str] = None) -
     ws = wb.active
     result["meta"]["source"]["sheet"] = ws.title
 
-    # 2) 모든 행을 리스트로 읽기
+    # 2) 모든 행을 리스트로 읽기 (iter_rows로 안정적 순회)
     all_rows = list(ws.iter_rows(values_only=True))
     if not all_rows:
         f = _failure(row=0, code=ERR_PARSE_ERROR, message="빈 엑셀 파일입니다.")
@@ -116,7 +121,7 @@ def load_reviews_from_excel(file_bytes: bytes, filename: Optional[str] = None) -
     # 3) 헤더 읽기 (첫 줄)
     headers = [_norm_header(h) for h in all_rows[0]]
 
-    # 4) 컬럼 매핑 (부분 문자열 매칭 지원)
+    # 4) 컬럼 매핑
     def find_col(*candidates: str) -> Optional[int]:
         for cand in candidates:
             cand = cand.strip().lower()
