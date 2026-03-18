@@ -66,6 +66,75 @@ def _failure(row: int, code: str, message: str, field: Optional[str] = None, val
     }
 
 
+def _parse_xlsx_via_zip(file_bytes: bytes) -> Tuple[Optional[List[tuple]], Optional[str]]:
+    """xlsx를 ZIP으로 열어 XML 직접 파싱 (스타일 깨진 파일 대응)"""
+    import zipfile
+    from xml.etree import ElementTree as ET
+
+    NS = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+    try:
+        zf = zipfile.ZipFile(BytesIO(file_bytes))
+    except Exception:
+        return None, None
+
+    # sharedStrings 로드
+    shared = []
+    if "xl/sharedStrings.xml" in zf.namelist():
+        try:
+            tree = ET.parse(zf.open("xl/sharedStrings.xml"))
+            for si in tree.findall(f"{NS}si"):
+                texts = [t.text or "" for t in si.iter(f"{NS}t")]
+                shared.append("".join(texts))
+        except Exception:
+            pass
+
+    # 첫 번째 시트 찾기
+    sheet_file = None
+    sheet_title = "Sheet1"
+    for name in zf.namelist():
+        if name.startswith("xl/worksheets/sheet") and name.endswith(".xml"):
+            sheet_file = name
+            break
+    if not sheet_file:
+        return None, None
+
+    try:
+        tree = ET.parse(zf.open(sheet_file))
+    except Exception:
+        return None, None
+
+    rows_data = []
+    for row_el in tree.iter(f"{NS}row"):
+        cells = []
+        for c in row_el.findall(f"{NS}c"):
+            t = c.get("t", "")  # s=shared string, inlineStr, n=number, etc
+            val = None
+            if t == "inlineStr":
+                is_el = c.find(f"{NS}is")
+                if is_el is not None:
+                    texts = [tt.text or "" for tt in is_el.iter(f"{NS}t")]
+                    val = "".join(texts)
+            elif t == "s":
+                v_el = c.find(f"{NS}v")
+                if v_el is not None and v_el.text is not None:
+                    idx = int(v_el.text)
+                    val = shared[idx] if idx < len(shared) else v_el.text
+            else:
+                v_el = c.find(f"{NS}v")
+                if v_el is not None and v_el.text is not None:
+                    try:
+                        val = float(v_el.text)
+                        if val == int(val):
+                            val = int(val)
+                    except ValueError:
+                        val = v_el.text
+            cells.append(val)
+        if cells:
+            rows_data.append(tuple(cells))
+
+    return (rows_data if rows_data else None), sheet_title
+
+
 def load_reviews_from_excel(file_bytes: bytes, filename: Optional[str] = None) -> Dict[str, Any]:
     """
     Excel(xlsx) bytes -> parse rows -> return meta/items/failures/stats
@@ -92,7 +161,7 @@ def load_reviews_from_excel(file_bytes: bytes, filename: Optional[str] = None) -
         codes = result["stats"]["codes"]
         codes[code] = int(codes.get(code, 0)) + 1
 
-    # 1) 워크북 로드 — openpyxl 우선, 실패 시 pandas 대체
+    # 1) 워크북 로드 — openpyxl 우선, 실패 시 ZIP/XML 직접 파싱
     all_rows = None
     sheet_title = None
 
@@ -111,20 +180,9 @@ def load_reviews_from_excel(file_bytes: bytes, filename: Optional[str] = None) -
         except Exception:
             continue
 
-    # 1-b) openpyxl 실패 시 pandas로 대체 (스타일 깨진 파일 대응)
+    # 1-b) openpyxl 실패 시 ZIP/XML 직접 파싱 (스타일 깨진 파일 대응)
     if all_rows is None:
-        try:
-            import pandas as pd
-            df = pd.read_excel(BytesIO(file_bytes), engine="openpyxl", header=None)
-            if df.empty:
-                raise ValueError("빈 파일")
-            # 첫 행을 헤더로 사용
-            header_row = tuple(df.iloc[0].tolist())
-            data_rows = [tuple(row) for row in df.iloc[1:].values]
-            all_rows = [header_row] + data_rows
-            sheet_title = "Sheet1"
-        except Exception:
-            pass
+        all_rows, sheet_title = _parse_xlsx_via_zip(file_bytes)
 
     if all_rows is None:
         f = _failure(row=0, code=ERR_PARSE_ERROR, message="엑셀 파일을 열 수 없습니다. 파일이 손상되었을 수 있습니다.")
