@@ -136,7 +136,16 @@ async def analyze_reviews(
 
     items = result.get("items", [])
     if not items:
-        raise HTTPException(status_code=422, detail="리뷰 데이터가 없습니다. 엑셀 형식을 확인해주세요.")
+        meta = result.get("meta", {})
+        source = meta.get("source", {})
+        failures = result.get("failures", [])
+        fail_msg = failures[0].get("message", "") if failures else ""
+        detail = (
+            f"리뷰 데이터가 없습니다. "
+            f"시트: {source.get('sheet', '?')}, "
+            f"실패사유: {fail_msg or '내용이 비어있음'}"
+        )
+        raise HTTPException(status_code=422, detail=detail)
 
     # 리뷰 텍스트 추출 (최대 ANALYZE_REVIEW_LIMIT개)
     reviews = [item["content"] for item in items[:ANALYZE_REVIEW_LIMIT]]
