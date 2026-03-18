@@ -254,6 +254,7 @@ export default function UploadPage() {
 
     return (
         <div style={{ padding: 40, maxWidth: 800 }}>
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
             <h1 style={{ marginBottom: 4 }}>리뷰 분석</h1>
             <p style={{ color: "#888", marginBottom: 24 }}>
                 고객 리뷰 데이터(엑셀 또는 이미지)를 업로드하면 AI가 마케팅 인사이트를 추출합니다.
