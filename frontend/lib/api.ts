@@ -47,6 +47,11 @@ export async function apiFetch<T>(
     });
 
 
+    // 🔐 프로 전용 기능 접근 차단
+    if (res.status === 403) {
+        throw new Error("프로 전용 기능입니다. 플랜을 업그레이드해 주세요.");
+    }
+
     // 🔐 인증 만료/무효 토큰 공통 처리
 
     if (res.status === 401) {

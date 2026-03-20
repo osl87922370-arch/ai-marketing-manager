@@ -20,6 +20,7 @@ import models.result  # noqa: F401
 import models.place_insights  # noqa: F401
 import models.workflow_run  # noqa: F401
 import models.review_analysis  # noqa: F401
+import models.campaign_metric  # noqa: F401
 
 from routers.generate import router as generate_router
 from routers.history import router as history_router
@@ -27,6 +28,10 @@ from routers.results import router as results_router
 from routers.place_insights import router as place_insights_router
 from routers.reviews import router as reviews_router
 from routers.dashboard import router as dashboard_router
+from routers.utm import router as utm_router
+from routers.ga_dashboard import router as ga_dashboard_router
+from routers.performance import router as performance_router
+from routers.admin import router as admin_router
 
 # ======================
 # 테이블 자동 생성
@@ -148,6 +153,10 @@ app.include_router(results_router, prefix="/ai", tags=["ai"])
 app.include_router(dashboard_router, prefix="/ai", tags=["ai"])
 app.include_router(place_insights_router)
 app.include_router(reviews_router)
+app.include_router(utm_router, prefix="/ai", tags=["pro"])
+app.include_router(ga_dashboard_router, prefix="/ai", tags=["pro"])
+app.include_router(performance_router, prefix="/ai", tags=["pro"])
+app.include_router(admin_router, prefix="/admin", tags=["admin"])
 
 
 # ======================
@@ -161,4 +170,4 @@ def health():
 
 @app.get("/ai/me")
 def me(request: Request, user=Depends(get_current_user)):
-    return {"id": str(user.id), "email": user.email}
+    return {"id": str(user.id), "email": user.email, "plan": user.plan}
